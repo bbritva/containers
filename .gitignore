@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+exec
 
 #IDE files
 .idea/*
