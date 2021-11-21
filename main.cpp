@@ -6,11 +6,11 @@
 	#include <stack>
     #include <vector>
     #define STACK std::stack
-//    #define VECTOR std::vector
+    #define VECTOR std::vector
     #define MAP std::map
 //#else
 //    #define STACK ft::Stack
-    #define VECTOR ft::Vector
+//    #define VECTOR ft::Vector
 //    #define MAP ft::Map
     #include "Vector.hpp"
 //    #include "Map.hpp"
@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
     VECTOR<int> vector_int;
 	STACK<int> stack_int;
     VECTOR<Buffer> vector_buffer;
-	STACK<Buffer, std::deque<Buffer>> stack_deq_buffer;
+	STACK<Buffer, std::deque<Buffer> > stack_deq_buffer;
 	MAP<int, int> map_int;
 
 	for (int i = 0; i < 100; i++)
@@ -93,7 +93,7 @@ int main(int argc, char** argv) {
 //	{
 //		//NORMAL ! :P
 //	}
-	
+
 	for (int i = 0; i < COUNT; ++i)
 	{
 		map_int.insert(std::make_pair(rand(), rand()));
@@ -121,3 +121,15 @@ int main(int argc, char** argv) {
 	std::cout << std::endl;
 	return (0);
 }
+
+
+//#include <iostream>
+//
+//int main()
+//{
+//	std::cout  << "wtf\n";
+//	std::cout  << "wtf\n";
+//	std::cout  << "wtf\n";
+//	std::cout  << "wtf\n";
+//	std::cout  << "wtf\n";
+//}

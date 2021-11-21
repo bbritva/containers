@@ -1,7 +1,7 @@
 NAME		=	exec
 CPP			=	clang++ $(CFLAGS)
 RM			=	rm -f
-CFLAGS		=	-Wall -Wextra -Werror -g -std=c++98
+CFLAGS		=	-Wall -Wextra -Werror -g3 -std=c++98
 SRCS		=	main.cpp
 OBJS		=	$(SRCS:.cpp=.o)
 HDRS		=	Vector.hpp
@@ -26,7 +26,7 @@ fclean:		clean
 
 re:			fclean all
 
-%.o:		%.cpp Array.hpp
+%.o:		%.cpp
 			$(CPP) -c $< -o $@
 			echo $@ compilled
 
