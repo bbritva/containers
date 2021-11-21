@@ -26,7 +26,7 @@ fclean:		clean
 
 re:			fclean all
 
-%.o:		%.cpp
+%.o:		%.cpp $(HDRS)
 			$(CPP) -c $< -o $@
 			echo $@ compilled
 

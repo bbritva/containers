@@ -6,11 +6,11 @@
 	#include <stack>
     #include <vector>
     #define STACK std::stack
-    #define VECTOR std::vector
+//    #define VECTOR std::vector
     #define MAP std::map
 //#else
 //    #define STACK ft::Stack
-//    #define VECTOR ft::Vector
+    #define VECTOR ft::Vector
 //    #define MAP ft::Map
     #include "Vector.hpp"
 //    #include "Map.hpp"
@@ -121,15 +121,3 @@ int main(int argc, char** argv) {
 	std::cout << std::endl;
 	return (0);
 }
-
-
-//#include <iostream>
-//
-//int main()
-//{
-//	std::cout  << "wtf\n";
-//	std::cout  << "wtf\n";
-//	std::cout  << "wtf\n";
-//	std::cout  << "wtf\n";
-//	std::cout  << "wtf\n";
-//}
