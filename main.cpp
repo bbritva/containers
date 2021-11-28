@@ -68,16 +68,16 @@ int main(int argc, char** argv) {
 	STACK<Buffer, std::deque<Buffer> > stack_deq_buffer;
 	MAP<int, int> map_int;
 
-	for (int i = 0; i < 100; i++)
+	for (int i = 0; i < COUNT; i++)
 	{
 		vector_buffer.push_back(Buffer());
 	}
 
-//	for (int i = 0; i < COUNT; i++)
-//	{
-//		const int idx = rand() % COUNT;
-////		vector_buffer[idx].idx = 5;
-//	}
+	for (int i = 0; i < COUNT; i++)
+	{
+		const int idx = rand() % COUNT;
+		vector_buffer[idx].idx = 5;
+	}
 //    VECTOR<Buffer>().swap(vector_buffer);
 
 //	try

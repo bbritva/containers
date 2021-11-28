@@ -12,6 +12,7 @@ namespace ft {
         T *_arr;
         unsigned int _size;
         unsigned int _index;
+		std::allocator<T> allocator;
     public:
         Vector() {
             _arr = new T[BASIC_SIZE];
