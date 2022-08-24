@@ -1,5 +1,5 @@
 NAME		=	exec
-CPP			=	clang++ $(CFLAGS)
+CPP			=	g++ $(CFLAGS)
 RM			=	rm -f
 CFLAGS		=	-Wall -Wextra -Werror -g3 -std=c++98
 SRCS		=	main.cpp
