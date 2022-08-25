@@ -9,10 +9,10 @@
 //    #define VECTOR std::vector
     #define MAP std::map
 //#else
-//    #define STACK ft::Stack
-    #define VECTOR ft::Vector
-//    #define MAP ft::Map
-    #include "Vector.hpp"
+//    #define STACK ft::stack
+    #define VECTOR ft::vector
+//    #define MAP ft::map
+    #include "vector.hpp"
 //    #include "Map.hpp"
 //    #include "Stack.hpp"
 //#endif
@@ -23,8 +23,8 @@
 #define BUFFER_SIZE 4096
 struct Buffer
 {
-	int idx;
-	char buff[BUFFER_SIZE];
+	int		idx;
+	char	buff[BUFFER_SIZE];
 };
 
 
@@ -50,7 +50,7 @@ public:
 };
 
 int main(int argc, char** argv) {
-    ft::Vector<Buffer> vec;
+    ft::vector<Buffer> vec;
 	if (argc != 2)
 	{
 		std::cerr << "Usage: ./test seed" << std::endl;

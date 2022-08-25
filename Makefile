@@ -1,10 +1,10 @@
 NAME		=	exec
-CPP			=	g++ $(CFLAGS)
+CPP			=	c++ $(CFLAGS)
 RM			=	rm -f
 CFLAGS		=	-Wall -Wextra -Werror -g3 -std=c++98
 SRCS		=	main.cpp
 OBJS		=	$(SRCS:.cpp=.o)
-HDRS		=	Vector.hpp
+HDRS		=	vector.hpp
 CYAN		=	\x1B[36m
 MAGENTA		=	\x1B[35m
 GREEN		=	\033[92m

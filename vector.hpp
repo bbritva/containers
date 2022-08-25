@@ -7,27 +7,27 @@
 
 namespace ft {
     template<typename T>
-    class Vector {
+    class vector {
     private:
         T *_arr;
         unsigned int _size;
         unsigned int _index;
-		std::allocator<T> allocator;
+		std::allocator<T> _allocator;
     public:
-        Vector() {
+        vector() {
             _arr = new T[BASIC_SIZE];
 			_index = 0;
             _size = BASIC_SIZE;
         };
 
-        explicit Vector(unsigned int size) {
+        explicit vector(unsigned int size) {
             size = (BASIC_SIZE > size) ? BASIC_SIZE : size;
             _arr = new T[size];
             _size = size;
 			_index = 0;
         };
 
-        Vector(Vector const &other) {
+        vector(vector const &other) {
             _arr = new T[other._size];
             for (unsigned int i = 0; i < other._size; ++i)
                 _arr[i] = other._arr[i];
@@ -35,11 +35,11 @@ namespace ft {
 			_index = other._index;
         }
 
-        ~Vector() {
+        ~vector() {
             delete[] _arr;
         }
 
-        Vector &operator=(const Vector &other) {
+        vector &operator=(const vector &other) {
             if (this == &other)
                 return (*this);
             if (_size < other._size) {
