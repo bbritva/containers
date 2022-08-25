@@ -27,5 +27,18 @@ int main() {
 		std::cout << vector_int[i];
 	}
 
+	for (int i = 0; i < COUNT; i++)
+	{
+		vector_str.push_back("sw");
+	}
+	for (int i = 0; i < 5; i++)
+	{
+		vector_str.pop_back();
+	}
+	for (unsigned int i = 0; i < vector_str.size(); i++)
+	{
+		std::cout << vector_str[i];
+	}
+
 	return (0);
 }
