@@ -56,7 +56,7 @@ namespace ft {
         }
 
         T &operator[](unsigned int index) {
-            if (index < _size)
+            if (index < _index)
                 return _arr[index];
             throw std::exception();
         }
@@ -75,11 +75,16 @@ namespace ft {
             _arr[_index++] = new_el;
         }
 
-        unsigned int size() {
-            return (_size);
+        void pop_back(){
+			_index--;
+			_allocator.destroy(&_arr[_index]);
         }
-        unsigned int length() {
+
+        unsigned int size() {
             return (_index);
+        }
+        unsigned int capacity() {
+            return (_size);
         }
 
 

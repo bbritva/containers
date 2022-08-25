@@ -18,7 +18,11 @@ int main() {
 	{
 		vector_int.push_back(i);
 	}
-	for (int i = 0; i < COUNT; i++)
+	for (int i = 0; i < 5; i++)
+	{
+		vector_int.pop_back();
+	}
+	for (unsigned int i = 0; i < vector_int.size(); i++)
 	{
 		std::cout << vector_int[i];
 	}
