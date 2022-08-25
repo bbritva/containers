@@ -14,10 +14,11 @@ namespace ft {
         unsigned int _index;
 		std::allocator<T> _allocator;
     public:
-        vector() {
+        explicit vector(const std::allocator<T>& allocator = std::allocator<T>()) {
             _arr = new T[BASIC_SIZE];
 			_index = 0;
             _size = BASIC_SIZE;
+			_allocator = allocator;
         };
 
         explicit vector(unsigned int size) {
@@ -69,7 +70,7 @@ namespace ft {
                 delete[] _arr;
                 _arr = new_arr;
             }
-            _arr[++_index] = new_el;
+            _arr[_index++] = new_el;
         }
 
         unsigned int size() {
