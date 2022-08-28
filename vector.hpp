@@ -66,13 +66,13 @@ namespace ft {
             {
                 T *new_arr = _allocator.allocate(_size << 1);
                 for (unsigned int i = 0; i < _size; ++i) {
-                    new_arr[i] = _arr[i];
+					_allocator.construct(&new_arr[i], _arr[i]);
                 }
 				_allocator.deallocate(_arr, _size);
 				_size = _size << 1;
                 _arr = new_arr;
             }
-            _arr[_index++] = new_el;
+            _allocator.construct(&_arr[_index++], new_el);
         }
 
         void pop_back(){
