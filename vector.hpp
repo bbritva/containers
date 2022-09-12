@@ -87,7 +87,32 @@ namespace ft {
             return (_size);
         }
 
+	};
 
-    };
+	template <class Category, class T, class Distance = ptrdiff_t,
+			class Pointer = T*, class Reference = T&>
+	class iterator
+	{
+	public:
+		/* Type of elements pointed. */
+		typedef T           value_type;
+
+		/* Type to represent the difference between two iterators. */
+		typedef Distance    difference_type;
+
+		/* Type to represent a pointer to an element pointed */
+		typedef Pointer     pointer;
+
+		/* Type to represent a reference to an element pointed */
+		typedef Reference   reference;
+
+		/* Category of the iterator. */
+		typedef Category    iterator_category;
+	};
+
+	template <typename T>
+	class random_access_iterator : ft::iterator<ft::random_access_iterator_tag, T>{
+
+	};
 }
 #endif//VECTOR_HPP

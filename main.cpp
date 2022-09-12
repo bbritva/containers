@@ -39,6 +39,16 @@ int main() {
 	{
 		std::cout << vector_str[i];
 	}
+	std::cout << std::endl;
+	std::vector<int> std_vector;
+	for (int i = 0; i < COUNT; i++)
+	{
+		std_vector.push_back(i);
+	}
+	ft::vector<int>::iterator it = vector_str.begin();
+	while (it != std_vector.end())
+		std::cout << *it++;
+
 
 	return (0);
 }
