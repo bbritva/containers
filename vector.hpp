@@ -10,82 +10,129 @@ namespace ft {
     class vector {
     private:
         T *_arr;
-        unsigned int _size;
-        unsigned int _index;
+        std::size_t _capacity;
+        std::size_t _size;
 		std::allocator<T> _allocator;
     public:
         explicit vector(const std::allocator<T>& allocator = std::allocator<T>()) {
-			_index = 0;
-			_size = BASIC_SIZE;
+			_size = 0;
+			_capacity = BASIC_SIZE;
 			_allocator = allocator;
 			_arr = _allocator.allocate(BASIC_SIZE);
 		};
 
-        explicit vector(unsigned int size, const std::allocator<T>& allocator = std::allocator<T>()) {
+        explicit vector(std::size_t size, const std::allocator<T>& allocator = std::allocator<T>()) {
             size = (BASIC_SIZE > size) ? BASIC_SIZE : size;
-            _size = size;
-			_index = 0;
+			_capacity = size;
+			_size = 0;
 			_allocator = allocator;
 			_arr = _allocator.allocate(size);
 		};
 
         vector(vector const &other, const std::allocator<T>& allocator = std::allocator<T>()) {
 			_allocator = allocator;
-            _arr = _allocator.allocate(other._size);
-            for (unsigned int i = 0; i < other._size; ++i)
+            _arr = _allocator.allocate(other._capacity);
+            for (std::size_t i = 0; i < other._capacity; ++i)
                 _arr[i] = other._arr[i];
-            _size = other._size;
-			_index = other._index;
+			_capacity = other._capacity;
+			_size = other._size;
         }
 
         ~vector() {
-            _allocator.deallocate(_arr, _size);
+            _allocator.deallocate(_arr, _capacity);
         }
 
         vector &operator=(const vector &other) {
             if (this == &other)
                 return (*this);
-            if (_size < other._size) {
-                _allocator.deallocate(_arr, _size);
-                _arr = _allocator.allocate(other._size);
+            if (_capacity < other._capacity) {
+                _allocator.deallocate(_arr, _capacity);
+                _arr = _allocator.allocate(other._capacity);
             }
-            for (unsigned int i = 0; i < _size; ++i)
+            for (std::size_t i = 0; i < _capacity; ++i)
                 _arr[i] = other._arr[i];
-            _size = other._size;
+			_capacity = other._capacity;
             return (*this);
         }
 
-        T &operator[](unsigned int index) {
-            if (index < _index)
-                return _arr[index];
-            throw std::exception();
+		const std::allocator<T>& get_allocator() const {
+			return _allocator;
+		}
+
+        T &operator[](std::size_t index) {
+			return _arr[index];
         }
 
+		T &at( std::size_t index ) {
+			if (index < _size)
+				return _arr[index];
+			throw std::out_of_range("out_of_range");
+		}
+
+		T &front() {
+			return _arr[0];
+		}
+
+		T &back() {
+			return _arr[_size - 1];
+		}
+
+		T *data() {
+			return _arr;
+		}
+
+		std::size_t max_size() {
+			return _allocator.max_size();
+		}
+
+		void reserve(std::size_t new_cap) {
+			if (new_cap <= _capacity)
+				return;
+			T *new_arr = _allocator.allocate(new_cap);
+			for (std::size_t i = 0; i < _size; ++i) {
+				_allocator.construct(&new_arr[i], _arr[i]);
+				_allocator.destroy(&_arr[i]);
+			}
+			_allocator.deallocate(_arr, _capacity);
+			_capacity = new_cap;
+			_arr = new_arr;
+		}
+
+		void resize(std::size_t count, T value = T()) {
+			while (_size < count)
+				push_back(value);
+			while (_size > count)
+				pop_back();
+		}
+
         void push_back(T new_el){
-            if (_index + 1 >= _size)
-            {
-                T *new_arr = _allocator.allocate(_size << 1);
-                for (unsigned int i = 0; i < _size; ++i) {
-					_allocator.construct(&new_arr[i], _arr[i]);
-                }
-				_allocator.deallocate(_arr, _size);
-				_size = _size << 1;
-                _arr = new_arr;
-            }
-            _allocator.construct(&_arr[_index++], new_el);
+            if (_size + 1 >= _capacity)
+				reserve(_capacity << 1);
+            _allocator.construct(&_arr[_size++], new_el);
         }
 
         void pop_back(){
-			_index--;
-			_allocator.destroy(&_arr[_index]);
+			_size--;
+			_allocator.destroy(&_arr[_size]);
         }
 
-        unsigned int size() {
-            return (_index);
-        }
-        unsigned int capacity() {
+        std::size_t size() {
             return (_size);
         }
+        std::size_t capacity() {
+            return (_capacity);
+        }
+
+		void swap(vector& other) {
+
+		}
+
+		void clear() {
+			for (std::size_t i = 0; i < _size; ++i) {
+				_allocator.destroy(&_arr[i]);
+			}
+			_size = 0;
+		}
 
 	};
 

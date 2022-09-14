@@ -13,7 +13,7 @@
 #define COUNT 100
 
 int main() {
-	/*{ //VECTOR
+	{ //VECTOR
 		NAMESPACE::vector<std::string> vector_str;
 		NAMESPACE::vector<int> vector_int;
 
@@ -37,7 +37,7 @@ int main() {
 			std::cout << vector_str[i];
 		}
 		std::cout << std::endl;
-	}*/
+	}
 	{ //STACK
 		NAMESPACE::stack<std::string> stack_str;
 		NAMESPACE::stack<int> stack_int;
