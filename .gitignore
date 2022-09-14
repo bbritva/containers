@@ -35,5 +35,5 @@ exec
 #IDE files
 .idea/*
 cmake-build-debug/*
-old*
-other*
+old_containers/*
+other_containers/*
