@@ -124,7 +124,18 @@ namespace ft {
         }
 
 		void swap(vector& other) {
-
+			T *arr = _arr;
+			std::size_t capacity = _capacity;
+			std::size_t size = _size;
+			std::allocator<T> allocator = _allocator;
+			_arr = other._arr;
+			_capacity = other._capacity;
+			_size = other._size;
+			_allocator = other._allocator;
+			other._arr = arr;
+			other._capacity = capacity;
+			other._size = size;
+			other._allocator = allocator;
 		}
 
 		void clear() {
@@ -135,6 +146,13 @@ namespace ft {
 		}
 
 	};
+	//class end
+
+	template <class T>
+	void swap (ft::vector<T> &first, ft::vector<T> &second)
+	{
+		first.swap(second);
+	}
 
 }
 #endif//VECTOR_HPP
