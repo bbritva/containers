@@ -23,19 +23,20 @@ namespace ft {
 		typedef typename Iterator::iterator_category	iterator_category;
 	};
 
-	template <class Category, class T, class Distance = std::ptrdiff_t, class Pointer = T*, class Reference = T&>
+	template <class Category, class T, class Distance = std::ptrdiff_t,
+			class Pointer = T*, class Reference = T&>
 	class iterator
 	{
 	public:
+		typedef Category	iterator_category;
 		typedef T			value_type;
 		typedef Distance	difference_type;
 		typedef Pointer		pointer;
 		typedef Reference	reference;
-		typedef Category	iterator_category;
 	};
 
 	template <typename T>
-	class random_access_iterator : ft::iterator<ft::random_access_iterator_tag, typename T>
+	class random_access_iterator : iterator<ft::random_access_iterator_tag, typename T>
 	{
 
 	};
