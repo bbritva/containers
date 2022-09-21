@@ -14,8 +14,11 @@ namespace ft {
 		T* _pointer;
 	public:
 		random_access_iterator() : _pointer(NULL) {}
+
 		explicit random_access_iterator(T* x) : _pointer(x) {}
+
 		random_access_iterator(const random_access_iterator& other) : _pointer(other._pointer) {}
+
 		random_access_iterator &operator=(const random_access_iterator &other) {
 			if (this == &other)
 				return (*this);
@@ -34,9 +37,37 @@ namespace ft {
 			return tmp;
 		}
 
+		random_access_iterator& operator--() {
+			--_pointer;
+			return *this;
+		}
+
+		random_access_iterator operator--(int) {
+			random_access_iterator tmp(*this);
+			operator--();
+			return tmp;
+		}
+
+		random_access_iterator operator+(std::size_t step) const {
+			return (_pointer + step);
+		}
+
+		random_access_iterator operator-(std::size_t step) const {
+			return (_pointer - step);
+		}
+
 		random_access_iterator operator+=(std::size_t step) {
 			_pointer += step;
 			return *this;
+		}
+
+		random_access_iterator operator-=(std::size_t step) {
+			_pointer -= step;
+			return *this;
+		}
+
+		T& operator[](std::size_t offset) {
+			return *(_pointer + offset);
 		}
 
 		bool operator==(const random_access_iterator& other) const {
@@ -45,7 +76,15 @@ namespace ft {
 		bool operator!=(const random_access_iterator& other) const {
 			return _pointer != other._pointer;
 		}
-		T& operator*() {return *_pointer;}
+
+		T& operator*() {
+			return *_pointer;
+		}
+
+		T* operator->() {
+			return _pointer;
+		}
+
 	};
 
 	template<typename T>
