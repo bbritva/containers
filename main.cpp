@@ -23,8 +23,9 @@ int main() {
 		for (int i = 0; i < 5; i++) {
 			vector_int.pop_back();
 		}
-		for (unsigned int i = 0; i < vector_int.size(); i++) {
-			std::cout << vector_int[i];
+		ft::vector<int>::iterator it = vector_int.begin();
+		while (it != vector_int.end()) {
+			std::cout << *it++;
 		}
 
 		for (int i = 0; i < COUNT; i++) {
@@ -38,7 +39,6 @@ int main() {
 		}
 		std::cout << std::endl;
 
-		ft::vector<int>::iterator it = vector_int.begin();
 		it++;
 		std::cout << *it << "\n";
 

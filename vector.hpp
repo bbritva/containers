@@ -107,6 +107,10 @@ namespace ft {
 			return iterator(&_arr[0]);
 		}
 
+		iterator end() {
+			return iterator(&_arr[_size]);
+		}
+
 		// Allocator
 
 		const std::allocator<T>& get_allocator() const {
