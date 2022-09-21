@@ -6,7 +6,7 @@
 #define CONTAINERS_STACK_HPP
 
 namespace ft {
-	template<typename T, class Container = std::vector<T> >
+	template<typename T, class Container = ft::vector<T> >
 	class stack {
 	private:
 		Container _data;

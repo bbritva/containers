@@ -25,7 +25,7 @@ namespace ft {
 
 	template <class Category, class T, class Distance = std::ptrdiff_t,
 			class Pointer = T*, class Reference = T&>
-	class iterator
+	class iterator_base
 	{
 	public:
 		typedef Category	iterator_category;
@@ -35,19 +35,6 @@ namespace ft {
 		typedef Reference	reference;
 	};
 
-	template <class Category, class T>
-	class MyIterator : public ft::iterator<random_access_iterator_tag, T>
-	{
-		T* p;
-	public:
-		MyIterator(T* x) :p(x) {}
-		MyIterator(const MyIterator& mit) : p(mit.p) {}
-		MyIterator& operator++() {++p;return *this;}
-		MyIterator operator++(int) {MyIterator tmp(*this); operator++(); return tmp;}
-		bool operator==(const MyIterator& rhs) const {return p==rhs.p;}
-		bool operator!=(const MyIterator& rhs) const {return p!=rhs.p;}
-		int& operator*() {return *p;}
-	};
 }
 
 #endif //CONTAINERS_ITERATOR_TRAITS_HPP
