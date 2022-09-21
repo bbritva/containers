@@ -7,8 +7,52 @@
 # include "iterators.hpp"
 
 namespace ft {
+
+	template <class T>
+	class random_access_iterator : public ft::iterator_base<ft::random_access_iterator_tag, T>
+	{
+		T* _pointer;
+	public:
+		random_access_iterator() : _pointer(NULL) {}
+		explicit random_access_iterator(T* x) : _pointer(x) {}
+		random_access_iterator(const random_access_iterator& other) : _pointer(other._pointer) {}
+		random_access_iterator &operator=(const random_access_iterator &other) {
+			if (this == &other)
+				return (*this);
+			_pointer = other._pointer;
+			return (*this);
+		}
+
+		random_access_iterator& operator++() {
+			++_pointer;
+			return *this;
+		}
+
+		random_access_iterator operator++(int) {
+			random_access_iterator tmp(*this);
+			operator++();
+			return tmp;
+		}
+
+		random_access_iterator operator+=(std::size_t step) {
+			_pointer += step;
+			return *this;
+		}
+
+		bool operator==(const random_access_iterator& other) const {
+			return _pointer == other._pointer;
+		}
+		bool operator!=(const random_access_iterator& other) const {
+			return _pointer != other._pointer;
+		}
+		T& operator*() {return *_pointer;}
+	};
+
 	template<typename T>
 	class vector {
+	public:
+		typedef ft::random_access_iterator<T> iterator;
+
 	private:
 		T *_arr;
 		std::size_t _capacity;
@@ -56,9 +100,20 @@ namespace ft {
 			return (*this);
 		}
 
+		// Iterators
+
+
+		iterator begin() {
+			return iterator(&_arr[0]);
+		}
+
+		// Allocator
+
 		const std::allocator<T>& get_allocator() const {
 			return _allocator;
 		}
+
+		// Element access
 
 		T &operator[](std::size_t index) {
 			return _arr[index];
@@ -82,8 +137,29 @@ namespace ft {
 			return _arr;
 		}
 
+		// Capacity
+
+		std::size_t size() {
+			return (_size);
+		}
+
 		std::size_t max_size() {
 			return _allocator.max_size();
+		}
+
+		void resize(std::size_t count, T value = T()) {
+			while (_size < count)
+				push_back(value);
+			while (_size > count)
+				pop_back();
+		}
+
+		std::size_t capacity() {
+			return (_capacity);
+		}
+
+		bool empty() const {
+			return (_size == 0);
 		}
 
 		void reserve(std::size_t new_cap) {
@@ -99,12 +175,11 @@ namespace ft {
 			_arr = new_arr;
 		}
 
-		void resize(std::size_t count, T value = T()) {
-			while (_size < count)
-				push_back(value);
-			while (_size > count)
-				pop_back();
-		}
+		// TODO: shrink_to_fit ??
+
+		// Modifiers
+
+		// TODO: assign ??
 
 		void push_back(T new_el) {
 			if (_size + 1 >= _capacity)
@@ -117,15 +192,8 @@ namespace ft {
 			_allocator.destroy(&_arr[_size]);
 		}
 
-		std::size_t size() {
-			return (_size);
-		}
-		bool empty() const {
-			return (_size == 0);
-		}
-		std::size_t capacity() {
-			return (_capacity);
-		}
+		// TODO: insert ??
+		// TODO: erase ??
 
 		void swap(vector& other) {
 			T *arr = _arr;
@@ -149,34 +217,12 @@ namespace ft {
 			_size = 0;
 		}
 
+		// TODO: emplace ??
+		// TODO: emplace_back ??
 	};
 	//class end
 
-	template <class Category, class T>
-	class iterator : public ft::iterator_base<ft::random_access_iterator_tag, T>
-	{
-		T* ptr;
-	public:
-		iterator(T* x) : ptr(x) {}
-		iterator(const iterator& other) : ptr(other.p) {}
-		iterator& operator++() {
-			++ptr;
-			return *this;
-		}
 
-		iterator operator++(int) {
-			iterator tmp(*this);
-			operator++();
-			return tmp;
-		}
-		bool operator==(const iterator& other) const {
-			return ptr == other.ptr;
-		}
-		bool operator!=(const iterator& other) const {
-			return ptr != other.ptr;
-		}
-		T& operator*() {return *ptr;}
-	};
 
 	template <class T>
 	void swap (ft::vector<T> &first, ft::vector<T> &second)

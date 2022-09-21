@@ -37,6 +37,11 @@ int main() {
 			std::cout << vector_str[i];
 		}
 		std::cout << std::endl;
+
+		ft::vector<int>::iterator it = vector_int.begin();
+		it++;
+		std::cout << *it << "\n";
+
 	}
 	{ //STACK
 		NAMESPACE::stack<std::string> stack_str;
