@@ -236,11 +236,11 @@ namespace ft {
 			return iterator(&_arr[_size]);
 		}
 
-		const_iterator begin() const {
+		const_iterator cbegin() const {
 			return const_iterator(&_arr[0]);
 		}
 
-		const_iterator end() const {
+		const_iterator cend() const {
 			return const_iterator(&_arr[_size]);
 		}
 
@@ -252,11 +252,11 @@ namespace ft {
 			return reverse_iterator(&_arr[0]);
 		}
 
-		const_reverse_iterator rbegin() const {
+		const_reverse_iterator crbegin() const {
 			return const_reverse_iterator(&_arr[_size]);
 		}
 
-		const_reverse_iterator rend() const {
+		const_reverse_iterator crend() const {
 			return const_reverse_iterator(&_arr[0]);
 		}
 
@@ -333,6 +333,23 @@ namespace ft {
 		// Modifiers
 
 		// TODO: assign ??
+
+		void assign (std::size_t n, const T& value) {
+			clear();
+			while (n--) {
+				push_back(value);
+			}
+		}
+
+		template <class InputIterator>
+		void assign (InputIterator first, InputIterator last) {
+			clear();
+			while (first != last) {
+				push_back(*first);
+				first++;
+			}
+		}
+
 
 		void push_back(T new_el) {
 			if (_size + 1 >= _capacity)
