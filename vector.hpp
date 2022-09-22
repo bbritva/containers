@@ -176,6 +176,7 @@ namespace ft {
 		typedef ft::random_access_iterator<T> iterator;
 		typedef ft::random_access_iterator<const T> const_iterator;
 		typedef ft::reverse_iterator<T> reverse_iterator;
+		typedef ft::reverse_iterator<const T> const_reverse_iterator;
 
 	private:
 		T *_arr;
@@ -233,6 +234,30 @@ namespace ft {
 
 		iterator end() {
 			return iterator(&_arr[_size]);
+		}
+
+		const_iterator begin() const {
+			return const_iterator(&_arr[0]);
+		}
+
+		const_iterator end() const {
+			return const_iterator(&_arr[_size]);
+		}
+
+		reverse_iterator rbegin() {
+			return reverse_iterator(&_arr[_size]);
+		}
+
+		const_iterator rend() {
+			return reverse_iterator(&_arr[0]);
+		}
+
+		const_reverse_iterator rbegin() const {
+			return const_reverse_iterator(&_arr[_size]);
+		}
+
+		const_reverse_iterator rend() const {
+			return const_reverse_iterator(&_arr[0]);
 		}
 
 		// Allocator
