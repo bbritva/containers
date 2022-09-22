@@ -78,6 +78,22 @@ namespace ft {
 			return _pointer != other._pointer;
 		}
 
+		virtual bool operator>(const random_access_iterator & other) const {
+			return _pointer > other._pointer;
+		}
+
+		bool operator<(const random_access_iterator & other) const {
+			return _pointer < other._pointer;
+		}
+
+		bool operator>=(const random_access_iterator & other) const {
+			return _pointer >= other._pointer;
+		}
+
+		bool operator<=(const random_access_iterator & other) const {
+			return _pointer <= other._pointer;
+		}
+
 		T& operator*() {
 			return *_pointer;
 		}
@@ -134,6 +150,23 @@ namespace ft {
 
 		T& operator[](std::size_t offset) {
 			return *(random_access_iterator<T>::_pointer - offset);
+		}
+
+
+		bool operator>(const reverse_iterator& other) const {
+			return random_access_iterator<T>::_pointer < other._pointer;
+		}
+
+		bool operator<(const reverse_iterator& other) const {
+			return random_access_iterator<T>::_pointer > other._pointer;
+		}
+
+		bool operator>=(const reverse_iterator& other) const {
+			return random_access_iterator<T>::_pointer <= other._pointer;
+		}
+
+		bool operator<=(const reverse_iterator& other) const {
+			return random_access_iterator<T>::_pointer >= other._pointer;
 		}
 	};
 
