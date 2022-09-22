@@ -328,11 +328,7 @@ namespace ft {
 			_arr = new_arr;
 		}
 
-		// TODO: shrink_to_fit ??
-
 		// Modifiers
-
-		// TODO: assign ??
 
 		void assign (std::size_t n, const T& value) {
 			clear();
@@ -362,7 +358,16 @@ namespace ft {
 			_allocator.destroy(&_arr[_size]);
 		}
 
-		// TODO: insert ??
+		iterator insert (iterator position, const T& value) {
+			push_back(back());
+			iterator it = end() - 1;
+			while (it != (position + 1)) {
+				*it = *(it - 1);
+				it--;
+			}
+			*it = value;
+		}
+
 		// TODO: erase ??
 
 		void swap(vector& other) {
