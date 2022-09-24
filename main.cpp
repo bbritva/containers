@@ -23,7 +23,7 @@ int main() {
 		for (int i = 0; i < 5; i++) {
 			vector_int.pop_back();
 		}
-		ft::vector<int>::iterator it = vector_int.begin();
+		NAMESPACE::vector<int>::iterator it = vector_int.begin();
 		while (it != vector_int.end()) {
 			std::cout << *it++;
 		}
@@ -43,6 +43,7 @@ int main() {
 		std::cout << *it << "\n";
 
 	}
+
 	{ //STACK
 		NAMESPACE::stack<std::string> stack_str;
 		NAMESPACE::stack<int> stack_int;
@@ -69,6 +70,19 @@ int main() {
 			stack_str.pop();
 		}
 		std::cout << std::endl;
+		{
+			NAMESPACE::vector<int> vector;
+			for (int i = 0; i < 10; i++) {
+				vector.push_back(i);
+			}
+			vector.insert(vector.begin() + 3, (std::size_t )3, 77);
+			NAMESPACE::vector<int>::iterator it = vector.begin();
+			while (it != vector.end()) {
+				std::cout << *it++;
+			}
+		}
+		std::cout << std::endl;
+
 	}
 
 

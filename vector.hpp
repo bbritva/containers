@@ -50,11 +50,11 @@ namespace ft {
 		}
 
 		virtual random_access_iterator operator+(std::size_t step) const {
-			return (_pointer + step);
+			return random_access_iterator(_pointer + step);
 		}
 
 		virtual random_access_iterator operator-(std::size_t step) const {
-			return (_pointer - step);
+			return random_access_iterator(_pointer - step);
 		}
 
 		virtual random_access_iterator operator+=(std::size_t step) {
@@ -131,11 +131,11 @@ namespace ft {
 		}
 
 		reverse_iterator operator+(std::size_t step) const {
-			return (random_access_iterator<T>::_pointer - step);
+			return reverse_iterator(random_access_iterator<T>::_pointer - step);
 		}
 
 		reverse_iterator operator-(std::size_t step) const {
-			return (random_access_iterator<T>::_pointer + step);
+			return reverse_iterator(random_access_iterator<T>::_pointer + step);
 		}
 
 		reverse_iterator operator+=(std::size_t step) {
@@ -316,15 +316,18 @@ namespace ft {
 		}
 
 		void reserve(std::size_t new_cap) {
-			if (new_cap <= _capacity)
+			if (new_cap <= _capacity) {
 				return;
-			T *new_arr = _allocator.allocate(new_cap);
+			}
+			std::size_t old_capacity = _capacity;
+			while (_capacity < new_cap)
+				_capacity *= 2;
+			T *new_arr = _allocator.allocate(_capacity);
 			for (std::size_t i = 0; i < _size; ++i) {
 				_allocator.construct(&new_arr[i], _arr[i]);
 				_allocator.destroy(&_arr[i]);
 			}
-			_allocator.deallocate(_arr, _capacity);
-			_capacity = new_cap;
+			_allocator.deallocate(_arr, old_capacity);
 			_arr = new_arr;
 		}
 
@@ -358,14 +361,34 @@ namespace ft {
 			_allocator.destroy(&_arr[_size]);
 		}
 
-		iterator insert (iterator position, const T& value) {
+		void insert (iterator position, const T& value) {
 			push_back(back());
 			iterator it = end() - 1;
-			while (it != (position + 1)) {
+			while (it != (position)) {
 				*it = *(it - 1);
 				it--;
 			}
 			*it = value;
+		}
+
+		void insert (iterator position, std::size_t n, const T& value) {
+			if (_capacity <= _size + n)
+				reserve(_size + n);
+			iterator it = end() + n - 1;
+			while (it != position + n - 1) {
+				*it = *(it - n);
+				it--;
+			}
+			for (std::size_t i = 0; i < n; ++i) {
+				*position = value;
+				position++;
+			}
+			_size += n;
+		}
+
+		template <class InputIterator>
+		void insert (iterator position, InputIterator first, InputIterator last) {
+
 		}
 
 		// TODO: erase ??
