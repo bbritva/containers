@@ -387,8 +387,20 @@ namespace ft {
 		}
 
 		template <class InputIterator>
+		// TODO: enable_if
 		void insert (iterator position, InputIterator first, InputIterator last) {
-
+			std::size_t n = last - first;
+			if (_capacity <= _size + n)
+				reserve(_size + n);
+			iterator it = end() + n - 1;
+			while (it != position + n - 1) {
+				*it = *(it - n);
+				it--;
+			}
+			while (first != last) {
+				*position++ = *first++;
+			}
+			_size += n;
 		}
 
 		// TODO: erase ??
@@ -427,6 +439,20 @@ namespace ft {
 	{
 		first.swap(second);
 	}
+
+	template <class T>
+	struct is_iterator
+	{
+		template <class U>
+		static char is_iter(random_access_iterator *);
+
+		template <class X>
+		static char is_ptr(X *);
+		static double is_ptr(...);
+
+		static T t;
+		enum { value = sizeof(is_ptr(t)) == sizeof(char) };
+	};
 
 }
 #endif//VECTOR_HPP
