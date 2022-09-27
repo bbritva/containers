@@ -14,7 +14,7 @@ all:		$(NAME)
 
 $(NAME):	$(OBJS)
 			$(CPP) $(OBJS) -o $(NAME)
-			echo "${GREEN}"$(NAME)" is compiled${ENDCOLOR}"
+			echo $(NAME)" is compiled."
 
 clean:
 			$(RM) $(OBJS)

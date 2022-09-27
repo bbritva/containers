@@ -5,6 +5,7 @@
 
 # include <iostream>
 # include "iterators.hpp"
+# include "sfinae.hpp"
 
 namespace ft {
 
@@ -388,7 +389,8 @@ namespace ft {
 
 		template <class InputIterator>
 		// TODO: enable_if
-		void insert (iterator position, InputIterator first, InputIterator last) {
+		void insert (iterator position, InputIterator first, InputIterator last,
+			typename ft::enable_if<!ft::is_integral<InputIterator>::InputIterator>::type * = 0) {
 			std::size_t n = last - first;
 			if (_capacity <= _size + n)
 				reserve(_size + n);
@@ -439,20 +441,6 @@ namespace ft {
 	{
 		first.swap(second);
 	}
-
-	template <class T>
-	struct is_iterator
-	{
-		template <class U>
-		static char is_iter(random_access_iterator *);
-
-		template <class X>
-		static char is_ptr(X *);
-		static double is_ptr(...);
-
-		static T t;
-		enum { value = sizeof(is_ptr(t)) == sizeof(char) };
-	};
 
 }
 #endif//VECTOR_HPP

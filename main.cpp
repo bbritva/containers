@@ -8,8 +8,6 @@
 #include "vector.hpp"
 #include "stack.hpp"
 
-#include <cstdlib>
-
 #define COUNT 100
 
 int main() {
@@ -75,7 +73,7 @@ int main() {
 			for (int i = 0; i < 10; i++) {
 				vector.push_back(i);
 			}
-			vector.insert(vector.begin() + 3, (std::size_t )3, 77);
+			vector.insert(vector.begin() + 3, 3, 77);
 			NAMESPACE::vector<int>::iterator it = vector.begin();
 			while (it != vector.end()) {
 				std::cout << *it++;
