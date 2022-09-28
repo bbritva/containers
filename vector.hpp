@@ -336,20 +336,22 @@ namespace ft {
 
 		void assign (std::size_t n, const T& value) {
 			clear();
+			reserve(n);
 			while (n--) {
 				push_back(value);
 			}
 		}
 
 		template <class InputIterator>
-		void assign (InputIterator first, InputIterator last) {
+		void assign (InputIterator first, InputIterator last,
+		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL) {
 			clear();
+			reserve(last - first);
 			while (first != last) {
 				push_back(*first);
 				first++;
 			}
 		}
-
 
 		void push_back(T new_el) {
 			if (_size + 1 >= _capacity)
