@@ -1,8 +1,6 @@
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# define BASIC_SIZE 10
-
 # include <iostream>
 # include "iterators.hpp"
 # include "sfinae.hpp"
@@ -174,10 +172,10 @@ namespace ft {
 	template<typename T>
 	class vector {
 	public:
-		typedef ft::random_access_iterator<T> iterator;
-		typedef ft::random_access_iterator<const T> const_iterator;
-		typedef ft::reverse_iterator<T> reverse_iterator;
-		typedef ft::reverse_iterator<const T> const_reverse_iterator;
+		typedef ft::random_access_iterator<T>				iterator;
+		typedef ft::random_access_iterator<const T>			const_iterator;
+		typedef ft::reverse_iterator<T>						reverse_iterator;
+		typedef ft::reverse_iterator<const T>				const_reverse_iterator;
 
 	private:
 		T *_arr;
@@ -185,19 +183,22 @@ namespace ft {
 		std::size_t _size;
 		std::allocator<T> _allocator;
 	public:
+
+		//constructors
+
 		explicit vector(const std::allocator<T>& allocator = std::allocator<T>()) {
 			_size = 0;
-			_capacity = BASIC_SIZE;
+			_capacity = 0;
 			_allocator = allocator;
-			_arr = _allocator.allocate(BASIC_SIZE);
 		};
 
-		explicit vector(std::size_t size, const std::allocator<T>& allocator = std::allocator<T>()) {
-			size = (BASIC_SIZE > size) ? BASIC_SIZE : size;
-			_capacity = size;
-			_size = 0;
+		explicit vector(std::size_t size, const T& value = T(), const std::allocator<T>& allocator = std::allocator<T>()) {
 			_allocator = allocator;
-			_arr = _allocator.allocate(size);
+			_size = 0;
+			reserve(size);
+			for (std::size_t i = 0; i < size; ++i) {
+				push_back(value);
+			}
 		};
 
 		vector(vector const &other, const std::allocator<T>& allocator = std::allocator<T>()) {
@@ -209,8 +210,19 @@ namespace ft {
 			_size = other._size;
 		}
 
+		template< class InputIterator >
+		vector( InputIterator first, InputIterator last, const std::allocator<T>& allocator = std::allocator<T>(),
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL) {
+			_capacity = 0;
+			_allocator = allocator;
+			_size = 0;
+			while (first != last)
+				push_back(*first++);
+		}
+
 		~vector() {
-			_allocator.deallocate(_arr, _capacity);
+			if (_capacity)
+				_allocator.deallocate(_arr, _capacity);
 		}
 
 		vector &operator=(const vector &other) {
@@ -227,7 +239,6 @@ namespace ft {
 		}
 
 		// Iterators
-
 
 		iterator begin() {
 			return iterator(&_arr[0]);
@@ -321,6 +332,7 @@ namespace ft {
 				return;
 			}
 			std::size_t old_capacity = _capacity;
+			_capacity = (_capacity) ? _capacity : 1;
 			while (_capacity < new_cap)
 				_capacity *= 2;
 			T *new_arr = _allocator.allocate(_capacity);
@@ -328,7 +340,8 @@ namespace ft {
 				_allocator.construct(&new_arr[i], _arr[i]);
 				_allocator.destroy(&_arr[i]);
 			}
-			_allocator.deallocate(_arr, old_capacity);
+			if (old_capacity)
+				_allocator.deallocate(_arr, old_capacity);
 			_arr = new_arr;
 		}
 
@@ -355,7 +368,7 @@ namespace ft {
 
 		void push_back(T new_el) {
 			if (_size + 1 >= _capacity)
-				reserve(_capacity << 1);
+				reserve(_capacity + 1);
 			_allocator.construct(&_arr[_size++], new_el);
 		}
 
@@ -390,7 +403,6 @@ namespace ft {
 		}
 
 		template <class InputIterator>
-		// TODO: enable_if
 		void insert (iterator position, InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL) {
 			std::size_t n = last - first;
@@ -407,8 +419,6 @@ namespace ft {
 			}
 			_size += n;
 		}
-
-		// TODO: erase ??
 
 		void swap(vector& other) {
 			T *arr = _arr;
@@ -431,9 +441,6 @@ namespace ft {
 			}
 			_size = 0;
 		}
-
-		// TODO: emplace ??
-		// TODO: emplace_back ??
 	};
 	//class end
 
