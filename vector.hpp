@@ -390,8 +390,9 @@ namespace ft {
 		template <class InputIterator>
 		// TODO: enable_if
 		void insert (iterator position, InputIterator first, InputIterator last,
-			typename ft::enable_if<!ft::is_integral<InputIterator>::InputIterator>::type * = 0) {
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL) {
 			std::size_t n = last - first;
+			std::cout << n << "\n";
 			if (_capacity <= _size + n)
 				reserve(_size + n);
 			iterator it = end() + n - 1;

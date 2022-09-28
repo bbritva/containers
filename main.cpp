@@ -80,6 +80,22 @@ int main() {
 			}
 		}
 		std::cout << std::endl;
+		{
+			NAMESPACE::vector<int> vector;
+			std::vector<int> std_vector;
+			for (int i = 0; i < 3; i++) {
+				std_vector.push_back(i + 100);
+			}
+			for (int i = 0; i < 10; i++) {
+				vector.push_back(i);
+			}
+			vector.insert(vector.begin() + 3, std_vector.begin(), std_vector.end());
+			NAMESPACE::vector<int>::iterator it = vector.begin();
+			while (it != vector.end()) {
+				std::cout << *it++ << ", ";
+			}
+		}
+		std::cout << std::endl;
 
 	}
 
