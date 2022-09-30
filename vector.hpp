@@ -19,10 +19,17 @@ namespace ft {
 
 		random_access_iterator(const random_access_iterator& other) : _pointer(other._pointer) {}
 
-		random_access_iterator &operator=(const random_access_iterator &other) {
+		random_access_iterator &operator=(random_access_iterator &other) {
 			if (this == &other)
 				return (*this);
-			_pointer = other._pointer;
+			_pointer = ft::random_access_iterator<T>(other._pointer)._pointer;
+			return (*this);
+		}
+
+		const random_access_iterator &operator=(const random_access_iterator &other) {
+			if (this == &other)
+				return (*this);
+			_pointer = ft::random_access_iterator<const T>(other._pointer)._pointer;
 			return (*this);
 		}
 
@@ -248,11 +255,11 @@ namespace ft {
 			return iterator(&_arr[_size]);
 		}
 
-		const_iterator cbegin() const {
+		const_iterator begin() const {
 			return const_iterator(&_arr[0]);
 		}
 
-		const_iterator cend() const {
+		const_iterator end() const {
 			return const_iterator(&_arr[_size]);
 		}
 
@@ -264,11 +271,11 @@ namespace ft {
 			return reverse_iterator(&_arr[0]);
 		}
 
-		const_reverse_iterator crbegin() const {
+		const_reverse_iterator rbegin() const {
 			return const_reverse_iterator(&_arr[_size]);
 		}
 
-		const_reverse_iterator crend() const {
+		const_reverse_iterator rend() const {
 			return const_reverse_iterator(&_arr[0]);
 		}
 

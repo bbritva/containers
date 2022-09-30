@@ -96,6 +96,14 @@ int main() {
 			}
 		}
 		std::cout << std::endl;
+		{
+#define TESTED_TYPE int
+			NAMESPACE::vector<TESTED_TYPE> foo(3, 15);
+			NAMESPACE::vector<TESTED_TYPE> bar(5, 42);
+
+			NAMESPACE::vector<TESTED_TYPE>::const_iterator it_foo = foo.begin();
+			NAMESPACE::vector<TESTED_TYPE>::const_iterator it_bar = bar.begin();
+		}
 
 	}
 
