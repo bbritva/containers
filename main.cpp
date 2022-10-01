@@ -103,6 +103,9 @@ int main() {
 
 			NAMESPACE::vector<TESTED_TYPE>::const_iterator it_foo = foo.begin();
 			NAMESPACE::vector<TESTED_TYPE>::const_iterator it_bar = bar.begin();
+
+			(void) it_bar;
+			(void) it_foo;
 		}
 
 	}

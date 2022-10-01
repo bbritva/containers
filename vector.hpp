@@ -26,11 +26,8 @@ namespace ft {
 			return (*this);
 		}
 
-		const random_access_iterator &operator=(const random_access_iterator &other) {
-			if (this == &other)
-				return (*this);
-			_pointer = ft::random_access_iterator<const T>(other._pointer)._pointer;
-			return (*this);
+		operator random_access_iterator<const T> () const {
+			return (random_access_iterator<const T>(this->_pointer));
 		}
 
 		virtual random_access_iterator& operator++() {
