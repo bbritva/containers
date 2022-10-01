@@ -61,6 +61,24 @@ namespace ft {
 		static const bool value = true;
 	};
 
+	// for const and non const
+	template <bool isConst, typename NonConstType, typename ConstType>
+	struct setConst {};
+
+	// non const
+	template <typename NonConstType, typename ConstType>
+	struct setConst<false, NonConstType, ConstType>
+	{
+		typedef NonConstType type;
+	};
+
+	// const
+	template <typename NonConstType, typename ConstType>
+	struct setConst<true, NonConstType, ConstType>
+	{
+		typedef ConstType type;
+	};
+
 } // namespace ft
 
 #endif //CONTAINERS_SFINAE_HPP

@@ -7,73 +7,78 @@
 
 namespace ft {
 
-	template <class T>
+	template <bool isConst, class T>
 	class random_access_iterator : public ft::iterator_base<ft::random_access_iterator_tag, T>
 	{
+	public:
+//		typedef long int                                        difference_type;
+//		typedef T                                               value_type;
+//		typedef size_t                                          size_type;
+
+//		typedef std::random_access_iterator_tag                 iterator_category;
+		typedef typename setConst<isConst, T&, const T&>::type	reference;
+		typedef typename setConst<isConst, T*, const T*>::type	pointer;
+//		typedef T*                                              elemPtr;
 	protected:
 		T* _pointer;
 	public:
-		random_access_iterator() : _pointer(NULL) {}
+		explicit random_access_iterator(T* x = 0) : _pointer(x) {}
 
-		explicit random_access_iterator(T* x) : _pointer(x) {}
+		random_access_iterator(const random_access_iterator& other)
+			: _pointer(other._pointer) {}
 
-		random_access_iterator(const random_access_iterator& other) : _pointer(other._pointer) {}
-
-		random_access_iterator &operator=(random_access_iterator &other) {
+		random_access_iterator &operator=(const random_access_iterator &other) {
 			if (this == &other)
 				return (*this);
-			_pointer = ft::random_access_iterator<T>(other._pointer)._pointer;
+			_pointer = other._pointer;
 			return (*this);
 		}
 
-		const random_access_iterator &operator=(const random_access_iterator &other) {
-			if (this == &other)
-				return (*this);
-			_pointer = ft::random_access_iterator<const T>(other._pointer)._pointer;
-			return (*this);
+		operator random_access_iterator<true, T> () const {
+			return (random_access_iterator<true, T>(this->_pointer));
 		}
 
-		virtual random_access_iterator& operator++() {
+		random_access_iterator& operator++() {
 			++_pointer;
 			return *this;
 		}
 
-		virtual random_access_iterator operator++(int) {
+		random_access_iterator operator++(int) {
 			random_access_iterator tmp(*this);
 			operator++();
 			return tmp;
 		}
 
-		virtual random_access_iterator& operator--() {
+		random_access_iterator& operator--() {
 			--_pointer;
 			return *this;
 		}
 
-		virtual random_access_iterator operator--(int) {
+		random_access_iterator operator--(int) {
 			random_access_iterator tmp(*this);
 			operator--();
 			return tmp;
 		}
 
-		virtual random_access_iterator operator+(std::size_t step) const {
+		random_access_iterator operator+(std::size_t step) const {
 			return random_access_iterator(_pointer + step);
 		}
 
-		virtual random_access_iterator operator-(std::size_t step) const {
+		random_access_iterator operator-(std::size_t step) const {
 			return random_access_iterator(_pointer - step);
 		}
 
-		virtual random_access_iterator operator+=(std::size_t step) {
+		random_access_iterator operator+=(std::size_t step) {
 			_pointer += step;
 			return *this;
 		}
 
-		virtual random_access_iterator operator-=(std::size_t step) {
+		random_access_iterator operator-=(std::size_t step) {
 			_pointer -= step;
 			return *this;
 		}
 
-		virtual T& operator[](std::size_t offset) {
+		reference operator[](std::size_t offset) {
 			return *(_pointer + offset);
 		}
 
@@ -100,18 +105,23 @@ namespace ft {
 			return _pointer <= other._pointer;
 		}
 
-		T& operator*() {
+		reference operator*() {
 			return *_pointer;
 		}
 
-		T* operator->() {
+		pointer operator->() {
 			return _pointer;
+		}
+
+		std::size_t operator-(const random_access_iterator & other) const {
+			return (this->_pointer - other._pointer);
 		}
 
 	};
 
+	/*
 	template <class T>
-	class reverse_iterator : public ft::random_access_iterator<T>
+	class reverse_iterator
 	{
 	public:
 		reverse_iterator& operator++() {
@@ -175,14 +185,14 @@ namespace ft {
 			return random_access_iterator<T>::_pointer >= other._pointer;
 		}
 	};
-
+*/
 	template<typename T>
 	class vector {
 	public:
-		typedef ft::random_access_iterator<T>				iterator;
-		typedef ft::random_access_iterator<const T>			const_iterator;
-		typedef ft::reverse_iterator<T>						reverse_iterator;
-		typedef ft::reverse_iterator<const T>				const_reverse_iterator;
+		typedef ft::random_access_iterator<false, T>		iterator;
+		typedef ft::random_access_iterator<true, T>			const_iterator;
+//		typedef ft::reverse_iterator<T>						reverse_iterator;
+//		typedef ft::reverse_iterator<const T>				const_reverse_iterator;
 
 	private:
 		T *_arr;
@@ -263,21 +273,21 @@ namespace ft {
 			return const_iterator(&_arr[_size]);
 		}
 
-		reverse_iterator rbegin() {
-			return reverse_iterator(&_arr[_size]);
-		}
-
-		const_iterator rend() {
-			return reverse_iterator(&_arr[0]);
-		}
-
-		const_reverse_iterator rbegin() const {
-			return const_reverse_iterator(&_arr[_size]);
-		}
-
-		const_reverse_iterator rend() const {
-			return const_reverse_iterator(&_arr[0]);
-		}
+//		reverse_iterator rbegin() {
+//			return reverse_iterator(&_arr[_size]);
+//		}
+//
+//		const_reverse_iterator rend() {
+//			return reverse_iterator(&_arr[0]);
+//		}
+//
+//		const_reverse_iterator rbegin() const {
+//			return const_reverse_iterator(&_arr[_size]);
+//		}
+//
+//		const_reverse_iterator rend() const {
+//			return const_reverse_iterator(&_arr[0]);
+//		}
 
 		// Allocator
 
