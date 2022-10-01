@@ -106,6 +106,17 @@ int main() {
 
 			(void) it_bar;
 			(void) it_foo;
+
+			NAMESPACE::vector<std::string> vct(10);
+
+			for (unsigned long int i = 0; i < vct.size(); ++i)
+				vct[i] = std::string((vct.size() - i), i + 65);
+
+			checkErase(vct, vct.erase(vct.begin() + 2));
+
+			static int i = 0;
+			std::cout << "[" << i++ << "] " << "erase: " << it - vct.begin() << std::endl;
+
 		}
 
 	}
