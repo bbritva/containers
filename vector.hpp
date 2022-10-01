@@ -176,6 +176,7 @@ namespace ft {
 	template<typename T>
 	class vector {
 	public:
+		typedef std::size_t									size_type;
 		typedef ft::random_access_iterator<T>				iterator;
 		typedef ft::random_access_iterator<const T>			const_iterator;
 		typedef ft::reverse_iterator<T>						reverse_iterator;
@@ -308,11 +309,11 @@ namespace ft {
 
 		// Capacity
 
-		std::size_t size() {
+		std::size_t size() const {
 			return (_size);
 		}
 
-		std::size_t max_size() {
+		std::size_t max_size() const {
 			return _allocator.max_size();
 		}
 
@@ -323,7 +324,7 @@ namespace ft {
 				pop_back();
 		}
 
-		std::size_t capacity() {
+		std::size_t capacity() const {
 			return (_capacity);
 		}
 
