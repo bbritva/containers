@@ -19,10 +19,10 @@ namespace ft {
 
 		random_access_iterator(const random_access_iterator& other) : _pointer(other._pointer) {}
 
-		random_access_iterator &operator=(random_access_iterator &other) {
+		random_access_iterator &operator=(random_access_iterator const &other) {
 			if (this == &other)
 				return (*this);
-			_pointer = ft::random_access_iterator<T>(other._pointer)._pointer;
+			_pointer = other._pointer;
 			return (*this);
 		}
 
@@ -238,13 +238,15 @@ namespace ft {
 		vector &operator=(const vector &other) {
 			if (this == &other)
 				return (*this);
+			clear();
 			if (_capacity < other._capacity) {
 				_allocator.deallocate(_arr, _capacity);
 				_arr = _allocator.allocate(other._capacity);
 			}
 			for (std::size_t i = 0; i < _capacity; ++i)
-				_arr[i] = other._arr[i];
+				_allocator.construct(&_arr[i], other._arr[i]);
 			_capacity = other._capacity;
+			_size = other._size;
 			return (*this);
 		}
 
