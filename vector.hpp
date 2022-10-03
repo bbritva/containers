@@ -393,13 +393,19 @@ namespace ft {
 		}
 
 		void insert (iterator position, const T& value) {
-			push_back(back());
-			iterator it = end() - 1;
-			while (it != (position)) {
-				*it = *(it - 1);
-				it--;
+			if (position == end())
+				push_back(value);
+			else {
+				push_back(back());
+
+				iterator it = end() - 1;
+				while (it != (position)) {
+					_allocator.destroy(it.getPtr());
+					_allocator.construct(it.getPtr(), *(it - 1));
+					it--;
+				}
+				*it = value;
 			}
-			*it = value;
 		}
 
 		void insert (iterator position, std::size_t n, const T& value) {
