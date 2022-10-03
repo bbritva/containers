@@ -109,6 +109,10 @@ namespace ft {
 			return _pointer;
 		}
 
+		T* getPtr() {
+			return _pointer;
+		}
+
 	};
 
 	template <class T>
@@ -452,35 +456,35 @@ namespace ft {
 			_size = 0;
 		}
 
-		iterator erase( iterator pos ) {
+		iterator erase(iterator pos) {
 			iterator it = pos;
 			if (it != end()) {
 				while (it < end() - 1) {
-					_allocator.destroy(*it);
-					_allocator.construct(*it, *(it + 1));
+					_allocator.destroy(it.getPtr());
+					_allocator.construct(it.getPtr(), *(it + 1));
 					it++;
 				}
-				_allocator.destroy(*(it));
+				_allocator.destroy(it.getPtr());
 				--_size;
 			}
 			return pos;
 		}
 
 		iterator erase(iterator first, iterator last) {
-			iterator it = last;
-			if (it != end()) {
-				while (first != last && it < end()) {
-					_allocator.destroy(*first);
-					_allocator.construct(*first, *it);
-					it++;
-					first++;
-				}
-				while (first != last) {
-					_allocator.destroy(*first);
-					first++;
-				}
+			iterator ret = first;
+			iterator it_end = end();
+			while (last < it_end) {
+				_allocator.destroy(first.getPtr());
+				_allocator.construct(first.getPtr(), *last);
+				last++;
+				first++;
 			}
-			return first;
+			while (first < it_end) {
+				_allocator.destroy(first.getPtr());
+				first++;
+				_size--;
+			}
+			return ret;
 		}
 	};
 	//class end

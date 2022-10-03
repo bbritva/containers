@@ -15,6 +15,7 @@
 #define TESTED_NAMESPACE NAMESPACE
 
 #define T_SIZE_TYPE typename TESTED_NAMESPACE::vector<T>::size_type
+#define TESTED_TYPE std::string
 
 template <typename T>
 void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = true)
@@ -36,6 +37,14 @@ void	printSize(TESTED_NAMESPACE::vector<T> const &vct, bool print_content = true
 			std::cout << "- " << *it << std::endl;
 	}
 	std::cout << "###############################################" << std::endl;
+}
+
+void	checkErase(TESTED_NAMESPACE::vector<TESTED_TYPE> const &vct,
+				   TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator const &it)
+{
+	static int i = 0;
+	std::cout << "[" << i++ << "] " << "erase: " << it - vct.begin() << std::endl;
+	printSize(vct);
 }
 
 int main() {
@@ -127,41 +136,32 @@ int main() {
 	}
 	std::cout << std::endl;
 	 */
-#define TESTED_TYPE int
 	{
-		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(5);
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin(), ite = vct.end();
+		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(10);
 
-		std::cout << "len: " << (ite - it) << std::endl;
-		for (; it != ite; ++it)
-			*it = (ite - it);
-
-		it = vct.begin();
-		TESTED_NAMESPACE::vector<TESTED_TYPE> vct_range(it, --(--ite));
-		for (int i = 0; it != ite; ++it)
-			*it = ++i * 5;
-
-		it = vct.begin();
-		TESTED_NAMESPACE::vector<TESTED_TYPE> vct_copy(vct);
-		for (int i = 0; it != ite; ++it)
-			*it = ++i * 7;
-		vct_copy.push_back(42);
-		vct_copy.push_back(21);
-
-		std::cout << "\t-- PART ONE --" << std::endl;
+		for (unsigned long int i = 0; i < vct.size(); ++i)
+			vct[i] = std::string((vct.size() - i), i + 65);
 		printSize(vct);
-		printSize(vct_range);
-		printSize(vct_copy);
 
-		vct = vct_copy;
-		vct_copy = vct_range;
-		vct_range.clear();
+		checkErase(vct, vct.erase(vct.begin() + 2));
 
-		std::cout << "\t-- PART TWO --" << std::endl;
+		checkErase(vct, vct.erase(vct.begin()));
+		checkErase(vct, vct.erase(vct.end() - 1));
+
+		checkErase(vct, vct.erase(vct.begin(), vct.begin() + 3));
+		checkErase(vct, vct.erase(vct.end() - 3, vct.end() - 1));
+
+		vct.push_back("Hello");
+		vct.push_back("Hi there");
 		printSize(vct);
-		printSize(vct_range);
-		printSize(vct_copy);
-		return (0);
+		checkErase(vct, vct.erase(vct.end() - 3, vct.end()));
+
+		vct.push_back("ONE");
+		vct.push_back("TWO");
+		vct.push_back("THREE");
+		vct.push_back("FOUR");
+		printSize(vct);
+		checkErase(vct, vct.erase(vct.begin(), vct.end()));
 	}
 	return (0);
 }
