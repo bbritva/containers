@@ -294,17 +294,17 @@ namespace ft {
 			return _arr[index];
 		}
 
-		T &at( std::size_t index ) {
+		T &at( std::size_t index ) const {
 			if (index < _size)
 				return _arr[index];
 			throw std::out_of_range("out_of_range");
 		}
 
-		T &front() {
+		T &front() const {
 			return _arr[0];
 		}
 
-		T &back() {
+		T &back() const {
 			return _arr[_size - 1];
 		}
 
