@@ -369,7 +369,6 @@ namespace ft {
 		void assign (InputIterator first, InputIterator last,
 		typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL) {
 			clear();
-			reserve(last - first);
 			while (first != last) {
 				push_back(*first);
 				first++;
@@ -415,8 +414,7 @@ namespace ft {
 		template <class InputIterator>
 		void insert (iterator position, InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL) {
-			std::size_t n = last - first;
-			std::cout << n << "\n";
+			std::size_t n = ft::distance(first, last);
 			if (_capacity <= _size + n)
 				reserve(_size + n);
 			iterator it = end() + n - 1;
