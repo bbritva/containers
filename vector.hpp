@@ -60,6 +60,10 @@ namespace ft {
 			return random_access_iterator(_pointer - step);
 		}
 
+		long int operator-(const random_access_iterator& other) const {
+			return (_pointer - other._pointer);
+		}
+
 		virtual random_access_iterator operator+=(std::size_t step) {
 			_pointer += step;
 			return *this;
@@ -200,6 +204,7 @@ namespace ft {
 		explicit vector(std::size_t size, const T& value = T(), const std::allocator<T>& allocator = std::allocator<T>()) {
 			_allocator = allocator;
 			_size = 0;
+			_capacity = 0;
 			reserve(size);
 			for (std::size_t i = 0; i < size; ++i) {
 				push_back(value);
