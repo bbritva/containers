@@ -10,7 +10,7 @@ namespace ft {
 	template <class T>
 	class random_access_iterator : public ft::iterator_base<ft::random_access_iterator_tag, T>
 	{
-	protected:
+	private:
 		T* _pointer;
 	public:
 		random_access_iterator() : _pointer(NULL) {}
@@ -30,12 +30,12 @@ namespace ft {
 			return (random_access_iterator<const T>(this->_pointer));
 		}
 
-		virtual random_access_iterator& operator++() {
+		random_access_iterator& operator++() {
 			++_pointer;
 			return *this;
 		}
 
-		virtual random_access_iterator operator++(int) {
+		random_access_iterator operator++(int) {
 			random_access_iterator tmp(*this);
 			operator++();
 			return tmp;
@@ -52,11 +52,11 @@ namespace ft {
 			return tmp;
 		}
 
-		virtual random_access_iterator operator+(std::size_t step) const {
+		random_access_iterator operator+(std::size_t step) const {
 			return random_access_iterator(_pointer + step);
 		}
 
-		virtual random_access_iterator operator-(std::size_t step) const {
+		random_access_iterator operator-(std::size_t step) const {
 			return random_access_iterator(_pointer - step);
 		}
 
@@ -64,7 +64,7 @@ namespace ft {
 			return (_pointer - other._pointer);
 		}
 
-		virtual random_access_iterator operator+=(std::size_t step) {
+		random_access_iterator operator+=(std::size_t step) {
 			_pointer += step;
 			return *this;
 		}
@@ -74,7 +74,7 @@ namespace ft {
 			return *this;
 		}
 
-		virtual T& operator[](std::size_t offset) {
+		T& operator[](std::size_t offset) {
 			return *(_pointer + offset);
 		}
 
@@ -115,70 +115,117 @@ namespace ft {
 
 	};
 
+	template<typename T>
+	random_access_iterator<T> operator+(std::size_t step, random_access_iterator<T>& iterator) {
+		return random_access_iterator<T>(iterator + step);
+	}
+
 	template <class T>
-	class reverse_iterator : public ft::random_access_iterator<T>
+	class reverse_iterator : public ft::iterator_base<ft::random_access_iterator_tag, T>
 	{
+	private:
+		random_access_iterator<T> _iter;
 	public:
-		reverse_iterator& operator++() {
-			--random_access_iterator<T>::_pointer;
+		reverse_iterator() : _iter(NULL) {}
+
+		explicit reverse_iterator(T* x) : _iter(x) {}
+
+		reverse_iterator(const reverse_iterator& other) : _iter(other._iter) {}
+
+		reverse_iterator &operator=(reverse_iterator const &other) {
+			if (this == &other)
+				return (*this);
+			_iter = other._iter;
+			return (*this);
+		}
+
+		operator reverse_iterator<const T> () const {
+			return (reverse_iterator<const T>(this->_iter));
+		}
+
+		virtual reverse_iterator& operator++() {
+			--_iter;
 			return *this;
 		}
 
-		reverse_iterator operator++(int) {
-			reverse_iterator tmp(*this);
-			operator--();
-			return tmp;
-		}
-
-		reverse_iterator& operator--() {
-			++random_access_iterator<T>::_pointer;
-			return *this;
-		}
-
-		reverse_iterator operator--(int) {
+		virtual reverse_iterator operator++(int) {
 			reverse_iterator tmp(*this);
 			operator++();
 			return tmp;
 		}
 
-		reverse_iterator operator+(std::size_t step) const {
-			return reverse_iterator(random_access_iterator<T>::_pointer - step);
-		}
-
-		reverse_iterator operator-(std::size_t step) const {
-			return reverse_iterator(random_access_iterator<T>::_pointer + step);
-		}
-
-		reverse_iterator operator+=(std::size_t step) {
-			random_access_iterator<T>::_pointer -= step;
+		reverse_iterator& operator--() {
+			++_iter;
 			return *this;
 		}
 
-		reverse_iterator operator-=(std::size_t step) {
-			random_access_iterator<T>::_pointer += step;
+		reverse_iterator operator--(int) {
+			reverse_iterator tmp(*this);
+			operator--();
+			return tmp;
+		}
+
+		reverse_iterator operator+(std::size_t step) const {
+			return reverse_iterator(_iter - step);
+		}
+
+		reverse_iterator operator-(std::size_t step) const {
+			return reverse_iterator(_iter + step);
+		}
+
+		long int operator-(const reverse_iterator& other) const {
+			return (_iter - other._iter);
+		}
+
+		reverse_iterator operator+=(std::size_t step) {
+			_iter -= step;
+			return *this;
+		}
+
+		virtual reverse_iterator operator-=(std::size_t step) {
+			_iter += step;
 			return *this;
 		}
 
 		T& operator[](std::size_t offset) {
-			return *(random_access_iterator<T>::_pointer - offset);
+			return *(_iter - offset);
 		}
 
-
-		bool operator>(const reverse_iterator& other) const {
-			return random_access_iterator<T>::_pointer < other._pointer;
+		bool operator==(const reverse_iterator& other) const {
+			return _iter == other._iter;
+		}
+		bool operator!=(const reverse_iterator& other) const {
+			return _iter != other._iter;
 		}
 
-		bool operator<(const reverse_iterator& other) const {
-			return random_access_iterator<T>::_pointer > other._pointer;
+		virtual bool operator>(const reverse_iterator & other) const {
+			return _iter < other._iter;
 		}
 
-		bool operator>=(const reverse_iterator& other) const {
-			return random_access_iterator<T>::_pointer <= other._pointer;
+		bool operator<(const reverse_iterator & other) const {
+			return _iter > other._iter;
 		}
 
-		bool operator<=(const reverse_iterator& other) const {
-			return random_access_iterator<T>::_pointer >= other._pointer;
+		bool operator>=(const reverse_iterator & other) const {
+			return _iter <= other._iter;
 		}
+
+		bool operator<=(const reverse_iterator & other) const {
+			return _iter >= other._iter;
+		}
+
+		T& operator*() {
+			return *_iter;
+		}
+
+		T* operator->() {
+			return _iter.getPtr();
+		}
+
+		T* getPtr() {
+			return _iter.getPtr();
+		}
+
 	};
 
 	template<typename T>
