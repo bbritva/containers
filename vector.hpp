@@ -41,12 +41,12 @@ namespace ft {
 			return tmp;
 		}
 
-		virtual random_access_iterator& operator--() {
+		random_access_iterator& operator--() {
 			--_pointer;
 			return *this;
 		}
 
-		virtual random_access_iterator operator--(int) {
+		random_access_iterator operator--(int) {
 			random_access_iterator tmp(*this);
 			operator--();
 			return tmp;
@@ -235,6 +235,7 @@ namespace ft {
 		}
 
 		~vector() {
+			clear();
 			if (_capacity)
 				_allocator.deallocate(_arr, _capacity);
 		}
@@ -396,10 +397,11 @@ namespace ft {
 			if (position == end())
 				push_back(value);
 			else {
+				size_type index = position - begin();
 				push_back(back());
-
+				position = iterator(&_arr[index]);
 				iterator it = end() - 1;
-				while (it != (position)) {
+				while (it != position) {
 					_allocator.destroy(it.getPtr());
 					_allocator.construct(it.getPtr(), *(it - 1));
 					it--;
@@ -409,15 +411,20 @@ namespace ft {
 		}
 
 		void insert (iterator position, std::size_t n, const T& value) {
+			size_type index = position - begin();
 			if (_capacity <= _size + n)
 				reserve(_size + n);
+			position = iterator(&_arr[index]);
 			iterator it = end() + n - 1;
-			while (it != position + n - 1) {
-				*it = *(it - n);
+			iterator ite = position + n - 1;
+			while (it != ite) {
+				_allocator.destroy(it.getPtr());
+				_allocator.construct(it.getPtr(), *(it - n));
 				it--;
 			}
 			for (std::size_t i = 0; i < n; ++i) {
-				*position = value;
+				_allocator.destroy(position.getPtr());
+				_allocator.construct(position.getPtr(), value);
 				position++;
 			}
 			_size += n;
@@ -491,6 +498,13 @@ namespace ft {
 				_size--;
 			}
 			return ret;
+		}
+
+		void show() {
+			std::cout << std::endl << "Content is:" << std::endl;
+			iterator it = begin();
+			for (; it != end(); ++it)
+				std::cout << "- " << *it << std::endl;
 		}
 	};
 	//class end
