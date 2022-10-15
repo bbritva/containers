@@ -7,7 +7,7 @@
 
 namespace ft {
 
-	template<typename T>
+	template<typename T, typename A = std::allocator<T> >
 	class vector {
 	public:
 		typedef std::size_t									size_type;
@@ -351,10 +351,70 @@ namespace ft {
 
 
 	template <class T>
-	void swap (ft::vector<T> &first, ft::vector<T> &second)
-	{
+	void swap (ft::vector<T> &first, ft::vector<T> &second) {
 		first.swap(second);
 	}
 
+	template<class T, class Allocator>
+	bool operator==(const vector<T, Allocator> &first,
+					const vector<T, Allocator> &second) {
+		return first.size() == second.size() &&
+				equal(first.begin(), first.end(), second.begin());
+	}
+
+	template<class T, class Allocator>
+	bool operator!=(const vector<T, Allocator> &first,
+					const vector<T, Allocator> &second) {
+		return !(first == second);
+	}
+
+	template<class T, class Allocator>
+	bool operator<(const vector<T, Allocator> &first,
+				   const vector<T, Allocator> &second) {
+		return lexicographical_compare(first.begin(), first.end(),
+									   second.begin(), second.end());
+	}
+
+	template<class T, class Allocator>
+	bool operator<=(const vector<T, Allocator> &first,
+					const vector<T, Allocator> &second) {
+		return !(second < first);
+	}
+
+	template<class T, class Allocator>
+	bool operator>(const vector<T, Allocator> &first,
+					const vector<T, Allocator> &second) {
+		return second < first;
+	}
+
+	template<class T, class Allocator>
+	bool operator>=(const vector<T, Allocator> &first,
+					const vector<T, Allocator> &second) {
+		return !(first < second);
+	}
+
+	template<class T, class U>
+	bool lexicographical_compare(T first1, T last1, U first2, U last2) {
+		while (first1 != last1 && first2 != last2) {
+			if (first2 == last2 || *first1 < *first2)
+				return true;
+			if (*first2 < *first1)
+				return false;
+			first1++;
+			first2++;
+		}
+		return first2 != last2;
+	}
+
+	template<class T, class U>
+	bool equal(T first1, T last1, U first2) {
+		while (first1 != last1) {
+			if (*first1 != *first2)
+				return false;
+			++first1;
+			++first2;
+		}
+		return true;
+	}
 }
 #endif//VECTOR_HPP

@@ -16,27 +16,15 @@
 
 #define T_SIZE_TYPE typename TESTED_NAMESPACE::vector<T>::size_type
 
-void	prepost_incdec(TESTED_NAMESPACE::vector<TESTED_TYPE> &vct)
+template <class T, class Alloc>
+void	cmp(const TESTED_NAMESPACE::vector<T, Alloc> &lhs, const TESTED_NAMESPACE::vector<T, Alloc> &rhs)
 {
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin();
-	TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_tmp;
+	static int i = 0;
 
-	std::cout << "Pre inc" << std::endl;
-	it_tmp = ++it;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Pre dec" << std::endl;
-	it_tmp = --it;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Post inc" << std::endl;
-	it_tmp = it++;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-
-	std::cout << "Post dec" << std::endl;
-	it_tmp = it--;
-	std::cout << *it_tmp << " | " << *it << std::endl;
-	std::cout << "###############################################" << std::endl;
+	std::cout << "############### [" << i++ << "] ###############"  << std::endl;
+	std::cout << "eq: " << (lhs == rhs) << " | ne: " << (lhs != rhs) << std::endl;
+	std::cout << "lt: " << (lhs <  rhs) << " | le: " << (lhs <= rhs) << std::endl;
+	std::cout << "gt: " << (lhs >  rhs) << " | ge: " << (lhs >= rhs) << std::endl;
 }
 
 template <typename T>
@@ -151,32 +139,27 @@ int main() {
 	std::cout << std::endl;
 	 */
 	{
-		const int size = 5;
-		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin();
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite = vct.begin();
+		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(4);
+		TESTED_NAMESPACE::vector<TESTED_TYPE> vct2(4);
 
-		for (int i = 0; i < size; ++i)
-			it[i] = (size - i) * 5;
-		prepost_incdec(vct);
+		cmp(vct, vct);  // 0
+		cmp(vct, vct2); // 1
 
-		it = it + 5;
-		it = 1 + it;
-		it = it - 4;
-		std::cout << *(it += 2) << std::endl;
-		std::cout << *(it -= 1) << std::endl;
+		vct2.resize(10);
 
-		*(it -= 2) = 42;
-		*(it += 2) = 21;
+		cmp(vct, vct2); // 2
+		cmp(vct2, vct); // 3
 
-		std::cout << "const_ite +=: " << *(ite += 2) << std::endl;
-		std::cout << "const_ite -=: " << *(ite -= 2) << std::endl;
+		vct[2] = 42;
 
-		std::cout << "(it == const_it): " << (ite == it) << std::endl;
-		std::cout << "(const_ite - it): " << (ite - it) << std::endl;
-		std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+		cmp(vct, vct2); // 4
+		cmp(vct2, vct); // 5
 
-		printSize(vct, true);
+		swap(vct, vct2);
+
+		cmp(vct, vct2); // 6
+		cmp(vct2, vct); // 7
+
 	}
 	return (0);
 }
