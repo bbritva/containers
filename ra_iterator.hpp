@@ -81,30 +81,6 @@ namespace ft {
 			return *(_pointer + offset);
 		}
 
-		bool operator==(const random_access_iterator &other) const {
-			return _pointer == other._pointer;
-		}
-
-		bool operator!=(const random_access_iterator &other) const {
-			return _pointer != other._pointer;
-		}
-
-		bool operator>(const random_access_iterator &other) const {
-			return _pointer > other._pointer;
-		}
-
-		bool operator<(const random_access_iterator &other) const {
-			return _pointer < other._pointer;
-		}
-
-		bool operator>=(const random_access_iterator &other) const {
-			return _pointer >= other._pointer;
-		}
-
-		bool operator<=(const random_access_iterator &other) const {
-			return _pointer <= other._pointer;
-		}
-
 		T &operator*() {
 			return *_pointer;
 		}
@@ -113,13 +89,107 @@ namespace ft {
 			return _pointer;
 		}
 
-		T *getPtr() {
+		T *getPtr() const {
 			return _pointer;
 		}
 
 	};
 
-	template<typename T>
+	template <class T>
+	bool operator==(const random_access_iterator<T> first,
+					const random_access_iterator<T> second) {
+		return first.getPtr() == second.getPtr();
+	}
+
+	// for non-const and const
+	template<class T_F, class T_S>
+	bool operator==(const random_access_iterator<T_F> first,
+					const random_access_iterator<T_S> second) {
+		return first.getPtr() == second.getPtr();
+	}
+
+	template <class T>
+	bool operator!=(const random_access_iterator<T> first,
+					const random_access_iterator<T> second) {
+		return first.getPtr() != second.getPtr();
+	}
+
+	// for non-const and const
+	template<class T_F, class T_S>
+	bool operator!=(const random_access_iterator<T_F> first,
+					const random_access_iterator<T_S> second) {
+		return first.getPtr() != second.getPtr();
+	}
+
+	template <class T>
+	bool operator<(const random_access_iterator<T> first,
+					const random_access_iterator<T> second)
+	{
+		return first.getPtr() < second.getPtr();
+	}
+
+	// for non-const and const
+	template<class T_F, class T_S>
+	bool operator<(const random_access_iterator<T_F> first,
+					const random_access_iterator<T_S> second)
+	{
+		return first.getPtr() < second.getPtr();
+	}
+
+	template <class T>
+	bool operator>(const random_access_iterator<T> first,
+					const random_access_iterator<T> second) {
+		return first.getPtr() > second.getPtr();
+	}
+
+	// for non-const and const
+	template<class T_F, class T_S>
+	bool operator>(const random_access_iterator<T_F> first,
+					const random_access_iterator<T_S> second) {
+		return first.getPtr() > second.getPtr();
+	}
+
+	template <class T>
+	bool operator<=(const random_access_iterator<T> first,
+					const random_access_iterator<T> second) {
+		return first.getPtr() <= second.getPtr();
+	}
+
+	// for non-const and const
+	template<class T_F, class T_S>
+	bool operator<=(const random_access_iterator<T_F> first,
+			   const random_access_iterator<T_S> second) {
+		return first.getPtr() <= second.getPtr();
+	}
+
+	template <class T>
+	bool operator>=(const random_access_iterator<T> first,
+					const random_access_iterator<T> second) {
+		return first.getPtr() >= second.getPtr();
+	}
+
+	// for non-const and const
+	template<class T_F, class T_S>
+	bool operator>=(const random_access_iterator<T_F> first,
+					const random_access_iterator<T_S> second) {
+		return first.getPtr() >= second.getPtr();
+	}
+
+	template <class T>
+	long int operator-(const ft::random_access_iterator<T> first,
+							const ft::random_access_iterator<T> second) {
+		return first.getPtr() - second.getPtr();
+	}
+
+	// for non-const and const
+	template<class T_F, class T_S>
+	long int operator-(const ft::random_access_iterator<T_F> first,
+							const ft::random_access_iterator<T_S> second)
+	{
+		return first.getPtr() - second.getPtr();
+	}
+
+	template<class T>
 	random_access_iterator<T> operator+(std::size_t step, random_access_iterator<T> &iterator) {
 		return random_access_iterator<T>(iterator + step);
 	}
