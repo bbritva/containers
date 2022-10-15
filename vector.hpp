@@ -411,10 +411,11 @@ namespace ft {
 		}
 
 		void insert (iterator position, std::size_t n, const T& value) {
-			size_type index = position - begin();
-			if (_capacity <= _size + n)
+			if (_capacity <= _size + n) {
+				size_type index = position - begin();
 				reserve(_size + n);
-			position = iterator(&_arr[index]);
+				position = iterator(&_arr[index]);
+			}
 			iterator it = end() + n - 1;
 			iterator ite = position + n - 1;
 			while (it != ite) {
@@ -434,8 +435,11 @@ namespace ft {
 		void insert (iterator position, InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL) {
 			std::size_t n = ft::distance(first, last);
-			if (_capacity <= _size + n)
+			if (_capacity <= _size + n) {
+				size_type index = position - begin();
 				reserve(_size + n);
+				position = iterator(&_arr[index]);
+			}
 			iterator it = end() + n - 1;
 			while (it != position + n - 1) {
 				*it = *(it - n);
