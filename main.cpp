@@ -9,15 +9,20 @@
 //#define NAMESPACE std
 #include "vector.hpp"
 #include "stack.hpp"
-#include "containers_test/srcs/base.hpp"
+//#include "containers_test/srcs/base.hpp"
 
-#define TESTED_TYPE foo<int>
-//#define TESTED_TYPE int
+//#define TESTED_TYPE foo<int>
+#define TESTED_TYPE int
 #define TESTED_NAMESPACE ft
 
 #define COUNT 100
 
 #define T_SIZE_TYPE typename TESTED_NAMESPACE::vector<T>::size_type
+
+void	is_empty(TESTED_NAMESPACE::vector<TESTED_TYPE> const &vct)
+{
+	std::cout << (vct.empty() ? "true" : "false") << std::endl;
+}
 
 template <class T, class Alloc>
 void	cmp(const TESTED_NAMESPACE::vector<T, Alloc> &lhs, const TESTED_NAMESPACE::vector<T, Alloc> &rhs)
@@ -142,46 +147,49 @@ int main() {
 	std::cout << std::endl;
 	 */
 	{
-		const int size = 5;
-		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator r_it(vct.rbegin());
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cr_ite(vct.rend());
+		const int start_size = 7;
+		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(start_size, 20);
+		TESTED_NAMESPACE::vector<TESTED_TYPE> vct2;
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin();
 
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it(vct.begin());
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite(vct.end());
+		for (int i = 2; i < start_size; ++i)
+			it[i] = (start_size - i) * 3;
+//		printSize(vct, true);
 
-		for (int i = 1; r_it != cr_ite; ++i)
-			*r_it++ = (i * 7);
-		printSize(vct, 1);
+		vct.resize(10, 42);
+//		printSize(vct, true);
 
-		r_it = vct.rbegin();
-		cr_ite = vct.rbegin();
+		vct.resize(18, 43);
+//		printSize(vct, true);
+		vct.resize(10);
+//		printSize(vct, true);
+		vct.resize(23, 44);
+//		printSize(vct, true);
+		vct.resize(5);
+//		printSize(vct, true);
+		vct.reserve(5);
+		vct.reserve(3);
+//		printSize(vct, true);
+		vct.resize(87);
+		vct.resize(5);
+//		printSize(vct, true);
 
-		std::cout << *(++cr_ite) << std::endl;
-		std::cout << *(cr_ite++) << std::endl;
-		std::cout << *cr_ite++ << std::endl;
-		std::cout << *++cr_ite << std::endl;
+		std::cout << "is_empty vct2: ";
+		is_empty(vct2);
+		vct2 = vct;
+		std::cout << "is_empty vct2: ";
+		is_empty(vct2);
+		vct.reserve(vct.capacity() + 1);
+		std::cout << "print vct:\n";
+		printSize(vct, true);
+		std::cout << "print vct2:\n";
+		printSize(vct2, true);
 
-		r_it->m();
-		cr_ite->m();
-
-		std::cout << *(++r_it) << std::endl;
-		std::cout << *(r_it++) << std::endl;
-		std::cout << *r_it++ << std::endl;
-		std::cout << *++r_it << std::endl;
-
-		std::cout << *(--cr_ite) << std::endl;
-		std::cout << *(cr_ite--) << std::endl;
-		std::cout << *--cr_ite << std::endl;
-		std::cout << *cr_ite-- << std::endl;
-
-		(*r_it).m();
-		(*cr_ite).m();
-
-		std::cout << *(--r_it) << std::endl;
-		std::cout << *(r_it--) << std::endl;
-		std::cout << *r_it-- << std::endl;
-		std::cout << *--r_it << std::endl;
+		vct2.resize(0);
+		std::cout << "is_empty vct2: ";
+		is_empty(vct2);
+		std::cout << "print vct2:\n";
+		printSize(vct2, true);
 	}
 	return (0);
 }

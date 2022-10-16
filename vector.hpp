@@ -71,10 +71,11 @@ namespace ft {
 				return (*this);
 			clear();
 			if (_capacity < other._capacity) {
-				_allocator.deallocate(_arr, _capacity);
+				if (_capacity)
+					_allocator.deallocate(_arr, _capacity);
 				_arr = _allocator.allocate(other._capacity);
 			}
-			for (std::size_t i = 0; i < _capacity; ++i)
+			for (std::size_t i = 0; i < other._size; ++i)
 				_allocator.construct(&_arr[i], other._arr[i]);
 			_capacity = other._capacity;
 			_size = other._size;
