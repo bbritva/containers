@@ -10,9 +10,8 @@
 # include "sfinae.hpp"
 
 namespace ft {
-
 	template<class T>
-	class random_access_iterator : public ft::iterator_base<ft::random_access_iterator_tag, T> {
+	class random_access_iterator : public iterator_base<random_access_iterator_tag, T> {
 	private:
 		T *_pointer;
 	public:
@@ -31,6 +30,14 @@ namespace ft {
 
 		operator random_access_iterator<const T>() const {
 			return (random_access_iterator<const T>(this->_pointer));
+		}
+
+		T &operator*() {
+			return *_pointer;
+		}
+
+		T *operator->() {
+			return _pointer;
 		}
 
 		random_access_iterator &operator++() {
@@ -81,18 +88,9 @@ namespace ft {
 			return *(_pointer + offset);
 		}
 
-		T &operator*() {
-			return *_pointer;
-		}
-
-		T *operator->() {
-			return _pointer;
-		}
-
 		T *getPtr() const {
 			return _pointer;
 		}
-
 	};
 
 	template <class T>

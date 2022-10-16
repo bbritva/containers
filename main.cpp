@@ -12,6 +12,7 @@
 #include "containers_test/srcs/base.hpp"
 
 #define TESTED_TYPE foo<int>
+//#define TESTED_TYPE int
 #define TESTED_NAMESPACE ft
 
 #define COUNT 100
@@ -143,44 +144,44 @@ int main() {
 	{
 		const int size = 5;
 		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator rit(vct.rbegin());
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cr_it(vct.rend());
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator r_it(vct.rbegin());
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cr_ite(vct.rend());
+
 		TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it(vct.begin());
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite(vct.rend());
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator ite(vct.end());
 
-		for (int i = 1; rit != cr_it; ++i)
-			*rit++ = (i * 7);
-		printSize(vct, true);
+		for (int i = 1; r_it != cr_ite; ++i)
+			*r_it++ = (i * 7);
+		printSize(vct, 1);
 
-		rit = vct.rbegin();
-		cr_it = vct.rbegin();
+		r_it = vct.rbegin();
+		cr_ite = vct.rbegin();
 
-		std::cout << *(++cr_it) << std::endl;
-		std::cout << *(cr_it++) << std::endl;
-		std::cout << *cr_it++ << std::endl;
-		std::cout << *++cr_it << std::endl;
+		std::cout << *(++cr_ite) << std::endl;
+		std::cout << *(cr_ite++) << std::endl;
+		std::cout << *cr_ite++ << std::endl;
+		std::cout << *++cr_ite << std::endl;
 
-		rit->m();
-		cr_it->m();
+		r_it->m();
+		cr_ite->m();
 
-		std::cout << *(++rit) << std::endl;
-		std::cout << *(rit++) << std::endl;
-		std::cout << *rit++ << std::endl;
-		std::cout << *++rit << std::endl;
+		std::cout << *(++r_it) << std::endl;
+		std::cout << *(r_it++) << std::endl;
+		std::cout << *r_it++ << std::endl;
+		std::cout << *++r_it << std::endl;
 
-		std::cout << *(--cr_it) << std::endl;
-		std::cout << *(cr_it--) << std::endl;
-		std::cout << *--cr_it << std::endl;
-		std::cout << *cr_it-- << std::endl;
+		std::cout << *(--cr_ite) << std::endl;
+		std::cout << *(cr_ite--) << std::endl;
+		std::cout << *--cr_ite << std::endl;
+		std::cout << *cr_ite-- << std::endl;
 
-		(*rit).m();
-		(*cr_it).m();
+		(*r_it).m();
+		(*cr_ite).m();
 
-		std::cout << *(--rit) << std::endl;
-		std::cout << *(rit--) << std::endl;
-		std::cout << *rit-- << std::endl;
-		std::cout << *--rit << std::endl;
-
+		std::cout << *(--r_it) << std::endl;
+		std::cout << *(r_it--) << std::endl;
+		std::cout << *r_it-- << std::endl;
+		std::cout << *--r_it << std::endl;
 	}
 	return (0);
 }

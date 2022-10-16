@@ -103,7 +103,7 @@ namespace ft {
 			return reverse_iterator(&_arr[_size]);
 		}
 
-		const_iterator rend() {
+		reverse_iterator rend() {
 			return reverse_iterator(&_arr[0]);
 		}
 

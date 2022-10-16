@@ -10,7 +10,7 @@
 
 namespace ft {
 	template<class T>
-	class reverse_iterator : public ft::iterator_base<ft::random_access_iterator_tag, T> {
+	class reverse_iterator : public iterator_base<random_access_iterator_tag, T> {
 	private:
 		random_access_iterator<T> _iter;
 	public:
@@ -78,7 +78,7 @@ namespace ft {
 		}
 
 		long int operator-(const reverse_iterator &other) const {
-			return (_iter + other._iter);
+			return (other._iter - _iter);
 		}
 
 		reverse_iterator operator+=(std::size_t step) {
@@ -98,7 +98,6 @@ namespace ft {
 		T *getPtr() const {
 			return (_iter - 1).getPtr();
 		}
-
 	};
 
 	template <class T>
