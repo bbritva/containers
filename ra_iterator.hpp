@@ -263,7 +263,7 @@ namespace ft {
 		}
 
 		long int operator-(const reverse_iterator &other) const {
-			return (_iter - other._iter);
+			return (_iter + other._iter);
 		}
 
 		reverse_iterator operator+=(std::size_t step) {
@@ -280,7 +280,7 @@ namespace ft {
 			return *(_iter - 1 - offset);
 		}
 
-		T *getPtr() {
+		T *getPtr() const {
 			return (_iter - 1).getPtr();
 		}
 
@@ -382,7 +382,7 @@ namespace ft {
 
 	template<class T>
 	reverse_iterator<T> operator+(std::size_t step, reverse_iterator<T> &iterator) {
-		return reverse_iterator<T>(iterator - step);
+		return reverse_iterator<T>(iterator + step);
 	}
 
 }

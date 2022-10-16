@@ -142,28 +142,32 @@ int main() {
 	{
 		const int size = 5;
 		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_ = vct.begin();
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator rit(it_);
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator rit = vct.rbegin();
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator cr_ite = vct.rbegin();
 
 		for (int i = 0; i < size; ++i)
-			vct[i] = (i + 1) * 5;
-		printSize(vct);
+			rit[i] = (size - i) * 5;
 
-		std::cout << (it_ == rit.base()) << std::endl;
-		std::cout << (it_ == (rit + 3).base()) << std::endl;
+		std::cout << *rit << std::endl;
+		rit = rit + 5;
+		std::cout << *rit << std::endl;
+		rit = 1 + rit;
+		std::cout << *rit << std::endl;
+		rit = rit - 4;
+		std::cout << *rit << std::endl;
+		std::cout << *(rit += 2) << std::endl;
+		std::cout << *(rit -= 1) << std::endl;
 
-		std::cout << *(rit.base() + 1) << std::endl;
-		std::cout << *(rit - 3) << std::endl;
-		std::cout << *(rit - 3).base() << std::endl;
-		rit -= 3;
-		std::cout << *rit.base() << std::endl;
+		*(rit -= 2) = 42;
+		*(rit += 2) = 21;
 
-		std::cout << "TEST OFFSET" << std::endl;
-		std::cout << *(rit) << std::endl;
-		std::cout << *(rit).base() << std::endl;
-		std::cout << *(rit - 0) << std::endl;
-		std::cout << *(rit - 0).base() << std::endl;
-		std::cout << *(rit - 1).base() << std::endl;
+		std::cout << "const_ite +=/-=: " << *(cr_ite += 2) << " | " << *(cr_ite -= 2) << std::endl;
+
+		std::cout << "(rit == const_it): " << (cr_ite == rit) << std::endl;
+		std::cout << "(const_ite - rit): " << (cr_ite - rit) << std::endl;
+		std::cout << "(cr_ite + 3 == rit): " << (cr_ite + 3 == rit) << std::endl;
+
+		printSize(vct, true);
 
 	}
 	return (0);
