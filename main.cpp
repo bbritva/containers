@@ -9,8 +9,9 @@
 //#define NAMESPACE std
 #include "vector.hpp"
 #include "stack.hpp"
-#include "containers_test/srcs/base.hpp"
+//#include "containers_test/srcs/base.hpp"
 #define TESTED_TYPE int
+#define TESTED_NAMESPACE ft
 
 #define COUNT 100
 
@@ -139,26 +140,30 @@ int main() {
 	std::cout << std::endl;
 	 */
 	{
-		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(4);
-		TESTED_NAMESPACE::vector<TESTED_TYPE> vct2(4);
+		const int size = 5;
+		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it_ = vct.begin();
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator rit(it_);
 
-		cmp(vct, vct);  // 0
-		cmp(vct, vct2); // 1
+		for (int i = 0; i < size; ++i)
+			vct[i] = (i + 1) * 5;
+		printSize(vct);
 
-		vct2.resize(10);
+		std::cout << (it_ == rit.base()) << std::endl;
+		std::cout << (it_ == (rit + 3).base()) << std::endl;
 
-		cmp(vct, vct2); // 2
-		cmp(vct2, vct); // 3
+		std::cout << *(rit.base() + 1) << std::endl;
+		std::cout << *(rit - 3) << std::endl;
+		std::cout << *(rit - 3).base() << std::endl;
+		rit -= 3;
+		std::cout << *rit.base() << std::endl;
 
-		vct[2] = 42;
-
-		cmp(vct, vct2); // 4
-		cmp(vct2, vct); // 5
-
-		swap(vct, vct2);
-
-		cmp(vct, vct2); // 6
-		cmp(vct2, vct); // 7
+		std::cout << "TEST OFFSET" << std::endl;
+		std::cout << *(rit) << std::endl;
+		std::cout << *(rit).base() << std::endl;
+		std::cout << *(rit - 0) << std::endl;
+		std::cout << *(rit - 0).base() << std::endl;
+		std::cout << *(rit - 1).base() << std::endl;
 
 	}
 	return (0);
