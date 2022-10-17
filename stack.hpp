@@ -5,9 +5,13 @@
 #ifndef CONTAINERS_STACK_HPP
 #define CONTAINERS_STACK_HPP
 
+#include "vector.hpp"
+
 namespace ft {
 	template<typename T, class Container = ft::vector<T> >
 	class stack {
+	public:
+		typedef Container container_type;
 	private:
 		Container _data;
 
@@ -15,7 +19,20 @@ namespace ft {
 		explicit stack(const Container& cont = Container()) : _data(cont){
 		};
 
+		stack(const stack &other) : _data(other._data) {}
+
+		stack &operator=(const stack &other) {
+			if (this == &other)
+				return (*this);
+			_data = other._data;
+			return *this;
+		}
+
 		T& top() {
+			return _data.back();
+		}
+
+		const T& top() const {
 			return _data.back();
 		}
 
@@ -34,7 +51,47 @@ namespace ft {
 		void pop() {
 			_data.pop_back();
 		}
+
+		const Container &getData() const {
+			return _data;
+		}
 	};
+
+	template<class T, class Container>
+	bool operator==(const stack<T, Container> &first,
+					const stack<T, Container> &second) {
+		return first.getData() == second.getData();
+	}
+
+	template<class T, class Container>
+	bool operator!=(const stack<T, Container> &first,
+					const stack<T, Container> &second) {
+		return !(first == second);
+	}
+
+	template<class T, class Container>
+	bool operator<(const stack<T, Container> &first,
+					const stack<T, Container> &second) {
+		return first.getData() < second.getData();
+	}
+
+	template<class T, class Container>
+	bool operator<=(const stack<T, Container> &first,
+					const stack<T, Container> &second) {
+		return first.getData() <= second.getData();
+	}
+
+	template<class T, class Container>
+	bool operator>(const stack<T, Container> &first,
+					const stack<T, Container> &second) {
+		return first.getData() > second.getData();
+	}
+
+	template<class T, class Container>
+	bool operator>=(const stack<T, Container> &first,
+					const stack<T, Container> &second) {
+		return first.getData() >= second.getData();
+	}
 }
 
 #endif //CONTAINERS_STACK_HPP
