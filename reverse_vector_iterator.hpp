@@ -20,6 +20,9 @@ namespace ft {
 
 		reverse_iterator(const reverse_iterator &other) : _iter(other._iter) {}
 
+		template < typename _T >
+		reverse_iterator(const reverse_iterator<_T> &other) : _iter(other.base()) {}
+
 		reverse_iterator(const random_access_iterator<T> &other) :
 			_iter(other.getPtr()) {}
 

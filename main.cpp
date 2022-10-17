@@ -8,43 +8,13 @@
 #define NAMESPACE ft
 //#define NAMESPACE std
 #include "vector.hpp"
-#include "stack.hpp"
-#include "containers_test/srcs/base.hpp"
+#include "containers_test/srcs/vector/common.hpp"
 
-#define TESTED_TYPE foo<int>
-//#define TESTED_TYPE int
+//#define TESTED_TYPE foo<int>
+#define TESTED_TYPE int
 #define TESTED_NAMESPACE ft
 
-#define t_stack_ TESTED_NAMESPACE::stack<TESTED_TYPE>
-typedef t_stack_::container_type container_type;
-
 #define COUNT 100
-
-template <typename T_STACK>
-void	printSize(T_STACK &stck, bool print_content = true)
-{
-	std::cout << "size: " << stck.size() << std::endl;
-	if (print_content)
-	{
-		std::cout << std::endl << "Content was:" << std::endl;
-		while (stck.size() != 0) {
-			std::cout << "- " << stck.top() << std::endl;
-			stck.pop();
-		}
-	}
-	std::cout << "###############################################" << std::endl;
-}
-
-template <class T_STACK>
-void	cmp(const T_STACK &lhs, const T_STACK &rhs)
-{
-	static int i = 0;
-
-	std::cout << "############### [" << i++ << "] ###############"  << std::endl;
-	std::cout << "eq: " << (lhs == rhs) << " | ne: " << (lhs != rhs) << std::endl;
-	std::cout << "lt: " << (lhs <  rhs) << " | le: " << (lhs <= rhs) << std::endl;
-	std::cout << "gt: " << (lhs >  rhs) << " | ge: " << (lhs >= rhs) << std::endl;
-}
 
 int main() {
 	/*
@@ -136,37 +106,25 @@ int main() {
 	std::cout << std::endl;
 	 */
 	{
-		container_type	ctnr;
+		TESTED_NAMESPACE::vector<TESTED_TYPE> vct;
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it = vct.begin();
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator cit = vct.begin();
 
-		ctnr.push_back(21);
-		ctnr.push_back(42);
-		ctnr.push_back(1337);
-		ctnr.push_back(19);
-		ctnr.push_back(0);
-		ctnr.push_back(183792);
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator rit(it);
 
-		t_stack_	stck(ctnr);
-		t_stack_	stck2(ctnr);
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit(rit);
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit_(it);
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator crit_2(cit);
 
-		cmp(stck, stck);  // 0
-		cmp(stck, stck2); // 1
+		/* error expected
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator rit_(crit);
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator rit2(cit);
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::iterator it2(rit);
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_iterator cit2(crit);
+		*/
 
-		stck2.push(60);
-		stck2.push(61);
-		stck2.push(62);
-
-		cmp(stck, stck2); // 2
-		cmp(stck2, stck); // 3
-
-		stck.push(42);
-
-		cmp(stck, stck2); // 4
-		cmp(stck2, stck); // 5
-
-		stck.push(100);
-
-		cmp(stck, stck2); // 6
-		cmp(stck2, stck); // 7
+		std::cout << "OK" << std::endl;
+		return (0);
 	}
 	return (0);
 }
