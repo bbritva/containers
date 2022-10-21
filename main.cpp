@@ -8,6 +8,7 @@
 #define NAMESPACE ft
 //#define NAMESPACE std
 #include "vector.hpp"
+#include "map.hpp"
 #include "containers_test/srcs/vector/common.hpp"
 
 //#define TESTED_TYPE foo<int>
