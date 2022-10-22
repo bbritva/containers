@@ -4,6 +4,7 @@
 # include <iostream>
 # include "direct_vector_iterator.hpp"
 # include "reverse_vector_iterator.hpp"
+# include "red_black_tree.hpp"
 # include "sfinae.hpp"
 # include "pair.hpp"
 
