@@ -20,7 +20,7 @@ namespace ft {
 //		typedef ft::reverse_iterator<const T>				const_reverse_iterator;
 
 	private:
-		rb_tree<>;
+		rb_tree<pair, std::less<Key> > _tree;
 		std::size_t _capacity;
 		std::size_t _size;
 		std::allocator<pair> _allocator;
@@ -28,24 +28,14 @@ namespace ft {
 
 		//constructors
 
-		explicit map(const std::allocator<pair>& allocator = std::allocator<pair>()) {
-			_root = NULL;
+		explicit map(const A& allocator = A()) {
+			_tree = rb_tree<pair, std::less<Key> > ();
 			_size = 0;
 			_capacity = 0;
 			_allocator = allocator;
 		};
 
-		explicit map(std::size_t size, const T& value = T(), const std::allocator<T>& allocator = std::allocator<T>()) {
-			_allocator = allocator;
-			_size = 0;
-			_capacity = 0;
-			reserve(size);
-			for (std::size_t i = 0; i < size; ++i) {
-				push_back(value);
-			}
-		};
-
-		map(map const &other, const std::allocator<T>& allocator = std::allocator<T>()) {
+		map(map const &other, const A &allocator = A()) {
 			_allocator = allocator;
 			_arr = _allocator.allocate(other._capacity);
 			for (std::size_t i = 0; i < other._size; ++i)
