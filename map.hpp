@@ -20,7 +20,7 @@ namespace ft {
 //		typedef ft::reverse_iterator<const T>				const_reverse_iterator;
 
 	private:
-		pair *_root;
+		rb_tree<>;
 		std::size_t _capacity;
 		std::size_t _size;
 		std::allocator<pair> _allocator;
