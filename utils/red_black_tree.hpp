@@ -34,6 +34,10 @@ namespace ft {
 			return *this;
 		};
 
+		void insert (const Node<T>& new_node){
+			_tree.insert(value);
+		};
+
 		bool empty() {
 			return !_root;
 		}

@@ -46,8 +46,6 @@ namespace ft {
 		bool operator==(Node const& other) {
 			return _value == other._value;
 		};
-
-		Node <T> *left_kid;
 	};
 
 	template <class T>

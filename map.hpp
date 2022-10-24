@@ -28,7 +28,7 @@ namespace ft {
 		//constructors
 
 		explicit map(const A& allocator = A()) {
-			_tree = rb_tree<pair, std::less<Key> > ();
+			_tree = rb_tree<pair, std::less<Key>, A> ();
 			_allocator = allocator;
 			_size = 0;
 		};
@@ -160,6 +160,10 @@ namespace ft {
 //		}
 
 		// Modifiers
+
+		void insert (const pair& value){
+			_tree.insert(value);
+		};
 
 //		void assign (std::size_t n, const T& value) {
 //			clear();
