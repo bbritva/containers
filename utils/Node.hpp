@@ -16,14 +16,14 @@ namespace ft {
 	template <class T>
 	class Node
 	{
-	private:
+	public:
 		T		_value;
 		t_color	_color;
 		Node	*_parent;
 		Node	*_left_kid;
 		Node	*_right_kid;
 
-	public:
+
 		explicit Node(T &value = T(), t_color color = RED, T *parent = NULL, T *left_kid = NULL, T *right_kid = NULL)
 			: _parent(parent), _left_kid(left_kid), _right_kid(right_kid), _color(color), _value(value) {};
 
@@ -47,6 +47,7 @@ namespace ft {
 			return _value == other._value;
 		};
 
+		Node <T> *left_kid;
 	};
 
 	template <class T>

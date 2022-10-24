@@ -34,8 +34,27 @@ namespace ft {
 			return *this;
 		};
 
+		bool empty() {
+			return !_root;
+		}
+
+		void clear() {
+			eraseNode(_root);
+			_root = NULL;
+		};
+
 		bool operator==(rb_tree const& other) {
 			return _root == other._root;
+		};
+
+	private:
+		void eraseNode(Node<T> *node) {
+			if (!node)
+				return;
+			eraseNode(node->_left_kid);
+			eraseNode(node->_right_kid);
+			_alloc.destroy(node);
+			_alloc.deallocate(node, sizeof(Node<T>));
 		};
 	};
 
