@@ -9,7 +9,8 @@
 # include "pair.hpp"
 
 namespace ft {
-	template<typename Key, typename Value, typename A = std::allocator<ft::pair<Key, Value> > >
+	template<typename Key, typename Value,
+			typename Compare = std::less<Key>, typename A = std::allocator<ft::pair<Key, Value> > >
 	class map {
 	public:
 		typedef std::size_t									size_type;
@@ -21,15 +22,15 @@ namespace ft {
 
 	private:
 		rb_tree<pair, std::less<Key> >	_tree;
-		std::allocator<pair>			_allocator;
+		A								_allocator;
 		size_type						_size;
 	public:
 
 		//constructors
 
 		explicit map(const A& allocator = A()) {
-			_tree = rb_tree<pair, std::less<Key>, A> ();
 			_allocator = allocator;
+			_tree(_allocator);
 			_size = 0;
 		};
 
