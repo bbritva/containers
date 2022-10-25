@@ -53,6 +53,8 @@ int main() {
 	}
 	{ //MAP
 		NAMESPACE::map<int, std::string> map_str;
+		ft::pair<int, std::string> pair(5, "tt");
+		map_str.insert(pair);
 
 //		for (int i = 0; i < COUNT; i++) {
 //			vector_int.push_back(i);

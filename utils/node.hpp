@@ -24,12 +24,20 @@ namespace ft {
 		node	*_right_kid;
 
 
-		explicit node(T &value = T(), t_color color = RED, T *parent = NULL, T *left_kid = NULL, T *right_kid = NULL)
-			: _parent(parent), _left_kid(left_kid), _right_kid(right_kid), _color(color), _value(value) {};
+		explicit node(T &value = T(), t_color color = RED) :
+			_value(value),
+			_color(color),
+			_parent(NULL),
+			_left_kid(NULL),
+			_right_kid(NULL) {};
 
-		node(node &other)
-			: _parent(other._parent), _left_kid(other._left_kid), _right_kid(other._right_kid),
-			_color(other._color), _value(other._value) {};
+		node(const node &other) :
+			_value(other._value),
+			_color(other._color),
+			_parent(other._parent),
+			_left_kid(other._left_kid),
+			_right_kid(other._right_kid)
+			 {};
 		~node() {};
 
 		node& operator=(node const& other) {

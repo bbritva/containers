@@ -9,35 +9,30 @@
 #include "node.hpp"
 
 namespace ft {
-	template <class T,
-			class Compare,
-			class Allocator = std::allocator<node<T> > >
+	template <class T, class Compare>
 	class rb_tree
 	{
 	private:
 		node<T>		*_root;
 		Compare		_comparator;
-		Allocator	_alloc;
 
 	public:
-		explicit rb_tree(const std::allocator<T>& allocator = std::allocator<T>(),
-		        const Compare& comparator = Compare())
-				: _root(NULL), _alloc(allocator), _comparator(comparator){};
+		explicit rb_tree(const Compare& comparator = Compare())
+				: _root(NULL), _comparator(comparator){};
 
-		rb_tree(const rb_tree &other) : _root(other._root), _alloc(other._alloc),
-			_comparator(other._comparator) {};
+		rb_tree(const rb_tree &other) : _root(other._root), _comparator(other._comparator) {};
+
 		~rb_tree() {};
 
 		rb_tree& operator=(const rb_tree& other) {
 			if (this == &other)
 				return *this;
-			_alloc = other._alloc;
 			_comparator = other._comparator;
 			_root = other._root;
 			return *this;
 		};
 
-		void insert (const node<T>& new_node){
+		void insert (node<T>* new_node){
 			insert_node(new_node, &_root, NULL);
 		};
 
@@ -60,23 +55,25 @@ namespace ft {
 				return;
 			eraseNode(node->_left_kid);
 			eraseNode(node->_right_kid);
-			_alloc.destroy(node);
-			_alloc.deallocate(node, sizeof(::ft::node<T>));
 		};
 
-		void insert_node(const node<T>& new_node, node<T> **place, node<T> *new_parent) {
+		void insert_node(node<T> *new_node, node<T> **place, node<T> *new_parent) {
 			if (!place || !new_node)
 				return;
 			if (!*place) {
 				*place = new_node;
-				(*place)->parent = new_parent;
+				(*place)->_parent = new_parent;
 				if (!new_parent)
-					(*place)->color = black;
+					(*place)->_color = black;
 				return;
-			} else if (new_node->data > (*place)->data) {
-				insert_node(&((*place)->_right_kid), new_node, *place);
-			} else {
-				insert_node(&((*place)->_left_kid), new_node, *place);
+			} else
+//				if (new_node->_value > (*place)->_value)
+				{
+				insert_node(new_node, &((*place)->_right_kid), *place);
+//			} else if (new_node->_value < (*place)->_value) {
+//				insert_node(new_node, &((*place)->_left_kid), *place);
+//			} else {
+//				std::cout << "Key exists\n";
 			}
 		};
 	};
