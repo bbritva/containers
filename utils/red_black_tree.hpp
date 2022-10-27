@@ -17,10 +17,8 @@ namespace ft {
 		Compare		_comparator;
 
 	public:
-		explicit rb_tree(const Compare& comparator = Compare())
-				: _root(NULL), _comparator(comparator){};
-
-		rb_tree(const rb_tree &other) : _root(other._root), _comparator(other._comparator) {};
+		explicit rb_tree(Compare const &comparator)
+				: _comparator(comparator){};
 
 		~rb_tree() {};
 
@@ -66,14 +64,12 @@ namespace ft {
 				if (!new_parent)
 					(*place)->_color = black;
 				return;
-			} else
-//				if (new_node->_value > (*place)->_value)
-				{
+			} else if (_comparator( new_node->_value, (*place)->_value)) {
 				insert_node(new_node, &((*place)->_right_kid), *place);
-//			} else if (new_node->_value < (*place)->_value) {
-//				insert_node(new_node, &((*place)->_left_kid), *place);
-//			} else {
-//				std::cout << "Key exists\n";
+			} else if (_comparator( (*place)->_value, new_node->_value)) {
+				insert_node(new_node, &((*place)->_left_kid), *place);
+			} else {
+				std::cout << "Key exists\n";
 			}
 		};
 	};

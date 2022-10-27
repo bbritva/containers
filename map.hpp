@@ -18,8 +18,22 @@ namespace ft {
 		typedef pair<Key, Value>				pair_type;
 		typedef node<ft::pair<Key, Value> >		node_type;
 
+		class comparator : public std::binary_function<pair_type , pair_type , bool>
+		{
+			friend class map;
+
+		protected:
+			Compare _comp;
+			comparator(Compare c) : _comp(c) {}
+
+		public:
+			bool operator()(const pair_type &first, const pair_type &second) const {
+				return _comp(first._key, second._key);
+			}
+		};
+
 	private:
-		rb_tree<pair_type, std::less<Key> >		_tree;
+		rb_tree<pair_type, comparator >			_tree;
 //		A										_allocator;
 		std::allocator<node_type>				_allocator;
 		size_type								_size;
@@ -28,14 +42,16 @@ namespace ft {
 
 		//constructors
 
-		explicit map(const A& allocator = A()) {
+		explicit map(const Compare& comp = Compare(),
+					 const A& allocator = A())
+					 : _tree(comparator(comp))
+		{
 			_allocator = allocator;
-			_tree = rb_tree<pair_type, std::less<Key> >();
 			_size = 0;
 		};
 
-		map(map const &other, const A &allocator = A()) {
-			_allocator = allocator;
+		map(map const &other) {
+			_allocator = other._allocator;
 			_tree = other._tree;
 			_size = other._size;
 		}

@@ -10,22 +10,22 @@ namespace ft {
 	class pair
 	{
 	public:
-		T1 first;
-		T2 second;
+		T1 _key;
+		T2 _value;
 
-		pair() : first(), second() {}
+		pair() : _key(), _value() {}
 
 		template<class U, class V>
-		pair(const pair<U, V>& other) : first(other.first), second(other.second) {}
+		pair(const pair<U, V>& other) : _key(other._key), _value(other._value) {}
 
-		pair(const T1& a, const T2& b) : first(a), second(b) {}
+		pair(const T1& a, const T2& b) : _key(a), _value(b) {}
 
 		pair& operator=(const pair& other)
 		{
 //			if (*this == other)
 //				return *this;
-			first = other.first;
-			second = other.second;
+			_key = other._key;
+			_value = other._value;
 			return *this;
 		}
 	};
