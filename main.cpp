@@ -53,9 +53,15 @@ int main() {
 	}
 	{ //MAP
 		NAMESPACE::map<int, std::string> map_str;
-		ft::pair<int, std::string> pair(5, "tt");
+		map_str.insert(ft::make_pair(5, "tt"));
+		map_str.insert(ft::make_pair(4, "tt"));
+		map_str.insert(ft::make_pair(1, "tt"));
+		map_str.insert(ft::make_pair(3, "tt"));
 		map_str.insert(ft::make_pair(6, "tt"));
-		map_str.insert(pair);
+		map_str.insert(ft::make_pair(9, "tt"));
+		map_str.insert(ft::make_pair(7, "tt"));
+		std::cout << "size = " << map_str.size() << "\n";
+		std::cout << "max_size = " << map_str.max_size() << "\n";
 
 //		for (int i = 0; i < COUNT; i++) {
 //			vector_int.push_back(i);

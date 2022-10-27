@@ -7,6 +7,7 @@
 # include "red_black_tree.hpp"
 # include "sfinae.hpp"
 # include "pair.hpp"
+# include "direct_tree_iterator.hpp"
 
 namespace ft {
 	template<typename Key, typename Value,
@@ -17,6 +18,11 @@ namespace ft {
 		typedef std::size_t						size_type;
 		typedef pair<Key, Value>				pair_type;
 		typedef node<ft::pair<Key, Value> >		node_type;
+
+		typedef ft::iterator_tree<pair_type, node_type>			iterator;
+		typedef ft::iterator_tree<const pair_type, ft::Node<pair_type> >	const_iterator;
+		typedef ft::reverse_iterator<iterator> reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 
 		class comparator : public std::binary_function<pair_type , pair_type , bool>
 		{
@@ -36,24 +42,19 @@ namespace ft {
 		rb_tree<pair_type, comparator >			_tree;
 //		A										_allocator;
 		std::allocator<node_type>				_allocator;
-		size_type								_size;
 
 	public:
 
 		//constructors
 
-		explicit map(const Compare& comp = Compare(),
-					 const A& allocator = A())
-					 : _tree(comparator(comp))
-		{
+		explicit map(const Compare& comp = Compare(), const A& allocator = A())
+					 : _tree(comparator(comp)) {
 			_allocator = allocator;
-			_size = 0;
 		};
 
 		map(map const &other) {
 			_allocator = other._allocator;
 			_tree = other._tree;
-			_size = other._size;
 		}
 
 		~map() {}
@@ -63,9 +64,10 @@ namespace ft {
 				return (*this);
 //			clear();
 			_tree = other._tree;
-			_size = other._size;
 			return (*this);
 		}
+
+		// element access
 
 		void insert (const pair_type & new_pair) {
 			node_type *new_node = _allocator.allocate(1);
@@ -76,10 +78,15 @@ namespace ft {
 
 		const std::allocator<node_type>& get_allocator() const {
 			return _allocator;
+		};
+
+		// capacity
+		bool empty() const {
+			return size() == 0;
 		}
 
 		std::size_t size() const {
-			return (_size);
+			return _tree.size();
 		}
 
 		std::size_t max_size() const {
@@ -88,6 +95,15 @@ namespace ft {
 
 		void clear() {
 			_tree.clear();
+		};
+
+		// observers:
+		Compare key_comp() const {
+			return Compare();
+		}
+
+		comparator	value_comp() const {
+			return comparator(key_comp());
 		}
 	};
 	//class end

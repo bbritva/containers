@@ -49,7 +49,19 @@ namespace ft {
 			return _root == other._root;
 		};
 
+		std::size_t size() const {
+			return size(_root);
+		}
+
+
 	private:
+
+		std::size_t size(node<T> *node) const {
+			if (!node)
+				return 0;
+			return size(node->_right_kid) + size(node->_left_kid) + 1;
+		}
+
 		void eraseNode(node<T> *node) {
 			if (!node)
 				return;
