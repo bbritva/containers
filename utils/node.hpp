@@ -24,7 +24,7 @@ namespace ft {
 		node	*_right_kid;
 
 
-		explicit node(T &value = T(), t_color color = RED) :
+		explicit node(const T &value = T(), t_color color = RED) :
 			_value(value),
 			_color(color),
 			_parent(NULL),

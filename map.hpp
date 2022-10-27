@@ -67,10 +67,10 @@ namespace ft {
 			return (*this);
 		}
 
-		void insert (pair_type & new_pair) {
+		void insert (const pair_type & new_pair) {
 			node_type *new_node = _allocator.allocate(1);
 			_allocator.construct(new_node, node_type (new_pair));
-//			new_node->_value = new_pair;
+			new_node->_value = new_pair;
 			_tree.insert(new_node);
 		};
 
