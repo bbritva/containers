@@ -18,7 +18,9 @@ namespace ft {
 
 	public:
 		explicit rb_tree(Compare const &comparator)
-				: _comparator(comparator){};
+				: _comparator(comparator) {
+			_root = NULL;
+		};
 
 		~rb_tree() {};
 
@@ -65,9 +67,9 @@ namespace ft {
 					(*place)->_color = black;
 				return;
 			} else if (_comparator( new_node->_value, (*place)->_value)) {
-				insert_node(new_node, &((*place)->_right_kid), *place);
-			} else if (_comparator( (*place)->_value, new_node->_value)) {
 				insert_node(new_node, &((*place)->_left_kid), *place);
+			} else if (_comparator( (*place)->_value, new_node->_value)) {
+				insert_node(new_node, &((*place)->_right_kid), *place);
 			} else {
 				std::cout << "Key exists\n";
 			}
