@@ -19,8 +19,8 @@ namespace ft {
 		typedef pair<Key, Value>				pair_type;
 		typedef node<ft::pair<Key, Value> >		node_type;
 
-		typedef ft::iterator_tree<pair_type, node_type>			iterator;
-		typedef ft::iterator_tree<const pair_type, ft::Node<pair_type> >	const_iterator;
+		typedef ft::tree_iterator<pair_type, node_type>			iterator;
+		typedef ft::tree_iterator<const pair_type, ft::node<pair_type> >	const_iterator;
 		typedef ft::reverse_iterator<iterator> reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
 

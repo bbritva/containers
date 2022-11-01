@@ -14,12 +14,14 @@ namespace ft {
 	{
 	private:
 		node<T>		*_root;
+		node<T>		*_last;
 		Compare		_comparator;
 
 	public:
 		explicit rb_tree(Compare const &comparator)
 				: _comparator(comparator) {
 			_root = NULL;
+			_last = new node<T>();
 		};
 
 		~rb_tree() {};
@@ -29,6 +31,7 @@ namespace ft {
 				return *this;
 			_comparator = other._comparator;
 			_root = other._root;
+			_last = other._last;
 			return *this;
 		};
 

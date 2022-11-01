@@ -55,42 +55,6 @@ namespace ft {
 			return _value == other._value;
 		};
 
-		node &operator++() {
-			if (_parent) {
-				if (_parent->_left_kid == this) {
-					// node is left_kid
-					if (_right_kid) {
-						this = _right_kid;
-						while (_left_kid) {
-							this = _left_kid;
-						}
-					} else {
-						this = _parent;
-					}
-					return *this;
-				} else {
-					// node is right_kid
-					if (_right_kid) {
-						this = _right_kid;
-						while (_left_kid) {
-							this = _left_kid;
-						}
-					} else {
-						while (_parent && _parent->_left_kid != this)
-							this = _parent;
-						if (_parent)
-							this = _parent;
-					}
-					return *this;
-				}
-			} else {
-				while (_left_kid) {
-					this = _left_kid;
-				}
-				return *this;
-			}
-
-		}
 	};
 
 	template <class T>
