@@ -56,7 +56,7 @@ namespace ft {
 					_node = _last;
 				} else if (_node->_parent->_left_kid == _node) {
 					// node is left_kid
-					this = _node->_parent;
+					_node = _node->_parent;
 				} else {
 					// node is right kid
 					// move while node is right kid and has parent
@@ -64,7 +64,7 @@ namespace ft {
 						_node = _node->_parent;
 					}
 					if (_node->_parent) {
-						this = _node->_parent;
+						_node = _node->_parent;
 					} else {
 						_node = _last;
 					}
@@ -73,11 +73,11 @@ namespace ft {
 			return *this;
 		}
 
-//		tree_iterator operator++(int) {
-//			tree_iterator tmp(*this);
-//			operator++();
-//			return tmp;
-//		}
+		tree_iterator operator++(int) {
+			tree_iterator tmp(*this);
+			operator++();
+			return tmp;
+		}
 
 //		tree_iterator &operator--() {
 //			--_pointer;
@@ -116,7 +116,7 @@ namespace ft {
 //			return *(_pointer + offset);
 //		}
 
-		T *getNode() const {
+		Node *getNode() const {
 			return _node;
 		}
 	};

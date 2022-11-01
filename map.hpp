@@ -67,6 +67,16 @@ namespace ft {
 			return (*this);
 		}
 
+		// iterators
+
+		iterator begin() {
+			return iterator (_tree.getFirst(), _tree.getRoot(), _tree.getLast());
+		}
+
+		iterator end() {
+			return iterator (_tree.getLast(), _tree.getRoot(), _tree.getLast());
+		}
+
 		// element access
 
 		void insert (const pair_type & new_pair) {

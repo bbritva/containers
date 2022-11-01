@@ -60,6 +60,13 @@ int main() {
 		map_str.insert(ft::make_pair(6, "tt"));
 		map_str.insert(ft::make_pair(9, "tt"));
 		map_str.insert(ft::make_pair(7, "tt"));
+		NAMESPACE::map<int, std::string>::iterator it = map_str.begin();
+		NAMESPACE::map<int, std::string>::iterator it_end = map_str.end();
+		while (it != it_end) {
+			std::cout << it->_value._key << " = " << it->_value._value << "\n";
+			it++;
+		}
+
 		std::cout << "size = " << map_str.size() << "\n";
 		std::cout << "max_size = " << map_str.max_size() << "\n";
 

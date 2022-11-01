@@ -56,6 +56,19 @@ namespace ft {
 			return size(_root);
 		}
 
+		node<T> *getRoot() {
+			return _root;
+		}
+		node<T> *getFirst() {
+			node<T> *first = _root;
+			while (first->_left_kid)
+				first = first->_left_kid;
+			return first;
+		}
+		node<T> *getLast() {
+			return _last;
+		}
+
 
 	private:
 
