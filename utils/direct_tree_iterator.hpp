@@ -79,16 +79,44 @@ namespace ft {
 			return tmp;
 		}
 
-//		tree_iterator &operator--() {
-//			--_pointer;
-//			return *this;
-//		}
+		tree_iterator &operator--() {
+			if (_node != _last) {
+				if (_node->_left_kid) {
+					//node has left kid
+					_node = _node->_left_kid;
+					while (_node->_right_kid) {
+						_node = _node->_right_kid;
+					}
+				} else if (!_node->_parent) {
+					_node = _last;
+				} else if (_node->_parent->_right_kid == _node) {
+					// node is right kid
+					_node = _node->_parent;
+				} else {
+					// node is left kid
+					// move while node is left kid and has parent
+					while (_node->_parent && _node->_parent->_left_kid == _node) {
+						_node = _node->_parent;
+					}
+					if (_node->_parent) {
+						_node = _node->_parent;
+					} else {
+						_node = _last;
+					}
+				}
+			} else {
+				_node = _root;
+				while (_node->_right_kid)
+					_node = _node->_right_kid;
+			}
+			return *this;
+		}
 
-//		tree_iterator operator--(int) {
-//			tree_iterator tmp(*this);
-//			operator--();
-//			return tmp;
-//		}
+		tree_iterator operator--(int) {
+			tree_iterator tmp(*this);
+			operator--();
+			return tmp;
+		}
 
 //		tree_iterator operator+(std::size_t step) const {
 //			return tree_iterator(_pointer + step);

@@ -66,6 +66,14 @@ int main() {
 			std::cout << it->_value._key << " = " << it->_value._value << "\n";
 			it++;
 		}
+		while (it != it_end) {
+			std::cout << it->_value._key << " = " << it->_value._value << "\n";
+			it++;
+		}
+		while (it != map_str.begin()) {
+			std::cout << it->_value._key << " = " << it->_value._value << "\n";
+			it--;
+		}
 
 		std::cout << "size = " << map_str.size() << "\n";
 		std::cout << "max_size = " << map_str.max_size() << "\n";
