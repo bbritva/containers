@@ -39,7 +39,7 @@ namespace ft {
 		};
 
 	private:
-		rb_tree<pair_type, comparator >			_tree;
+		rb_tree<pair_type, comparator, A>			_tree;
 //		A										_allocator;
 		std::allocator<node_type>				_allocator;
 
@@ -48,7 +48,7 @@ namespace ft {
 		//constructors
 
 		explicit map(const Compare& comp = Compare(), const A& allocator = A())
-					 : _tree(comparator(comp)) {
+					 : _tree(comparator(comp), _allocator.allocate(1)) {
 			_allocator = allocator;
 		};
 
@@ -62,7 +62,7 @@ namespace ft {
 		map &operator=(const map &other) {
 			if (this == &other)
 				return (*this);
-//			clear();
+			clear();
 			_tree = other._tree;
 			return (*this);
 		}
@@ -104,7 +104,7 @@ namespace ft {
 		}
 
 		void clear() {
-			_tree.clear();
+			_tree.clear(_allocator);
 		};
 
 		// observers:

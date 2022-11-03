@@ -9,7 +9,7 @@
 #include "node.hpp"
 
 namespace ft {
-	template <class T, class Compare>
+	template <class T, class Compare, class Allocator>
 	class rb_tree
 	{
 	private:
@@ -18,7 +18,7 @@ namespace ft {
 		Compare		_comparator;
 
 	public:
-		explicit rb_tree(Compare const &comparator, node<T> last)
+		explicit rb_tree(Compare const &comparator, node<T> *last)
 				: _comparator(comparator) {
 			_root = NULL;
 			_last = last;
@@ -43,8 +43,8 @@ namespace ft {
 			return !_root;
 		}
 
-		void clear() {
-			eraseNode(_root);
+		void clear(Allocator &allocator) {
+			eraseNode(_root, allocator);
 			_root = NULL;
 		};
 
@@ -111,11 +111,13 @@ namespace ft {
 			return size(node->_right_kid) + size(node->_left_kid) + 1;
 		}
 
-		void eraseNode(node<T> *node) {
+		void eraseNode(node<T> *node, Allocator &allocator) {
 			if (!node)
 				return;
 			eraseNode(node->_left_kid);
 			eraseNode(node->_right_kid);
+			allocator.destroy(node);
+			allocator.deallocate(node, 1);
 		};
 
 		void insert_node(node<T> *new_node, node<T> **place, node<T> *new_parent) {
@@ -138,11 +140,26 @@ namespace ft {
 
 		void replaceNode(node<T> **curr_node, node<T> *new_node) {
 			node<T> *tmp = *curr_node;
+			node<T> *left_kid = tmp->_left_kid;
+			node<T> *right_kid = tmp->_right_kid;
 			new_node->_color = tmp->_color;
 			new_node->_parent = tmp->_parent;
 			new_node->_left_kid = tmp->_left_kid;
 			new_node->_right_kid = tmp->_right_kid;
 			*curr_node = new_node;
+			if (right_kid)
+				insert_node(right_kid, &_root, NULL);
+			if (left_kid)
+				insert_node(left_kid, &_root, NULL);
+		};
+
+		node<T> *getSuccessor(node<T> *curr_node) {
+			if (!curr_node || !curr_node->_right_kid)
+				return NULL;
+			curr_node = curr_node->_right_kid;
+			while (curr_node->_left_kid)
+				curr_node = curr_node->_left_kid;
+			return curr_node;
 		};
 
 	};
