@@ -35,8 +35,9 @@ namespace ft {
 			return *this;
 		};
 
-		void insert (node<T>* new_node){
-			insert_node(new_node, &_root, NULL);
+		void insert (node<T>* new_node, node<T>* pos) {
+			pos = (pos) ? pos : _root;
+			insert_node(new_node, &pos, NULL);
 		};
 
 		bool empty() {
@@ -76,7 +77,7 @@ namespace ft {
 			if (_comparator(key, node->_value))
 				return findByKey(key, node->_left_kid);
 			if (_comparator(node->_value, key))
-				return find(key, node->_right_kid);
+				return findByKey(key, node->_right_kid);
 			return node;
 		};
 

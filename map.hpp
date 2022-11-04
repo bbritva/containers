@@ -19,10 +19,10 @@ namespace ft {
 		typedef pair<Key, Value>				pair_type;
 		typedef node<ft::pair<Key, Value> >		node_type;
 
-		typedef ft::tree_iterator<pair_type, node_type>			iterator;
+		typedef ft::tree_iterator<pair_type, node_type>						iterator;
 		typedef ft::tree_iterator<const pair_type, ft::node<pair_type> >	const_iterator;
-		typedef ft::reverse_iterator<iterator> reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator> const_reverse_iterator;
+		typedef ft::reverse_iterator<iterator>								reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
 
 		class comparator : public std::binary_function<pair_type , pair_type , bool>
 		{
@@ -63,32 +63,81 @@ namespace ft {
 			if (this == &other)
 				return (*this);
 			clear();
+			_allocator = other._allocator;
 			_tree = other._tree;
 			return (*this);
 		}
 
 		// iterators
 
-		iterator begin() {
-			return iterator (_tree.getFirst(), _tree.getRoot(), _tree.getLast());
-		}
+		iterator begin()
+		{ return iterator (_tree.getFirst(), _tree.getRoot(), _tree.getLast());}
 
-		iterator end() {
-			return iterator (_tree.getLast(), _tree.getRoot(), _tree.getLast());
-		}
+		iterator end()
+		{ return iterator (_tree.getLast(), _tree.getRoot(), _tree.getLast()); }
+
+		const_iterator begin() const
+		{ return iterator (_tree.getFirst(), _tree.getRoot(), _tree.getLast()); }
+
+		const_iterator end() const
+		{ return iterator (_tree.getLast(), _tree.getRoot(), _tree.getLast()); }
+
+		reverse_iterator rbegin()
+		{ return reverse_iterator(begin()); }
+
+		reverse_iterator rend()
+		{ return reverse_iterator(end()); }
+
+		const_reverse_iterator rbegin() const
+		{ return reverse_iterator(begin()); }
+
+		const_reverse_iterator rend() const
+		{ return reverse_iterator(end()); }
 
 		// element access
 
-		void insert (const pair_type & new_pair) {
-			node_type *new_node = _allocator.allocate(1);
-			_allocator.construct(new_node, node_type (new_pair));
-			new_node->_value = new_pair;
-			_tree.insert(new_node);
+		Value&	operator[](const Key& key) {
+			insert(ft::make_pair(key, Value()));
+			return find(key)->second;
+		}
+
+		pair<iterator, bool> insert (const pair_type &new_pair) {
+			iterator it = find(new_pair._key);
+			if (it == end()) {
+				node_type *new_node = _allocator.allocate(1);
+				_allocator.construct(new_node, node_type(new_pair));
+				_tree.insert(new_node, NULL);
+				return ft::make_pair(find(new_pair._key), true);
+			}
+			return ft::make_pair(it, false);
 		};
 
-		const std::allocator<node_type>& get_allocator() const {
-			return _allocator;
+		iterator insert (iterator pos, const pair_type &new_pair) {
+			if (pos == end())
+				insert(new_pair);
+			else {
+				node_type *new_node = _allocator.allocate(1);
+				_allocator.construct(new_node, node_type(new_pair));
+				_tree.insert(new_node, pos.getCurrent());
+			}
+			return find(new_pair._key);
 		};
+
+		template <class InputIt>
+		void insert(InputIt begin, InputIt end) {
+			while (begin != end) {
+				insert(*begin);
+				begin++;
+			}
+		}
+
+		iterator find(const Key& key) {
+			return iterator(_tree.findByKey(ft::make_pair(key, Value()), _tree.getRoot()), _tree.getRoot(), _tree.getLast());
+		}
+
+		const_iterator find(const Key& key) const {
+			return const_iterator(_tree.findByKey(ft::make_pair(key, Value()), _tree.getRoot()), _tree.getRoot(), _tree.getLast());
+		}
 
 		// capacity
 		bool empty() const {
@@ -115,6 +164,10 @@ namespace ft {
 		comparator	value_comp() const {
 			return comparator(key_comp());
 		}
+
+		const std::allocator<node_type>& get_allocator() const {
+			return _allocator;
+		};
 	};
 	//class end
 }
