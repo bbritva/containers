@@ -132,11 +132,49 @@ namespace ft {
 		}
 
 		iterator find(const Key& key) {
-			return iterator(_tree.findByKey(ft::make_pair(key, Value()), _tree.getRoot()), _tree.getRoot(), _tree.getLast());
+			return iterator(_tree.findByKey(ft::make_pair(key, Value()), _tree.getRoot()),
+							_tree.getRoot(), _tree.getLast());
 		}
 
 		const_iterator find(const Key& key) const {
-			return const_iterator(_tree.findByKey(ft::make_pair(key, Value()), _tree.getRoot()), _tree.getRoot(), _tree.getLast());
+			return const_iterator(	_tree.findByKey(ft::make_pair(key, Value()), _tree.getRoot()),
+									_tree.getRoot(), _tree.getLast());
+		}
+
+		size_type count(const Key& k) const {
+			return (find(k) != end());
+		}
+
+		iterator upper_bound(const Key& key) {
+			iterator it = begin();
+			pair_type pair = ft::make_pair(key, Value());
+			while (key_comp(*it, pair) && it != end())
+				it++;
+			return it;
+		}
+
+		const_iterator	upper_bound(const Key& key) const {
+			return const_iterator(upper_bound(key));
+		}
+
+		iterator lower_bound(const Key& key) {
+			iterator it = end();
+			pair_type pair = ft::make_pair(key, Value());
+			while (key_comp(*it, pair) && it != begin())
+				it--;
+			return it;
+		}
+
+		const_iterator	lower_bound(const Key& key) const {
+			return const_iterator(lower_bound(key));
+		}
+
+		ft::pair<iterator, iterator> equal_range(const Key& key) {
+			return ft::make_pair(lower_bound(key), upper_bound(key));
+		}
+
+		ft::pair<const_iterator, const_iterator> equal_range(const Key& key) const {
+			return ft::make_pair(lower_bound(key), upper_bound(key));
 		}
 
 		// capacity

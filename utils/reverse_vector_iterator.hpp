@@ -9,44 +9,40 @@
 # include "direct_vector_iterator.hpp"
 
 namespace ft {
-	template<class T>
-	class reverse_iterator : public iterator_base<random_access_iterator_tag, T> {
+	template<class Iter>
+	class reverse_iterator : public Iter {
 	private:
-		random_access_iterator<T> _iter;
+		Iter _iter;
 	public:
-		reverse_iterator() : _iter(NULL) {}
+		reverse_iterator() : _iter() {}
 
-		explicit reverse_iterator(T *x) : _iter(x) {}
+		explicit reverse_iterator(Iter x) : _iter(x) {}
 
-		reverse_iterator(const reverse_iterator &other) : _iter(other._iter) {}
+		template < typename U >
+		explicit reverse_iterator(const reverse_iterator<U> &other) : _iter(other.base()) {}
 
-		template < typename _T >
-		reverse_iterator(const reverse_iterator<_T> &other) : _iter(other.base()) {}
-
-		reverse_iterator(const random_access_iterator<T> &other) :
-			_iter(other.getPtr()) {}
-
-		reverse_iterator &operator=(reverse_iterator const &other) {
+		template < typename U >
+		reverse_iterator &operator=(reverse_iterator<U> const &other) {
 			if (this == &other)
 				return (*this);
-			_iter = other._iter;
+			_iter = other.base();
 			return (*this);
 		}
 
-		operator reverse_iterator<const T>() const {
-			return (reverse_iterator<const T>(this->_iter));
+		operator reverse_iterator<const Iter>() const {
+			return (reverse_iterator<const Iter>(this->_iter));
 		}
 
-		random_access_iterator<T> base() const {
+		Iter base() const {
 			return _iter;
 		}
 
-		T &operator*() {
-			random_access_iterator<T> ret(this->base());
+		typename ft::iterator_traits<Iter>::reference operator*() {
+			Iter ret(this->base());
 			return *--ret;
 		}
 
-		T *operator->() {
+		typename ft::iterator_traits<Iter>::pointer operator->() {
 			return &(operator*());
 		}
 
@@ -94,11 +90,11 @@ namespace ft {
 			return *this;
 		}
 
-		T &operator[](std::size_t offset) {
+		typename ft::iterator_traits<Iter>::reference operator[](std::size_t offset) {
 			return *(_iter - 1 - offset);
 		}
 
-		T *getPtr() const {
+		typename ft::iterator_traits<Iter>::pointer getPtr() const {
 			return (_iter - 1).getPtr();
 		}
 	};

@@ -103,7 +103,6 @@ namespace ft {
 			return ret;
 		};
 
-
 	private:
 
 		std::size_t size(node<T> *node) const {
