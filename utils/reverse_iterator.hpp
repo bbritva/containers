@@ -29,26 +29,12 @@ namespace ft {
 		explicit reverse_iterator(iterator_type const &other) : _iter(other) {}
 		reverse_iterator(reverse_iterator const &other) : _iter(other.base()) {}
 		template <class U> reverse_iterator(const reverse_iterator<U>& other) : _iter(other.base()) {}
-//		template <class U> reverse_iterator(const U& other) : _iter(other.base()) {}
 
-//		template < typename U >
-//		reverse_iterator &operator=(const reverse_iterator<U> &other) {
-//			if (this == &other)
-//				return (*this);
-//			_iter = other.base();
-//			return (*this);
-//		}
-//
-//		reverse_iterator &operator=(reverse_iterator const &other) {
-//			if (this == &other)
-//				return (*this);
-//			_iter = other.base();
-//			return (*this);
-//		}
-
-//		operator reverse_iterator<iterator_type>() const {
-//			return (reverse_iterator<iterator_type>(this->_iter));
-//		}
+		template < typename U >
+		reverse_iterator &operator=(reverse_iterator<U> const &other) {
+			_iter = other.base();
+			return (*this);
+		}
 
 		iterator_type base() const {
 			return _iter;
