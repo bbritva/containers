@@ -31,20 +31,20 @@ namespace ft {
 		template <class U> reverse_iterator(const reverse_iterator<U>& other) : _iter(other.base()) {}
 //		template <class U> reverse_iterator(const U& other) : _iter(other.base()) {}
 
-		template < typename U >
-		reverse_iterator &operator=(const reverse_iterator<U> &other) {
-			if (this == &other)
-				return (*this);
-			_iter(other.base());
-			return (*this);
-		}
-
-		reverse_iterator &operator=(reverse_iterator const &other) {
-			if (this == &other)
-				return (*this);
-			_iter = other.base();
-			return (*this);
-		}
+//		template < typename U >
+//		reverse_iterator &operator=(const reverse_iterator<U> &other) {
+//			if (this == &other)
+//				return (*this);
+//			_iter = other.base();
+//			return (*this);
+//		}
+//
+//		reverse_iterator &operator=(reverse_iterator const &other) {
+//			if (this == &other)
+//				return (*this);
+//			_iter = other.base();
+//			return (*this);
+//		}
 
 //		operator reverse_iterator<iterator_type>() const {
 //			return (reverse_iterator<iterator_type>(this->_iter));
