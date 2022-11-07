@@ -10,7 +10,16 @@
 namespace ft {
 	template<typename T, typename A = std::allocator<T> >
 	class vector {
+	private:
+		typedef typename A::template rebind<T>::other _T_alloc;
 	public:
+		typedef T										value_type;
+		typedef T*										pointer;
+		typedef T&										reference;
+		typedef const T*								const_pointer;
+		typedef const T&								const_reference;
+		typedef A										allocator_type;
+		typedef std::ptrdiff_t							difference_type;
 		typedef std::size_t								size_type;
 		typedef ft::random_access_iterator<T>			iterator;
 		typedef ft::random_access_iterator<const T>		const_iterator;
@@ -18,41 +27,41 @@ namespace ft {
 		typedef ft::reverse_iterator<const iterator>	const_reverse_iterator;
 
 	private:
-		T *_arr;
-		std::size_t _capacity;
-		std::size_t _size;
-		std::allocator<T> _allocator;
+		pointer			_arr;
+		size_type		_capacity;
+		size_type		_size;
+		allocator_type	_allocator;
+
 	public:
 
 		//constructors
-
-		explicit vector(const std::allocator<T>& allocator = std::allocator<T>()) {
+		explicit vector(const allocator_type allocator = allocator_type()) {
 			_size = 0;
 			_capacity = 0;
 			_allocator = allocator;
 		};
 
-		explicit vector(std::size_t size, const T& value = T(), const std::allocator<T>& allocator = std::allocator<T>()) {
+		explicit vector(size_type size, const_reference value = T(), const allocator_type& allocator = allocator_type()) {
 			_allocator = allocator;
 			_size = 0;
 			_capacity = 0;
 			reserve(size);
-			for (std::size_t i = 0; i < size; ++i) {
+			for (size_type i = 0; i < size; ++i) {
 				push_back(value);
 			}
 		};
 
-		vector(vector const &other, const std::allocator<T>& allocator = std::allocator<T>()) {
+		vector(vector const &other, const allocator_type& allocator = allocator_type()) {
 			_allocator = allocator;
 			_arr = _allocator.allocate(other._capacity);
-			for (std::size_t i = 0; i < other._size; ++i)
+			for (size_type i = 0; i < other._size; ++i)
 				_arr[i] = other._arr[i];
 			_capacity = other._capacity;
 			_size = other._size;
 		}
 
 		template< class InputIterator >
-		vector( InputIterator first, InputIterator last, const std::allocator<T>& allocator = std::allocator<T>(),
+		vector( InputIterator first, InputIterator last, const allocator_type& allocator = allocator_type(),
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL) {
 			_capacity = 0;
 			_allocator = allocator;
@@ -76,7 +85,7 @@ namespace ft {
 					_allocator.deallocate(_arr, _capacity);
 				_arr = _allocator.allocate(other._capacity);
 			}
-			for (std::size_t i = 0; i < other._size; ++i)
+			for (size_type i = 0; i < other._size; ++i)
 				_allocator.construct(&_arr[i], other._arr[i]);
 			_capacity = other._capacity;
 			_size = other._size;
@@ -119,52 +128,52 @@ namespace ft {
 
 		// Allocator
 
-		const std::allocator<T>& get_allocator() const {
+		const allocator_type& get_allocator() const {
 			return _allocator;
 		}
 
 		// Element access
 
-		T &operator[](std::size_t index) {
+		reference operator[](size_type index) {
 			return _arr[index];
 		}
 
-		T &at( std::size_t index ) const {
+		reference at( size_type index ) const {
 			if (index < _size)
 				return _arr[index];
 			throw std::out_of_range("out_of_range");
 		}
 
-		T &front() const {
+		reference front() const {
 			return _arr[0];
 		}
 
-		T &back() const {
+		reference back() const {
 			return _arr[_size - 1];
 		}
 
-		T *data() {
+		pointer data() {
 			return _arr;
 		}
 
 		// Capacity
 
-		std::size_t size() const {
+		size_type size() const {
 			return (_size);
 		}
 
-		std::size_t max_size() const {
+		size_type max_size() const {
 			return _allocator.max_size();
 		}
 
-		void resize(std::size_t count, T value = T()) {
+		void resize(size_type count, value_type value = value_type()) {
 			while (_size < count)
 				push_back(value);
 			while (_size > count)
 				pop_back();
 		}
 
-		std::size_t capacity() const {
+		size_type capacity() const {
 			return (_capacity);
 		}
 
@@ -172,16 +181,16 @@ namespace ft {
 			return (_size == 0);
 		}
 
-		void reserve(std::size_t new_cap) {
+		void reserve(size_type new_cap) {
 			if (new_cap <= _capacity) {
 				return;
 			}
-			std::size_t old_capacity = _capacity;
+			size_type old_capacity = _capacity;
 			_capacity = (_capacity) ? _capacity : 1;
 			while (_capacity < new_cap)
 				_capacity *= 2;
-			T *new_arr = _allocator.allocate(_capacity);
-			for (std::size_t i = 0; i < _size; ++i) {
+			pointer new_arr = _allocator.allocate(_capacity);
+			for (size_type i = 0; i < _size; ++i) {
 				_allocator.construct(&new_arr[i], _arr[i]);
 				_allocator.destroy(&_arr[i]);
 			}
@@ -192,7 +201,7 @@ namespace ft {
 
 		// Modifiers
 
-		void assign (std::size_t n, const T& value) {
+		void assign (size_type n, const_reference value) {
 			clear();
 			reserve(n);
 			while (n--) {
@@ -221,7 +230,7 @@ namespace ft {
 			_allocator.destroy(&_arr[_size]);
 		}
 
-		iterator insert (iterator position, const T& value)
+		iterator insert (iterator position, const_reference value)
 		{
 			if (position == end()) {
 				push_back(value);
@@ -241,7 +250,7 @@ namespace ft {
 			}
 		}
 
-		iterator insert (iterator position, std::size_t n, const T& value)
+		iterator insert (iterator position, size_type n, const_reference value)
 		{
 			if (_capacity <= _size + n) {
 				size_type index = position - begin();
@@ -256,7 +265,7 @@ namespace ft {
 				_allocator.construct(it.getPtr(), *(it - n));
 				it--;
 			}
-			for (std::size_t i = 0; i < n; ++i) {
+			for (size_type i = 0; i < n; ++i) {
 				_allocator.destroy(position.getPtr());
 				_allocator.construct(position.getPtr(), value);
 				position++;
@@ -269,7 +278,7 @@ namespace ft {
 		iterator insert (iterator position, InputIterator first, InputIterator last,
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL)
 		{
-			std::size_t n = ft::distance(first, last);
+			size_type n = ft::distance(first, last);
 			if (_capacity <= _size + n) {
 				size_type index = position - begin();
 				reserve(_size + n);
@@ -289,10 +298,10 @@ namespace ft {
 		}
 
 		void swap(vector& other) {
-			T *arr = _arr;
-			std::size_t capacity = _capacity;
-			std::size_t size = _size;
-			std::allocator<T> allocator = _allocator;
+			pointer arr = _arr;
+			size_type capacity = _capacity;
+			size_type size = _size;
+			allocator_type allocator = _allocator;
 			_arr = other._arr;
 			_capacity = other._capacity;
 			_size = other._size;
@@ -304,7 +313,7 @@ namespace ft {
 		}
 
 		void clear() {
-			for (std::size_t i = 0; i < _size; ++i) {
+			for (size_type i = 0; i < _size; ++i) {
 				_allocator.destroy(&_arr[i]);
 			}
 			_size = 0;
