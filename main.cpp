@@ -15,41 +15,9 @@
 
 //#define TESTED_TYPE foo<int>
 #define TESTED_TYPE int
-#define T1 char
-#define T2 foo<float>
 #define TESTED_NAMESPACE ft
-typedef TESTED_NAMESPACE::map<T1, T2> _map;
-typedef _map::const_iterator const_it;
 
 #define COUNT 100
-static unsigned int i = 0;
-
-template <typename T_MAP>
-void	printSize(T_MAP const &mp, bool print_content = 1)
-{
-	std::cout << "size: " << mp.size() << std::endl;
-	std::cout << "max_size: " << mp.max_size() << std::endl;
-	if (print_content)
-	{
-		typename T_MAP::const_iterator it = mp.begin(), ite = mp.end();
-		std::cout << std::endl << "Content is:" << std::endl;
-		for (; it != ite; ++it)
-			std::cout << "- " << printPair(it, false) << std::endl;
-	}
-	std::cout << "###############################################" << std::endl;
-}
-
-
-void	ft_comp(const _map &mp, const const_it &it1, const const_it &it2)
-{
-	bool res[2];
-
-	std::cout << "\t-- [" << ++i << "] --" << std::endl;
-	res[0] = mp.key_comp()(it1->first, it2->first);
-	res[1] = mp.value_comp()(*it1, *it2);
-	std::cout << "with [" << it1->first << " and " << it2->first << "]: ";
-	std::cout << "key_comp: " << res[0] << " | " << "value_comp: " << res[1] << std::endl;
-}
 
 int main() {
 
@@ -190,21 +158,30 @@ int main() {
 	std::cout << std::endl;
 
 	{
-		_map	mp;
+		const int size = 5;
+		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it = vct.rbegin();
+		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator ite = vct.rbegin();
 
-		mp['a'] = 2.3;
-		mp['b'] = 1.4;
-		mp['c'] = 0.3;
-		mp['d'] = 4.2;
-		printSize(mp);
+		for (int i = 0; i < size; ++i)
+			it[i] = (size - i) * 5;
 
-		for (const_it it1 = mp.begin(); it1 != mp.end(); ++it1)
-			for (const_it it2 = mp.begin(); it2 != mp.end(); ++it2)
-				ft_comp(mp, it1, it2);
+		it = it + 5;
+		it = 1 + it;
+		it = it - 4;
+		std::cout << *(it += 2) << std::endl;
+		std::cout << *(it -= 1) << std::endl;
 
-		printSize(mp);
-		return (0);
+		*(it -= 2) = 42;
+		*(it += 2) = 21;
 
+		std::cout << "const_ite +=/-=: " << *(ite += 2) << " | " << *(ite -= 2) << std::endl;
+
+		std::cout << "(it == const_it): " << (ite == it) << std::endl;
+		std::cout << "(const_ite - it): " << (ite - it) << std::endl;
+		std::cout << "(ite + 3 == it): " << (ite + 3 == it) << std::endl;
+
+		printSize(vct, true);
 	}
 	return (0);
 }

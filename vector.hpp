@@ -111,19 +111,19 @@ namespace ft {
 		}
 
 		reverse_iterator rbegin() {
-			return reverse_iterator(&_arr[_size]);
+			return reverse_iterator(iterator(&_arr[_size]));
 		}
 
 		reverse_iterator rend() {
-			return reverse_iterator(&_arr[0]);
+			return reverse_iterator(iterator(&_arr[0]));
 		}
 
 		const_reverse_iterator rbegin() const {
-			return const_reverse_iterator(&_arr[_size]);
+			return const_reverse_iterator(const_iterator(&_arr[_size]));
 		}
 
 		const_reverse_iterator rend() const {
-			return const_reverse_iterator(&_arr[0]);
+			return const_reverse_iterator(const_iterator(&_arr[0]));
 		}
 
 		// Allocator
