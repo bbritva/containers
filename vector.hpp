@@ -2,19 +2,20 @@
 # define VECTOR_HPP
 
 # include <iostream>
-# include "direct_vector_iterator.hpp"
-# include "reverse_vector_iterator.hpp"
-# include "sfinae.hpp"
+# include "utils/direct_vector_iterator.hpp"
+# include "utils/reverse_iterator.hpp"
+# include "utils/sfinae.hpp"
+
 
 namespace ft {
 	template<typename T, typename A = std::allocator<T> >
 	class vector {
 	public:
-		typedef std::size_t									size_type;
-		typedef ft::random_access_iterator<T>				iterator;
-		typedef ft::random_access_iterator<const T>			const_iterator;
-		typedef ft::reverse_iterator<T>						reverse_iterator;
-		typedef ft::reverse_iterator<const T>				const_reverse_iterator;
+		typedef std::size_t								size_type;
+		typedef ft::random_access_iterator<T>			iterator;
+		typedef ft::random_access_iterator<const T>		const_iterator;
+		typedef ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef ft::reverse_iterator<const iterator>	const_reverse_iterator;
 
 	private:
 		T *_arr;

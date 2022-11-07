@@ -2,47 +2,62 @@
 // Created by grvelva on 10/15/22.
 //
 
-#ifndef CONTAINERS_REVERSE_VECTOR_ITERATOR_HPP
-# define CONTAINERS_REVERSE_VECTOR_ITERATOR_HPP
+#ifndef CONTAINERS_REVERSE_ITERATOR_HPP
+# define CONTAINERS_REVERSE_ITERATOR_HPP
 
 # include <iostream>
-# include "direct_vector_iterator.hpp"
+# include "iterators.hpp"
 
 namespace ft {
 	template<class Iter>
-	class reverse_iterator : public Iter {
+	class reverse_iterator : public
+							 ft::iterator_base<typename iterator_traits<Iter>::iterator_category,
+									 typename iterator_traits<Iter>::value_type,
+									 typename iterator_traits<Iter>::difference_type,
+									 typename iterator_traits<Iter>::pointer,
+									 typename iterator_traits<Iter>::reference>
+	{
 	private:
 		Iter _iter;
 	public:
+		typedef Iter														iterator_type;
+		typedef typename iterator_traits<iterator_type>::difference_type	difference_type;
+		typedef typename iterator_traits<iterator_type>::reference			reference;
+		typedef typename iterator_traits<iterator_type>::pointer			pointer;
+
+
 		reverse_iterator() : _iter() {}
 
-		explicit reverse_iterator(Iter x) : _iter(x) {}
+		explicit reverse_iterator(iterator_type &other) : _iter(other) {}
 
-		template < typename U >
-		explicit reverse_iterator(const reverse_iterator<U> &other) : _iter(other.base()) {}
+		reverse_iterator(const reverse_iterator &other) : _iter(other._iter) {}
+
+		template <class U> reverse_iterator(const reverse_iterator<U>& other)
+				:_iter(other.base())
+		{}
 
 		template < typename U >
 		reverse_iterator &operator=(reverse_iterator<U> const &other) {
 			if (this == &other)
 				return (*this);
-			_iter = other.base();
+			_iter(other.base());
 			return (*this);
 		}
 
-		operator reverse_iterator<const Iter>() const {
-			return (reverse_iterator<const Iter>(this->_iter));
+		operator reverse_iterator<const iterator_type>() const {
+			return (reverse_iterator<const iterator_type>(this->_iter));
 		}
 
 		Iter base() const {
 			return _iter;
 		}
 
-		typename ft::iterator_traits<Iter>::reference operator*() {
+		reference operator*() {
 			Iter ret(this->base());
 			return *--ret;
 		}
 
-		typename ft::iterator_traits<Iter>::pointer operator->() {
+		pointer operator->() {
 			return &(operator*());
 		}
 
@@ -90,11 +105,11 @@ namespace ft {
 			return *this;
 		}
 
-		typename ft::iterator_traits<Iter>::reference operator[](std::size_t offset) {
+		reference operator[](std::size_t offset) {
 			return *(_iter - 1 - offset);
 		}
 
-		typename ft::iterator_traits<Iter>::pointer getPtr() const {
+		pointer getPtr() const {
 			return (_iter - 1).getPtr();
 		}
 	};

@@ -15,9 +15,18 @@ namespace ft {
 	private:
 		T *_pointer;
 	public:
+		typedef T														iterator_type;
+		typedef ft::iterator_base<ft::random_access_iterator_tag, T>	traits;
+		typedef typename traits::difference_type						difference_type;
+		typedef typename traits::reference								reference;
+		typedef typename traits::pointer								pointer;
+		typedef typename traits::value_type								value_type;
+		typedef typename traits::iterator_category						iterator_category;
+
+
 		random_access_iterator() : _pointer(NULL) {}
 
-		explicit random_access_iterator(T *x) : _pointer(x) {}
+		explicit random_access_iterator(pointer x) : _pointer(x) {}
 
 		random_access_iterator(const random_access_iterator &other) : _pointer(other._pointer) {}
 
@@ -28,15 +37,19 @@ namespace ft {
 			return (*this);
 		}
 
-		operator random_access_iterator<const T>() const {
-			return (random_access_iterator<const T>(this->_pointer));
+		operator random_access_iterator<const value_type>() const {
+			return (random_access_iterator<const value_type>(this->_pointer));
 		}
 
-		T &operator*() {
+		pointer base() const {
+			return _pointer;
+		}
+
+		reference operator*() {
 			return *_pointer;
 		}
 
-		T *operator->() {
+		pointer operator->() {
 			return _pointer;
 		}
 

@@ -8,6 +8,7 @@
 # include <iostream>
 # include "iterators.hpp"
 # include "sfinae.hpp"
+# include "node.hpp"
 
 namespace ft {
 	template<class T, class Node = node<T> >
@@ -32,8 +33,8 @@ namespace ft {
 			return (*this);
 		}
 
-		operator tree_iterator<const T, const node<T> >() const {
-			return (tree_iterator<const T, const Node>(this->_current, this->_root, this->_last));
+		operator tree_iterator<const T, node<T> >() const {
+			return (tree_iterator<const T, Node>(this->_current, this->_root, this->_last));
 		}
 
 		Node *getCurrent() const {
@@ -48,12 +49,12 @@ namespace ft {
 			return _root;
 		}
 
-		Node &operator*() {
+		Node &operator*() const {
 			return *_current;
 		}
 
-		Node *operator->() {
-			return _current;
+		Node *operator->() const {
+			return _current->_value;
 		}
 
 		tree_iterator &operator++() {

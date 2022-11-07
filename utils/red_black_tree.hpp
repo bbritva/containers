@@ -58,12 +58,15 @@ namespace ft {
 		};
 
 		node<T> *getRoot() {
-			return _root;
+			return _root ? _root : _last;
 		};
 		node<T> *getFirst() {
 			node<T> *first = _root;
-			while (first->_left_kid)
-				first = first->_left_kid;
+			if (first) {
+				while (first->_left_kid)
+					first = first->_left_kid;
+			} else
+				first = _last;
 			return first;
 		};
 

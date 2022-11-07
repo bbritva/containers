@@ -10,22 +10,22 @@ namespace ft {
 	class pair
 	{
 	public:
-		Key _key;
-		Value _value;
+		Key		first;
+		Value	second;
 
-		pair() : _key(), _value() {}
+		pair() : first(), second() {}
 
 		template<class U, class V>
-		pair(const pair<U, V>& other) : _key(other._key), _value(other._value) {}
+		pair(const pair<U, V>& other) : first(other.first), second(other.second) {}
 
-		pair(const Key& a, const Value& b) : _key(a), _value(b) {}
+		pair(const Key& a, const Value& b) : first(a), second(b) {}
 
 		pair& operator=(const pair& other)
 		{
 			if (*this == other)
 				return *this;
-			_key = other._key;
-			_value = other._value;
+			first = other.first;
+			second = other.second;
 			return *this;
 		}
 	};
@@ -37,7 +37,7 @@ namespace ft {
 
 	template <class Key, class Value>
 	bool operator==(const ft::pair<Key,Value>& first, const ft::pair<Key,Value>& second) {
-		return first._key == second._key && first._value == second._value;
+		return first.first == second.first && first.second == second.second;
 	}
 
 	template <class Key, class Value>
@@ -47,9 +47,9 @@ namespace ft {
 
 	template <class Key, class Value>
 	bool operator<(const ft::pair<Key,Value>& first, const ft::pair<Key,Value>& second) {
-		return first._key < second._key \
-			|| (!(second._key < first._key) \
-			&& first._value < second._value);
+		return first.first < second.first \
+ || (!(second.first < first.first) \
+ && first.second < second.second);
 	}
 
 	template <class Key, class Value>

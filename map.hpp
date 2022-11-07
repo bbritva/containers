@@ -2,12 +2,11 @@
 # define MAP_HPP
 
 # include <iostream>
-# include "direct_vector_iterator.hpp"
-# include "reverse_vector_iterator.hpp"
+# include "direct_tree_iterator.hpp"
+# include "reverse_iterator.hpp"
 # include "red_black_tree.hpp"
 # include "sfinae.hpp"
 # include "pair.hpp"
-# include "direct_tree_iterator.hpp"
 
 namespace ft {
 	template<typename Key, typename Value,
@@ -20,7 +19,7 @@ namespace ft {
 		typedef node<ft::pair<Key, Value> >		node_type;
 
 		typedef ft::tree_iterator<pair_type, node_type>						iterator;
-		typedef ft::tree_iterator<const pair_type, ft::node<pair_type> >	const_iterator;
+		typedef ft::tree_iterator<pair_type, ft::node<pair_type> >			const_iterator;
 		typedef ft::reverse_iterator<iterator>								reverse_iterator;
 		typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
 
@@ -34,7 +33,7 @@ namespace ft {
 
 		public:
 			bool operator()(const pair_type &first, const pair_type &second) const {
-				return _comp(first._key, second._key);
+				return _comp(first.first, second.first);
 			}
 		};
 
@@ -77,10 +76,10 @@ namespace ft {
 		{ return iterator (_tree.getLast(), _tree.getRoot(), _tree.getLast()); }
 
 		const_iterator begin() const
-		{ return iterator (_tree.getFirst(), _tree.getRoot(), _tree.getLast()); }
+		{ return const_iterator (_tree.getFirst(), _tree.getRoot(), _tree.getLast()); }
 
 		const_iterator end() const
-		{ return iterator (_tree.getLast(), _tree.getRoot(), _tree.getLast()); }
+		{ return const_iterator (_tree.getLast(), _tree.getRoot(), _tree.getLast()); }
 
 		reverse_iterator rbegin()
 		{ return reverse_iterator(begin()); }
@@ -89,25 +88,25 @@ namespace ft {
 		{ return reverse_iterator(end()); }
 
 		const_reverse_iterator rbegin() const
-		{ return reverse_iterator(begin()); }
+		{ return const_reverse_iterator(begin()); }
 
 		const_reverse_iterator rend() const
-		{ return reverse_iterator(end()); }
+		{ return const_reverse_iterator(end()); }
 
 		// element access
 
 		Value&	operator[](const Key& key) {
 			insert(ft::make_pair(key, Value()));
-			return find(key)->second;
+			return find(key)->_value._second;
 		}
 
 		pair<iterator, bool> insert (const pair_type &new_pair) {
-			iterator it = find(new_pair._key);
+			iterator it = find(new_pair.first);
 			if (it == end()) {
 				node_type *new_node = _allocator.allocate(1);
 				_allocator.construct(new_node, node_type(new_pair));
 				_tree.insert(new_node, NULL);
-				return ft::make_pair(find(new_pair._key), true);
+				return ft::make_pair(find(new_pair.first), true);
 			}
 			return ft::make_pair(it, false);
 		};
@@ -120,7 +119,7 @@ namespace ft {
 				_allocator.construct(new_node, node_type(new_pair));
 				_tree.insert(new_node, pos.getCurrent());
 			}
-			return find(new_pair._key);
+			return find(new_pair.first);
 		};
 
 		template <class InputIt>
