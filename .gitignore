@@ -42,3 +42,4 @@ cmake-build-debug/*
 /containers_test/
 /bumble_di/
 /output
+/daria/
