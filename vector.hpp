@@ -24,7 +24,7 @@ namespace ft {
 		typedef ft::random_access_iterator<T>			iterator;
 		typedef ft::random_access_iterator<const T>		const_iterator;
 		typedef ft::reverse_iterator<iterator>			reverse_iterator;
-		typedef ft::reverse_iterator<const iterator>	const_reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 	private:
 		pointer			_arr;
@@ -133,24 +133,30 @@ namespace ft {
 		}
 
 		// Element access
-
 		reference operator[](size_type index) {
 			return _arr[index];
 		}
+		const_reference operator[](size_type index) const {
+			return _arr[index];
+		}
 
-		reference at( size_type index ) const {
+		reference at( size_type index ) {
 			if (index < _size)
 				return _arr[index];
 			throw std::out_of_range("out_of_range");
 		}
 
-		reference front() const {
-			return _arr[0];
+		const_reference at( size_type index ) const {
+			if (index < _size)
+				return _arr[index];
+			throw std::out_of_range("out_of_range");
 		}
 
-		reference back() const {
-			return _arr[_size - 1];
-		}
+		reference front() { return _arr[0]; }
+		const_reference front() const { return _arr[0]; }
+
+		reference back() { return _arr[_size - 1]; }
+		const_reference back() const { return _arr[_size - 1]; }
 
 		pointer data() {
 			return _arr;
@@ -158,13 +164,10 @@ namespace ft {
 
 		// Capacity
 
-		size_type size() const {
-			return (_size);
-		}
-
-		size_type max_size() const {
-			return _allocator.max_size();
-		}
+		size_type size() const { return (_size); }
+		size_type max_size() const { return _allocator.max_size(); }
+		size_type capacity() const { return (_capacity); }
+		bool empty() const { return (_size == 0); }
 
 		void resize(size_type count, value_type value = value_type()) {
 			while (_size < count)
@@ -173,18 +176,9 @@ namespace ft {
 				pop_back();
 		}
 
-		size_type capacity() const {
-			return (_capacity);
-		}
-
-		bool empty() const {
-			return (_size == 0);
-		}
-
 		void reserve(size_type new_cap) {
-			if (new_cap <= _capacity) {
+			if (new_cap <= _capacity)
 				return;
-			}
 			size_type old_capacity = _capacity;
 			_capacity = (_capacity) ? _capacity : 1;
 			while (_capacity < new_cap)
