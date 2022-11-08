@@ -2,11 +2,11 @@
 # define MAP_HPP
 
 # include <iostream>
+# include "pair.hpp"
 # include "direct_tree_iterator.hpp"
 # include "reverse_iterator.hpp"
 # include "red_black_tree.hpp"
 # include "sfinae.hpp"
-# include "pair.hpp"
 
 namespace ft {
 	template<typename Key, typename Value,

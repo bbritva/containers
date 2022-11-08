@@ -24,10 +24,10 @@ namespace ft {
 		node	*_right_kid;
 
 
-		explicit node(const T &value = T(), t_color color = RED) :
+		explicit node(const T &value = T(), t_color color = RED, node<T> *parent = NULL) :
 			_value(value),
 			_color(color),
-			_parent(NULL),
+			_parent(parent),
 			_left_kid(NULL),
 			_right_kid(NULL) {};
 
@@ -50,6 +50,54 @@ namespace ft {
 			_right_kid = other._right_kid;
 			return *this;
 		};
+
+		node *getSuccessor() const {
+			node *successor = this;
+			if (_right_kid) {
+				successor = getMin(_right_kid);
+			} else if (_parent) {
+				successor = _parent;
+				if (successor->_left_kid == this) {
+					if (successor->_right_kid) {
+						successor = getMin(_right_kid);
+					}
+				}
+			} else {
+				// node is _root
+			}
+			return successor;
+
+			/*
+			node *parent = this->_p;
+			node *current = this;
+
+			if (current == current->_left)
+				return parent->TreeMax();
+
+			if (current->_right != current->_right->_right)
+				return current->_right->TreeMin();
+			while (parent != parent->_left && current == parent->_right)
+			{
+				current = parent;
+				parent = parent->_p;
+			}
+			return parent;
+			 */
+		}
+
+		static node *getMin(const node *_root) {
+			node *min = _root;
+			while (min->_left_kid)
+				min = min->_left_kid;
+			return min;
+		}
+
+		static node *getMax(const node *_root) {
+			node *max = _root;
+			while (max->_right_kid)
+				max = max->_right_kid;
+			return max;
+		}
 
 		bool operator==(node const& other) {
 			return _value == other._value;
