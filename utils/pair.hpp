@@ -16,7 +16,7 @@ namespace ft {
 		pair() : first(), second() {}
 
 		template<class U, class V>
-		pair(const pair<U, V>& other) : first(other.first), second(other.second) {}
+		explicit pair(const pair<U, V>& other) : first(other.first), second(other.second) {}
 
 		pair(const Key& a, const Value& b) : first(a), second(b) {}
 
@@ -28,10 +28,11 @@ namespace ft {
 			second = other.second;
 			return *this;
 		}
+		~pair(){};
 	};
 
 	template <class Key, class Value>
-	pair<Key, Value> make_pair(Key key, Value value) {
+	pair<Key, Value> make_pair(const Key &key, const Value &value) {
 		return ft::pair<Key, Value>(key, value);
 	}
 
@@ -48,8 +49,7 @@ namespace ft {
 	template <class Key, class Value>
 	bool operator<(const ft::pair<Key,Value>& first, const ft::pair<Key,Value>& second) {
 		return first.first < second.first \
- || (!(second.first < first.first) \
- && first.second < second.second);
+ 				|| (!(second.first < first.first) && first.second < second.second);
 	}
 
 	template <class Key, class Value>
