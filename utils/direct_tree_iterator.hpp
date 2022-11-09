@@ -11,78 +11,47 @@
 # include "node.hpp"
 
 namespace ft {
-	template<class T, class Node = node<T> >
+	template<class T>
 	class tree_iterator : public iterator_base<bidirectional_iterator_tag, T> {
 	private:
-		Node *_current;
-		Node *_root;
-		Node *_last;
+		typedef iterator_base<std::bidirectional_iterator_tag, typename T::value_type>	_iterator;
 	public:
-		explicit tree_iterator(Node *node = NULL, Node *root = NULL, Node *last = NULL)
-			: _current(node), _root(root), _last(last) {}
+		typedef tree_iterator							iterator_type;
+		typedef typename _iterator::value_type			value_type;
+		typedef typename _iterator::difference_type		difference_type;
+		typedef typename _iterator::reference			reference;
+		typedef typename _iterator::pointer				pointer;
+		typedef typename _iterator::iterator_category	iterator_category;
+		typedef T										node_type;
 
-		tree_iterator(const tree_iterator &other)
-			: _current(other._current), _root(other._root), _last(other._last) {}
+	private:
+		node_type *_current;
+
+	public:
+		explicit tree_iterator(node_type *node = NULL) : _current(node) {}
+		tree_iterator(const tree_iterator &other) : _current(other._current) {}
 
 		tree_iterator &operator=(tree_iterator const &other) {
 			if (this == &other)
 				return (*this);
 			_current = other._current;
-			_root = other._root;
-			_last = other._last;
 			return (*this);
 		}
 
-		operator tree_iterator<const T, node<T> >() const {
-			return (tree_iterator<const T, Node>(this->_current, this->_root, this->_last));
+		// CAST TO CONST
+		operator tree_iterator<const T>() const {
+			return (tree_iterator<const T>(this->_current));
 		}
 
-		Node *getCurrent() const {
-			return _current;
+		reference operator*() const {
+			return _current->key;
 		}
-
-		Node *getLast() const {
-			return _last;
-		}
-
-		Node *getRoot() const {
-			return _root;
-		}
-
-		Node &operator*() const {
-			return *_current;
-		}
-
-		Node *operator->() const {
-			return _current->_value;
+		pointer operator->() const {
+			return &(operator*());
 		}
 
 		tree_iterator &operator++() {
-			if (_current != _last) {
-				if (_current->_right_kid) {
-					//node has right kid
-					_current = _current->_right_kid;
-					while (_current->_left_kid) {
-						_current = _current->_left_kid;
-					}
-				} else if (!_current->_parent) {
-					_current = _last;
-				} else if (_current->_parent->_left_kid == _current) {
-					// node is left_kid
-					_current = _current->_parent;
-				} else {
-					// node is right kid
-					// move while node is right kid and has parent
-					while (_current->_parent && _current->_parent->_right_kid == _current) {
-						_current = _current->_parent;
-					}
-					if (_current->_parent) {
-						_current = _current->_parent;
-					} else {
-						_current = _last;
-					}
-				}
-			}
+			_current = _current->successor();
 			return *this;
 		}
 
@@ -93,35 +62,7 @@ namespace ft {
 		}
 
 		tree_iterator &operator--() {
-			if (_current != _last) {
-				if (_current->_left_kid) {
-					//node has left kid
-					_current = _current->_left_kid;
-					while (_current->_right_kid) {
-						_current = _current->_right_kid;
-					}
-				} else if (!_current->_parent) {
-					_current = _last;
-				} else if (_current->_parent->_right_kid == _current) {
-					// node is right kid
-					_current = _current->_parent;
-				} else {
-					// node is left kid
-					// move while node is left kid and has parent
-					while (_current->_parent && _current->_parent->_left_kid == _current) {
-						_current = _current->_parent;
-					}
-					if (_current->_parent) {
-						_current = _current->_parent;
-					} else {
-						_current = _last;
-					}
-				}
-			} else {
-				_current = _root;
-				while (_current->_right_kid)
-					_current = _current->_right_kid;
-			}
+			_current = _current->predecessor();
 			return *this;
 		}
 
@@ -131,6 +72,9 @@ namespace ft {
 			return tmp;
 		}
 
+		reference getCurrent() const {
+			return *_current;
+		}
 	};
 
 	template <class T>
