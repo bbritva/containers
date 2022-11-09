@@ -110,12 +110,10 @@ namespace ft {
 
 		void delete_node(const value_type& key) {
 			node_type *curr_node = findByKey(key, _root);
-			node_type *ret;
-			if (curr_node) {
-				ret = curr_node;
-				if (curr_node->_right_kid) {
-					if (curr_node->_left_kid) {
-						replaceNode(*curr_node, getSuccessor(curr_node));
+			if (curr_node != _leaf) {
+				if (curr_node->_right_kid != _leaf) {
+					if (curr_node->_left_kid != _leaf) {
+						replaceNode(*curr_node, curr_node->getSuccessor());
 					} else {
 						replaceNode(*curr_node, curr_node->_right_kid);
 					}
@@ -127,7 +125,6 @@ namespace ft {
 					}
 				}
 			}
-			return ret;
 		};
 
 	private:
