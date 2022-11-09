@@ -59,7 +59,7 @@ namespace ft {
 				successor = _parent;
 				if (successor->_left_kid == this) {
 					if (successor->_right_kid) {
-						successor = getMin(_right_kid);
+						successor = getMin(successor->_right_kid);
 					}
 				}
 			} else {
@@ -79,6 +79,40 @@ namespace ft {
 			while (parent != parent->_left && current == parent->_right)
 			{
 				current = parent;
+				parent = parent->_p;
+			}
+			return parent;
+			 */
+		}
+
+		node *getPredecessor() const
+		{
+			node *predecessor = this;
+			if (_left_kid) {
+				predecessor = getMax(_left_kid);
+			} else if (_parent) {
+				predecessor = _parent;
+				if (predecessor->_right_kid == this) {
+					if (predecessor->_left_kid) {
+						predecessor = getMax(predecessor->_left_kid);
+					}
+				}
+			} else {
+				// node is _root
+			}
+			return predecessor;
+			/*
+			Node * parent = this->_p;
+			Node * node = this;
+
+			if (node == node->_left)
+				return parent->TreeMax();
+
+			if (node->_left != node->_left->_left)
+				return node->_left->TreeMax();
+			while (parent != parent->_left && node == parent->_left)
+			{
+				node = parent;
 				parent = parent->_p;
 			}
 			return parent;
