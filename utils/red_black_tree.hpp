@@ -27,15 +27,15 @@ namespace ft {
 		allocator_type	_allocator;
 		node_allocator	_node_allocator;
 		node_type		*_root;
-		node_type		*_last;
+		node_type		*_leaf;
 		key_compare		_comparator;
 
 	public:
 		explicit rb_tree(const allocator_type &alloc = allocator_type(), const key_compare &comparator = key_compare())
 				: _allocator(alloc), _comparator(comparator) {
-			_root = NULL;
-			_last = _node_allocator(1);
-			_node_allocator.construct(_last, node_type(T(), black, _last, _last, _last));
+			_leaf = _node_allocator(1);
+			_node_allocator.construct(_leaf, node_type(T(), black, _leaf, _leaf, _leaf));
+			_root = _leaf;
 		};
 
 		~rb_tree() {
@@ -45,10 +45,10 @@ namespace ft {
 		rb_tree(const rb_tree& other) : _allocator(other._allocator), _node_allocator(other._node_allocator),
 										_comparator(other._comparator) {
 			iterator it = other.getMin();
-			_last = _node_allocator(1);
-			_node_allocator.construct(_last, node_type(T(), black, _last, _last, _last));
-			_root = NULL;
-			while (it != other._last) {
+			_leaf = _node_allocator(1);
+			_node_allocator.construct(_leaf, node_type(T(), black, _leaf, _leaf, _leaf));
+			_root = _leaf;
+			while (it != other._leaf) {
 				insertNode(*it);
 				++it;
 			}
@@ -87,8 +87,8 @@ namespace ft {
 		void clear() {
 			eraseNode(_root);
 			_root = NULL;
-			_node_allocator.destroy(_last);
-			_node_allocator.deallocate(_last, 1);
+			_node_allocator.destroy(_leaf);
+			_node_allocator.deallocate(_leaf, 1);
 		};
 
 		bool operator==(rb_tree const& other) {
@@ -103,22 +103,12 @@ namespace ft {
 			return _node_allocator.max_size();
 		};
 
-		node_type *getRoot() { return _root ? _root : _last; };
+		node_type *getRoot() { return _root ? _root : _leaf; };
 		node_type *getMin() { return _root->TreeMin(); }
 		node_type *getMax() { return _root->TreeMax(); }
-		node_type *getLast() { return _last; };
+		node_type *getLast() { return _leaf; };
 
-		node_type *findByKey(const T& key, node_type *node) {
-			if (!node)
-				return NULL;
-			if (_comparator(key, node->_value))
-				return findByKey(key, node->_left_kid);
-			if (_comparator(node->_value, key))
-				return findByKey(key, node->_right_kid);
-			return node;
-		};
-
-		node_type *delete_node(const T& key) {
+		void delete_node(const value_type& key) {
 			node_type *curr_node = findByKey(key, _root);
 			node_type *ret;
 			if (curr_node) {
@@ -145,10 +135,10 @@ namespace ft {
 		void rotateLeft(node_type *point) {
 			node_type *tmp = point->_right_kid;
 			point->_right_kid = tmp->_left_kid;
-			if (tmp->_left_kid != _last)
+			if (tmp->_left_kid != _leaf)
 				tmp->_left_kid->_parent = point;
 			tmp->_parent = point->_parent;
-			if (point->_parent == _last)
+			if (point->_parent == _leaf)
 				_root = tmp;
 			else if (point == point->_parent->_left_kid)
 				point->_parent->_left_kid = tmp;
@@ -162,10 +152,10 @@ namespace ft {
 		{
 			node_type* tmp = point->_left_kid;
 			point->_left_kid = tmp->_right_kid;
-			if (tmp->_right_kid != _last)
+			if (tmp->_right_kid != _leaf)
 				tmp->_right_kid->_parent = point;
 			tmp->_parent = point->_parent;
-			if (point->_parent == _last)
+			if (point->_parent == _leaf)
 				_root = tmp;
 			else if (point == point->_parent->_right_kid)
 				point->_parent->_right_kid = tmp;
@@ -230,6 +220,16 @@ namespace ft {
 			while (curr_node->_left_kid)
 				curr_node = curr_node->_left_kid;
 			return curr_node;
+		};
+
+		node_type *findByKey(const T& key, node_type *node) {
+			if (node == _leaf)
+				return _leaf;
+			if (_comparator(key, node->_value))
+				return findByKey(key, node->_left_kid);
+			if (_comparator(node->_value, key))
+				return findByKey(key, node->_right_kid);
+			return node;
 		};
 
 	};

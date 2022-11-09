@@ -18,10 +18,10 @@ namespace ft {
 		typedef pair<Key, Value>				pair_type;
 		typedef node<ft::pair<Key, Value> >		node_type;
 
-		typedef ft::tree_iterator<pair_type, node_type>						iterator;
-		typedef ft::tree_iterator<pair_type, ft::node<pair_type> >			const_iterator;
-		typedef ft::reverse_iterator<iterator>								reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>						const_reverse_iterator;
+		typedef ft::tree_iterator<node_type>			iterator;
+		typedef ft::tree_iterator<node_type>			const_iterator;
+		typedef ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 		class comparator : public std::binary_function<pair_type , pair_type , bool>
 		{
