@@ -15,11 +15,6 @@ namespace ft {
 	{
 	private:
 		typedef typename Allocator::template rebind<node<T> >::other	node_allocator;
-
-		node<T>		*_root;
-		node<T>		*_last;
-		Compare		_comparator;
-
 	public:
 		typedef T							value_type;
 		typedef Allocator					allocator_type;
@@ -28,24 +23,59 @@ namespace ft {
 		typedef tree_iterator<node_type>	iterator;
 //		typedef map_citerator<node_type>    const_iterator;
 
-		explicit rb_tree(Compare const &comparator, node<T> *last)
-				: _comparator(comparator) {
+	private:
+		allocator_type	_allocator;
+		node_allocator	_node_allocator;
+		node_type		*_root;
+		node_type		*_last;
+		key_compare		_comparator;
+
+	public:
+		explicit rb_tree(const allocator_type &alloc = allocator_type(), const key_compare &comparator = key_compare())
+				: _allocator(alloc), _comparator(comparator) {
 			_root = NULL;
-			_last = last;
+			_last = _node_allocator(1);
+			_node_allocator.construct(_last, node_type(T(), black, _last, _last, _last));
 		};
 
-		~rb_tree() {};
+		~rb_tree() {
+			clear();
+		};
+
+		rb_tree(const rb_tree& other) : _allocator(other._allocator), _node_allocator(other._node_allocator),
+										_comparator(other._comparator) {
+			iterator it = other.getMin();
+			_last = _node_allocator(1);
+			_node_allocator.construct(_last, node_type(T(), black, _last, _last, _last));
+			_root = NULL;
+			while (it != other._last) {
+				insertNode(*it);
+				++it;
+			}
+		}
 
 		rb_tree& operator=(const rb_tree& other) {
 			if (this == &other)
 				return *this;
-			_comparator = other._comparator;
-			_root = other._root;
-			_last = other._last;
+			clear();
+			this = rb_tree(other);
 			return *this;
 		};
 
-		void insert (node<T>* new_node, node<T>* pos) {
+		void swap(rb_tree& other)
+		{
+			rb_tree tmp(other);
+			other = *this;
+			*this = tmp;
+//			node_type *tmp = _last;
+//			_last = other._last;
+//			other._last = tmp;
+//			tmp = _root;
+//			_root = other._root;
+//			other._root = tmp;
+		}
+
+		void insert (node_type *new_node, node_type *pos) {
 			pos = (pos) ? pos : _root;
 			insert_node(new_node, &pos, NULL);
 		};
@@ -54,9 +84,11 @@ namespace ft {
 			return !_root;
 		}
 
-		void clear(Allocator &allocator) {
-			eraseNode(_root, allocator);
+		void clear() {
+			eraseNode(_root);
 			_root = NULL;
+			_node_allocator.destroy(_last);
+			_node_allocator.deallocate(_last, 1);
 		};
 
 		bool operator==(rb_tree const& other) {
@@ -67,24 +99,16 @@ namespace ft {
 			return size(_root);
 		};
 
-		node<T> *getRoot() {
-			return _root ? _root : _last;
-		};
-		node<T> *getFirst() {
-			node<T> *first = _root;
-			if (first) {
-				while (first->_left_kid)
-					first = first->_left_kid;
-			} else
-				first = _last;
-			return first;
+		std::size_t maxSize() const {
+			return _node_allocator.max_size();
 		};
 
-		node<T> *getLast() {
-			return _last;
-		};
+		node_type *getRoot() { return _root ? _root : _last; };
+		node_type *getMin() { return _root->TreeMin(); }
+		node_type *getMax() { return _root->TreeMax(); }
+		node_type *getLast() { return _last; };
 
-		node<T> *findByKey(const T& key, node<T> *node) {
+		node_type *findByKey(const T& key, node_type *node) {
 			if (!node)
 				return NULL;
 			if (_comparator(key, node->_value))
@@ -94,9 +118,9 @@ namespace ft {
 			return node;
 		};
 
-		node<T> *delete_node(const T& key) {
-			node<T> *curr_node = findByKey(key, _root);
-			node<T> *ret;
+		node_type *delete_node(const T& key) {
+			node_type *curr_node = findByKey(key, _root);
+			node_type *ret;
 			if (curr_node) {
 				ret = curr_node;
 				if (curr_node->_right_kid) {
@@ -118,22 +142,55 @@ namespace ft {
 
 	private:
 
-		std::size_t size(node<T> *node) const {
+		void rotateLeft(node_type *point) {
+			node_type *tmp = point->_right_kid;
+			point->_right_kid = tmp->_left_kid;
+			if (tmp->_left_kid != _last)
+				tmp->_left_kid->_parent = point;
+			tmp->_parent = point->_parent;
+			if (point->_parent == _last)
+				_root = tmp;
+			else if (point == point->_parent->_left_kid)
+				point->_parent->_left_kid = tmp;
+			else
+				point->_parent->_right_kid = tmp;
+			tmp->_left_kid = point;
+			point->_parent = tmp;
+		}
+
+		void rotateRight(node_type *point )
+		{
+			node_type* tmp = point->_left_kid;
+			point->_left_kid = tmp->_right_kid;
+			if (tmp->_right_kid != _last)
+				tmp->_right_kid->_parent = point;
+			tmp->_parent = point->_parent;
+			if (point->_parent == _last)
+				_root = tmp;
+			else if (point == point->_parent->_right_kid)
+				point->_parent->_right_kid = tmp;
+			else
+				point->_parent->_left_kid = tmp;
+			tmp->_right_kid = point;
+			point->_parent = tmp;
+		}
+
+		std::size_t size(node_type *node) const {
 			if (!node)
 				return 0;
 			return size(node->_right_kid) + size(node->_left_kid) + 1;
 		}
 
-		void eraseNode(node<T> *node, Allocator &allocator) {
+		void eraseNode(node_type *node) {
 			if (!node)
 				return;
 			eraseNode(node->_left_kid);
 			eraseNode(node->_right_kid);
-			allocator.destroy(node);
-			allocator.deallocate(node, 1);
+			_node_allocator.destroy(node);
+			_node_allocator.deallocate(node, 1);
 		};
 
-		void insert_node(node<T> *new_node, node<T> **place, node<T> *new_parent) {
+		void insert_node(node_type *new_node, node_type **place, node_type *new_parent) {
 			if (!place || !new_node)
 				return;
 			if (!*place) {
@@ -151,10 +208,10 @@ namespace ft {
 			}
 		};
 
-		void replaceNode(node<T> **curr_node, node<T> *new_node) {
-			node<T> *tmp = *curr_node;
-			node<T> *left_kid = tmp->_left_kid;
-			node<T> *right_kid = tmp->_right_kid;
+		void replaceNode(node_type **curr_node, node_type *new_node) {
+			node_type *tmp = *curr_node;
+			node_type *left_kid = tmp->_left_kid;
+			node_type *right_kid = tmp->_right_kid;
 			new_node->_color = tmp->_color;
 			new_node->_parent = tmp->_parent;
 			new_node->_left_kid = tmp->_left_kid;
@@ -166,7 +223,7 @@ namespace ft {
 				insert_node(left_kid, &_root, NULL);
 		};
 
-		node<T> *getSuccessor(node<T> *curr_node) {
+		node_type *getSuccessor(node_type *curr_node) {
 			if (!curr_node || !curr_node->_right_kid)
 				return NULL;
 			curr_node = curr_node->_right_kid;
