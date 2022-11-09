@@ -7,17 +7,27 @@
 
 #include <iostream>
 #include "node.hpp"
+#include "direct_tree_iterator.hpp"
 
 namespace ft {
-	template <class T, class Compare, class Allocator>
+	template <class T, class Compare = std::less<T>, class Allocator = std::allocator<node<T> > >
 	class rb_tree
 	{
 	private:
+		typedef typename Allocator::template rebind<node<T> >::other	node_allocator;
+
 		node<T>		*_root;
 		node<T>		*_last;
 		Compare		_comparator;
 
 	public:
+		typedef T							value_type;
+		typedef Allocator					allocator_type;
+		typedef Compare						key_compare;
+		typedef node<T>						node_type;
+		typedef tree_iterator<node_type>	iterator;
+//		typedef map_citerator<node_type>    const_iterator;
+
 		explicit rb_tree(Compare const &comparator, node<T> *last)
 				: _comparator(comparator) {
 			_root = NULL;
