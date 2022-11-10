@@ -58,7 +58,7 @@ namespace ft {
 			if (this == &other)
 				return *this;
 			clear();
-			this = rb_tree(other);
+			this = &rb_tree(other);
 			return *this;
 		};
 
@@ -75,9 +75,11 @@ namespace ft {
 //			other._root = tmp;
 		}
 
-		void insert (node_type *new_node, node_type *pos) {
+		bool insert (value_type value, node_type *pos) {
 			pos = (pos) ? pos : _root;
-			insert_node(new_node, &pos, NULL);
+			node_type *new_node = _node_allocator.allocate(1);
+			_node_allocator.construct(new_node, node_type(value));
+			return insert_node(new_node, &pos, NULL);
 		};
 
 		bool empty() {
@@ -110,6 +112,7 @@ namespace ft {
 
 		void delete_node(const value_type& key) {
 			node_type *curr_node= findByKey(key, _root);
+			node_type *to_clear = curr_node;
 			if (curr_node != _leaf) {
 				if (curr_node->_right_kid != _leaf) {
 					if (curr_node->_left_kid != _leaf) {
@@ -124,6 +127,11 @@ namespace ft {
 						replaceNode(*curr_node, _leaf);
 					}
 				}
+				if (to_clear->_color == black)
+					deleteFixUp(curr_node);
+				_node_allocator.destroy(to_clear);
+				_node_allocator.deallocate(to_clear, 1);
+				_leaf->_parent = _root;
 			}
 		};
 
@@ -177,22 +185,23 @@ namespace ft {
 			_node_allocator.deallocate(node, 1);
 		};
 
-		void insert_node(node_type *new_node, node_type **place, node_type *new_parent) {
-			if (!place || !new_node)
-				return;
-			if (!*place) {
+		bool insert_node(node_type *new_node, node_type **place, node_type *new_parent) {
+			if (!place || !*place || !new_node)
+				return false;
+			if (*place == _leaf) {
 				*place = new_node;
 				(*place)->_parent = new_parent;
-				if (!new_parent)
+				if (new_parent == _leaf)
 					(*place)->_color = black;
-				return;
 			} else if (_comparator( new_node->_value, (*place)->_value)) {
 				insert_node(new_node, &((*place)->_left_kid), *place);
 			} else if (_comparator( (*place)->_value, new_node->_value)) {
 				insert_node(new_node, &((*place)->_right_kid), *place);
 			} else {
 				std::cout << "Key exists\n";
+				return false;
 			}
+			return true;
 		};
 
 		void replaceNode(node_type **curr_node, node_type *new_node) {
@@ -370,6 +379,27 @@ namespace ft {
 				}
 			}
 			point->_color = black;
+		}
+
+		void balanceNode(node_type *point) {
+			if (point->_right_kid->_color == RED
+				&& point->_left_kid->_color == black) {
+				rotateLeft(point);
+			}
+			if (point->_left_kid->_color == RED
+				&& point->_left_kid->_left_kid->_color == RED) {
+				rotateRight(point);
+			}
+			if (point->_left_kid->_color == RED
+				&& point->_right_kid->_color == RED) {
+				swap_color(point);
+			}
+		}
+
+		void swap_color(node_type *point) {
+			point->color = (point->_parent == _leaf) ? RED : black;
+			point->_right_kid->_color = black;
+			point->_left_kid->_color = black;
 		}
 
 	};

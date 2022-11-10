@@ -52,48 +52,48 @@ int main() {
 
 	}
 	{ //MAP
-//		NAMESPACE::map<int, std::string> map_str;
-//		map_str.insert(ft::make_pair(5, "tt"));
-//		map_str.insert(ft::make_pair(4, "tt"));
-//		map_str.insert(ft::make_pair(1, "tt"));
-//		map_str.insert(ft::make_pair(3, "tt"));
-//		map_str.insert(ft::make_pair(6, "tt"));
-//		map_str.insert(ft::make_pair(9, "tt"));
-//		map_str.insert(ft::make_pair(7, "tt"));
-//		NAMESPACE::map<int, std::string>::iterator it = map_str.begin();
-//		NAMESPACE::map<int, std::string>::iterator it_end = map_str.end();
-//		while (it != it_end) {
-//			std::cout << it->_value._key << " = " << it->_value._value << "\n";
-//			it++;
-//		}
-//		while (it != map_str.begin()) {
-//			std::cout << it->_value._key << " = " << it->_value._value << "\n";
-//			it--;
-//		}
-//
-//		std::cout << "size = " << map_str.size() << "\n";
-//		std::cout << "max_size = " << map_str.max_size() << "\n";
+		NAMESPACE::map<int, std::string> map_str;
+		map_str.insert(ft::make_pair(5, "tt"));
+		map_str.insert(ft::make_pair(4, "tt"));
+		map_str.insert(ft::make_pair(1, "tt"));
+		map_str.insert(ft::make_pair(3, "tt"));
+		map_str.insert(ft::make_pair(6, "tt"));
+		map_str.insert(ft::make_pair(9, "tt"));
+		map_str.insert(ft::make_pair(7, "tt"));
+		NAMESPACE::map<int, std::string>::iterator it = map_str.begin();
+		NAMESPACE::map<int, std::string>::iterator it_end = map_str.end();
+		while (it != it_end) {
+			std::cout << it->_value._key << " = " << it->_value._value << "\n";
+			it++;
+		}
+		while (it != map_str.begin()) {
+			std::cout << it->_value._key << " = " << it->_value._value << "\n";
+			it--;
+		}
 
-//		for (int i = 0; i < COUNT; i++) {
-//			vector_int.push_back(i);
-//		}
-//		for (int i = 0; i < 5; i++) {
-//			vector_int.pop_back();
-//		}
-//		NAMESPACE::vector<int>::iterator it = vector_int.begin();
-//		while (it != vector_int.end()) {
-//			std::cout << *it++;
-//		}
+		std::cout << "size = " << map_str.size() << "\n";
+		std::cout << "max_size = " << map_str.max_size() << "\n";
 
-//		for (int i = 0; i < COUNT; i++) {
-//			vector_str.push_back("sw");
-//		}
-//		for (int i = 0; i < 5; i++) {
-//			vector_str.pop_back();
-//		}
-//		for (unsigned int i = 0; i < vector_str.size(); i++) {
-//			std::cout << vector_str[i];
-//		}
+		for (int i = 0; i < COUNT; i++) {
+			vector_int.push_back(i);
+		}
+		for (int i = 0; i < 5; i++) {
+			vector_int.pop_back();
+		}
+		NAMESPACE::vector<int>::iterator it = vector_int.begin();
+		while (it != vector_int.end()) {
+			std::cout << *it++;
+		}
+
+		for (int i = 0; i < COUNT; i++) {
+			vector_str.push_back("sw");
+		}
+		for (int i = 0; i < 5; i++) {
+			vector_str.pop_back();
+		}
+		for (unsigned int i = 0; i < vector_str.size(); i++) {
+			std::cout << vector_str[i];
+		}
 		std::cout << std::endl;
 
 //		it++;
@@ -158,45 +158,7 @@ int main() {
 	std::cout << std::endl;
 
 	{
-		const int size = 5;
-		TESTED_NAMESPACE::vector<TESTED_TYPE> vct(size);
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::reverse_iterator it(vct.rbegin());
-		TESTED_NAMESPACE::vector<TESTED_TYPE>::const_reverse_iterator ite(vct.rend());
 
-		for (int i = 1; it != ite; ++i)
-			*it++ = (i * 7);
-		printSize(vct, 1);
-
-		it = vct.rbegin();
-		ite = vct.rbegin();
-
-		std::cout << *(++ite) << std::endl;
-		std::cout << *(ite++) << std::endl;
-		std::cout << *ite++ << std::endl;
-		std::cout << *++ite << std::endl;
-
-		it->m();
-		ite->m();
-
-		std::cout << *(++it) << std::endl;
-		std::cout << *(it++) << std::endl;
-		std::cout << *it++ << std::endl;
-		std::cout << *++it << std::endl;
-
-		std::cout << *(--ite) << std::endl;
-		std::cout << *(ite--) << std::endl;
-		std::cout << *--ite << std::endl;
-		std::cout << *ite-- << std::endl;
-
-		(*it).m();
-		(*ite).m();
-
-		std::cout << *(--it) << std::endl;
-		std::cout << *(it--) << std::endl;
-		std::cout << *it-- << std::endl;
-		std::cout << *--it << std::endl;
-
-		return (0);
 	}
 	return (0);
 }
