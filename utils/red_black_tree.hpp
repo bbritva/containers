@@ -21,7 +21,7 @@ namespace ft {
 		typedef Compare						key_compare;
 		typedef node<T>						node_type;
 		typedef tree_iterator<node_type>	iterator;
-//		typedef map_citerator<node_type>    const_iterator;
+		typedef tree_iterator<const node_type>    const_iterator;
 
 	private:
 		allocator_type	_allocator;
