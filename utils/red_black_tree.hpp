@@ -103,13 +103,13 @@ namespace ft {
 			return _node_allocator.max_size();
 		};
 
-		node_type *getRoot() { return _root ? _root : _leaf; };
-		node_type *getMin() { return _root->TreeMin(); }
-		node_type *getMax() { return _root->TreeMax(); }
-		node_type *getLast() { return _leaf; };
+		node_type *getRoot() { return _root; }
+		node_type *getMin() { return _root->getMin(); }
+		node_type *getMax() { return _root->getMax(); }
+		node_type *getLast() { return _leaf; }
 
 		void delete_node(const value_type& key) {
-			node_type *curr_node = findByKey(key, _root);
+			node_type *curr_node= findByKey(key, _root);
 			if (curr_node != _leaf) {
 				if (curr_node->_right_kid != _leaf) {
 					if (curr_node->_left_kid != _leaf) {
@@ -121,7 +121,7 @@ namespace ft {
 					if (curr_node->_left_kid) {
 						replaceNode(*curr_node, curr_node->_right_kid);
 					} else {
-						replaceNode(*curr_node, NULL);
+						replaceNode(*curr_node, _leaf);
 					}
 				}
 			}
