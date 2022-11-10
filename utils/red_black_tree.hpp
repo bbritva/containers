@@ -229,6 +229,149 @@ namespace ft {
 			return node;
 		};
 
+		void balanceDeleteRightKid(node_type **point_ptr) {
+			node_type * tmp;
+			node_type * point = *point_ptr;
+
+			tmp = point->_parent->_left;
+			if (tmp->_color == RED)
+			{
+				tmp->_color = black;
+				point->_parent->_color = RED;
+				rightRotation(point->_parent);
+				tmp = point->_parent->_left_kid;
+			}
+			if (tmp->_left_kid->_color == black && tmp->_right_kid->_color == black)
+			{
+				tmp->_color = RED;
+				*point_ptr = point->_parent;
+			}
+			else
+			{
+				if (tmp->_left_kid->_color == black)
+				{
+					tmp->_right_kid->_color = black;
+					tmp->_color = RED;
+					leftRotation(tmp);
+					tmp = point->_parent->_left_kid;
+				}
+				tmp->_color = point->_parent->_color;
+				point->_parent->_color = black;
+				tmp->_left_kid->_color = black;
+				rightRotation(point->_parent);
+				*point_ptr = _root;
+			}
+		}
+
+		void balanceDeleteLeftKid(node_type **point_ptr) {
+			node_type * tmp;
+			node_type * point = *point_ptr;
+
+			tmp = point->_parent->_right_kid;
+			if (tmp->_color == RED)
+			{
+				tmp->_color = black;
+				point->_parent->_color = RED;
+				leftRotation(point->_parent);
+				tmp = point->_parent->_right_kid;
+			}
+			if (tmp->_left_kid->_color == black && tmp->_right_kid->_color == black)
+			{
+				tmp->_color = RED;
+				*point_ptr = point->_parent;
+			}
+			else
+			{
+				if (tmp->_right_kid->_color == black)
+				{
+					tmp->_left_kid->_color = black;
+					tmp->_color = RED;
+					rightRotation(tmp);
+					tmp = point->_parent->_right_kid;
+				}
+				tmp->_color = point->_parent->_color;
+				point->_parent->_color = black;
+				tmp->_right_kid->_color = black;
+				leftRotation(point->_parent);
+				*point_ptr = _root;
+			}
+		}
+
+		void balanceDelete(node_type *point)
+		{
+			node_type * tmp;
+			while (point != _root && point->_color == black)
+			{
+				if (point == point->_parent->_left)
+				{
+					// node is left kid
+//					balanceDeleteLeftKid(&point);
+					tmp = point->_parent->_right;
+					if (tmp->_color == RED)
+					{
+						tmp->_color = black;
+						point->_p->_color = RED;
+						leftRotation(point->_p);
+						tmp = point->_p->_right;
+					}
+					if (tmp->_left->_color == black && tmp->_right->_color == black)
+					{
+						tmp->_color = RED;
+						point = point->_p;
+					}
+					else
+					{
+						if (tmp->_right->_color == black)
+						{
+							tmp->_left->_color = black;
+							tmp->_color = RED;
+							rightRotation(tmp);
+							tmp = point->_p->_right;
+						}
+						tmp->_color = point->_p->_color;
+						point->_p->_color = black;
+						tmp->_right->_color = black;
+						leftRotation(point->_p);
+						point = _root;
+					}
+				}
+				else
+				{
+					// node is right kid
+//					balanceDeleteRightKid(&point);
+					tmp = point->_p->_left;
+					if (tmp->_color == RED)
+					{
+						tmp->_color = black;
+						point->_p->_color = RED;
+						rightRotation(point->_p);
+						tmp = point->_p->_left;
+					}
+					if (tmp->_left->_color == black && tmp->_right->_color == black)
+					{
+						tmp->_color = RED;
+						point = point->_p;
+					}
+					else
+					{
+						if (tmp->_left->_color == black)
+						{
+							tmp->_right->_color = black;
+							tmp->_color = RED;
+							leftRotation(tmp);
+							tmp = point->_p->_left;
+						}
+						tmp->_color = point->_p->_color;
+						point->_p->_color = black;
+						tmp->_left->_color = black;
+						rightRotation(point->_p);
+						point = _root;
+					}
+				}
+			}
+			point->_color = black;
+		}
+
 	};
 
 
