@@ -16,12 +16,12 @@ namespace ft {
 	private:
 		typedef typename Allocator::template rebind<node<T> >::other	node_allocator;
 	public:
-		typedef T							value_type;
-		typedef Allocator					allocator_type;
-		typedef Compare						key_compare;
-		typedef node<T>						node_type;
-		typedef tree_iterator<node_type>	iterator;
-		typedef tree_iterator<const node_type>    const_iterator;
+		typedef T									value_type;
+		typedef Allocator							allocator_type;
+		typedef Compare								key_compare;
+		typedef node<T>								node_type;
+		typedef tree_iterator<node_type>			iterator;
+		typedef tree_iterator<const node_type>		const_iterator;
 
 	private:
 		allocator_type	_allocator;
@@ -31,9 +31,11 @@ namespace ft {
 		key_compare		_comparator;
 
 	public:
-		explicit rb_tree(const allocator_type &alloc = allocator_type(), const key_compare &comparator = key_compare())
-				: _allocator(alloc), _comparator(comparator) {
-			_leaf = _node_allocator(1);
+		explicit rb_tree(const allocator_type &alloc = allocator_type(),
+						 const key_compare &comparator = key_compare())
+			: _allocator(alloc), _node_allocator(alloc), _comparator(comparator)
+		{
+			_leaf = _node_allocator.allocate(1);
 			_node_allocator.construct(_leaf, node_type(T(), black, _leaf, _leaf, _leaf));
 			_root = _leaf;
 		};
@@ -42,8 +44,9 @@ namespace ft {
 			clear();
 		};
 
-		rb_tree(const rb_tree& other) : _allocator(other._allocator), _node_allocator(other._node_allocator),
-										_comparator(other._comparator) {
+		rb_tree(const rb_tree& other)
+			: _node_allocator(other._node_allocator), _comparator(other._comparator)
+		{
 			iterator it = other.getMin();
 			_leaf = _node_allocator(1);
 			_node_allocator.construct(_leaf, node_type(T(), black, _leaf, _leaf, _leaf));
