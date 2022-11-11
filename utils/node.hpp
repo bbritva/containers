@@ -26,7 +26,8 @@ namespace ft {
 		node	*_left_kid;
 		node	*_right_kid;
 
-
+//		error: binding reference of type  ‘			ft::pair<const int, std::__cxx11::basic_string<char> >&’}
+//										to‘const	ft::pair<const int, std::__cxx11::basic_string<char> >’
 		explicit node(const T &value = T(), t_color color = RED, node<T> *parent = NULL
 				, node<T> *left_kid = NULL, node<T> *right_kid = NULL) :
 			_value(value),

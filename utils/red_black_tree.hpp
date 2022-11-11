@@ -16,12 +16,12 @@ namespace ft {
 	private:
 		typedef typename Allocator::template rebind<node<T> >::other	node_allocator;
 	public:
-		typedef T									value_type;
-		typedef Allocator							allocator_type;
-		typedef Compare								key_compare;
-		typedef node<T>								node_type;
-		typedef tree_iterator<node_type>			iterator;
-		typedef tree_iterator<const node_type>		const_iterator;
+		typedef T										value_type;
+		typedef Allocator								allocator_type;
+		typedef Compare									key_compare;
+		typedef node<T>									node_type;
+		typedef tree_iterator<node_type>				iterator;
+		typedef tree_iterator_const<node_type>	const_iterator;
 
 	private:
 		allocator_type	_allocator;
@@ -314,36 +314,30 @@ namespace ft {
 			node_type * tmp;
 			while (point != _root && point->_color == black)
 			{
-				if (point == point->_parent->_left)
-				{
+				if (point == point->_parent->_left_kid) {
 					// node is left kid
 //					balanceDeleteLeftKid(&point);
-					tmp = point->_parent->_right;
-					if (tmp->_color == RED)
-					{
+					tmp = point->_parent->_right_kid;
+					if (tmp->_color == RED) {
 						tmp->_color = black;
-						point->_p->_color = RED;
-						leftRotation(point->_p);
-						tmp = point->_p->_right;
+						point->_parent->_color = RED;
+						rotateLeft(point->_parent);
+						tmp = point->_parent->_right_kid;
 					}
-					if (tmp->_left->_color == black && tmp->_right->_color == black)
-					{
+					if (tmp->_left_kid->_color == black && tmp->_right_kid->_color == black) {
 						tmp->_color = RED;
-						point = point->_p;
-					}
-					else
-					{
-						if (tmp->_right->_color == black)
-						{
-							tmp->_left->_color = black;
+						point = point->_parent;
+					} else {
+						if (tmp->_right_kid->_color == black) {
+							tmp->_left_kid->_color = black;
 							tmp->_color = RED;
-							rightRotation(tmp);
-							tmp = point->_p->_right;
+							rotateRight(tmp);
+							tmp = point->_parent->_right_kid;
 						}
-						tmp->_color = point->_p->_color;
-						point->_p->_color = black;
-						tmp->_right->_color = black;
-						leftRotation(point->_p);
+						tmp->_color = point->_parent->_color;
+						point->_parent->_color = black;
+						tmp->_right_kid->_color = black;
+						rotateLeft(point->_parent);
 						point = _root;
 					}
 				}
@@ -351,32 +345,28 @@ namespace ft {
 				{
 					// node is right kid
 //					balanceDeleteRightKid(&point);
-					tmp = point->_p->_left;
-					if (tmp->_color == RED)
-					{
+					tmp = point->_parent->_left_kid;
+					if (tmp->_color == RED) {
 						tmp->_color = black;
-						point->_p->_color = RED;
-						rightRotation(point->_p);
-						tmp = point->_p->_left;
+						point->_parent->_color = RED;
+						rotateRight(point->_parent);
+						tmp = point->_parent->_left_kid;
 					}
-					if (tmp->_left->_color == black && tmp->_right->_color == black)
-					{
+					if (tmp->_left_kid->_color == black && tmp->_right_kid->_color == black) {
 						tmp->_color = RED;
-						point = point->_p;
-					}
-					else
-					{
-						if (tmp->_left->_color == black)
+						point = point->_parent;
+					} else {
+						if (tmp->_left_kid->_color == black)
 						{
-							tmp->_right->_color = black;
+							tmp->_right_kid->_color = black;
 							tmp->_color = RED;
-							leftRotation(tmp);
-							tmp = point->_p->_left;
+							rotateLeft(tmp);
+							tmp = point->_parent->_left_kid;
 						}
-						tmp->_color = point->_p->_color;
-						point->_p->_color = black;
-						tmp->_left->_color = black;
-						rightRotation(point->_p);
+						tmp->_color = point->_parent->_color;
+						point->_parent->_color = black;
+						tmp->_left_kid->_color = black;
+						rotateRight(point->_parent);
 						point = _root;
 					}
 				}
