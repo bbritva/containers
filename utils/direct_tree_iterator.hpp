@@ -72,8 +72,8 @@ namespace ft {
 			return tmp;
 		}
 
-		reference getCurrent() const {
-			return *_current;
+		node_type *getCurrent() const {
+			return _current;
 		}
 	};
 

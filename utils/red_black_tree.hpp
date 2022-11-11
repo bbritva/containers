@@ -138,6 +138,16 @@ namespace ft {
 			}
 		};
 
+		node_type *findByKey(const value_type &key, node_type *node) {
+			if (node == _leaf)
+				return _leaf;
+			if (_comparator(key, node->_value))
+				return findByKey(key, node->_left_kid);
+			if (_comparator(node->_value, key))
+				return findByKey(key, node->_right_kid);
+			return node;
+		};
+
 	private:
 
 		void rotateLeft(node_type *point) {
@@ -229,16 +239,6 @@ namespace ft {
 			while (curr_node->_left_kid)
 				curr_node = curr_node->_left_kid;
 			return curr_node;
-		};
-
-		node_type *findByKey(const T& key, node_type *node) {
-			if (node == _leaf)
-				return _leaf;
-			if (_comparator(key, node->_value))
-				return findByKey(key, node->_left_kid);
-			if (_comparator(node->_value, key))
-				return findByKey(key, node->_right_kid);
-			return node;
 		};
 
 		void balanceDeleteRightKid(node_type **point_ptr) {

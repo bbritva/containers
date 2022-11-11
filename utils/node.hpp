@@ -17,6 +17,9 @@ namespace ft {
 	class node
 	{
 	public:
+		typedef T	value_type;
+
+	public:
 		T		_value;
 		t_color	_color;
 		node	*_parent;

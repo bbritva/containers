@@ -11,6 +11,7 @@
 #include "vector.hpp"
 #include "stack.hpp"
 #include "map.hpp"
+//#include "daria/map.hpp"
 #include "containers_test/srcs/base.hpp"
 
 //#define TESTED_TYPE foo<int>
@@ -52,8 +53,11 @@ int main() {
 
 	}
 	{ //MAP
-		NAMESPACE::map<int, std::string> map_str;
-
+		NAMESPACE::map<int, int> map_int;
+		for (int i = 0; i < COUNT; ++i)
+		{
+			map_int.insert(ft::make_pair(i, i));
+		}
 	}
 
 	{ //STACK

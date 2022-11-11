@@ -14,8 +14,7 @@ namespace ft {
 			typename A = std::allocator< ft::pair<const Key, Value> > >
 	class map {
 	private:
-		typedef typename A::template rebind<Value>::other						pair_alloc_type;
-		typedef rb_tree<ft::pair<const Key, Value>, Compare, pair_alloc_type>	tree_type;
+		typedef typename A::template rebind<Value>::other	pair_alloc_type;
 
 	public:
 		typedef Key								key_type;
@@ -30,18 +29,13 @@ namespace ft {
 		typedef typename A::pointer             pointer;
 		typedef typename A::const_pointer       const_pointer;
 
-		typedef typename tree_type::iterator			iterator;
-		typedef typename tree_type::const_iterator		const_iterator;
-		typedef ft::reverse_iterator<iterator>			reverse_iterator;
-		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
-
 		class comparator : public std::binary_function<pair_type, pair_type, bool>
 		{
 			friend class map;
 
 		protected:
-			Compare _comp;
-			comparator(Compare c) : _comp(c) {}
+			key_compare _comp;
+			comparator(key_compare comp) : _comp(comp) {}
 
 		public:
 			bool operator()(const pair_type &first, const pair_type &second) const {
@@ -49,10 +43,16 @@ namespace ft {
 			}
 		};
 
+		typedef rb_tree<pair_type, comparator, allocator_type>	tree_type;
+		typedef typename tree_type::iterator			iterator;
+		typedef typename tree_type::const_iterator		const_iterator;
+		typedef ft::reverse_iterator<iterator>			reverse_iterator;
+		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
+
 	private:
-		tree_type			_tree;
 		allocator_type		_allocator;
 		comparator			_comparator;
+		tree_type			_tree;
 //		key_compare			_key_comp;
 		size_type			_size;
 
@@ -62,6 +62,7 @@ namespace ft {
 		explicit map(const key_compare& comp = Compare(),
 					 const allocator_type& allocator = allocator_type())
 					 :  _allocator(allocator), _comparator(comp),
+					 _tree(_allocator, _comparator),
 //					 _key_comp(key_comp),
 					 _size(0) {};
 
@@ -136,7 +137,7 @@ namespace ft {
 		}
 
 		// modifiers
-		pair<iterator, bool> insert (const pair_type &new_pair) {
+		pair<iterator, bool> insert(const pair_type &new_pair) {
 			iterator it = find(new_pair.first);
 			if (it == end()) {
 				_size++;
@@ -156,7 +157,7 @@ namespace ft {
 		};
 
 		template <class InputIt>
-		void insert(InputIt begin, InputIt end) {
+		void insert(InputIt begin, InputIt end, typename enable_if<!is_integral<InputIt>::value>::type = 0) {
 			while (begin != end) {
 				insert(*begin);
 				begin++;
@@ -164,15 +165,15 @@ namespace ft {
 		}
 
 		iterator find(const key_type &key) {
-			return iterator(_tree.findByKey(key, _tree.getRoot()));
+			return iterator(_tree.findByKey(pair_type(key, Value()), _tree.getRoot()));
 		}
 
 		const_iterator find(const key_type& key) const {
-			return const_iterator(_tree.findByKey(key, _tree.getRoot()));
+			return const_iterator(_tree.findByKey(pair_type(key, Value()), _tree.getRoot()));
 		}
 
-		size_type count(const Key& k) const {
-			return (find(k) != end());
+		size_type count(const key_type &key) const {
+			return (find(key) != end());
 		}
 
 		iterator upper_bound(const Key& key) {

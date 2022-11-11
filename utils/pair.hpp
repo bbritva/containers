@@ -29,6 +29,10 @@ namespace ft {
 			return *this;
 		}
 		~pair(){};
+
+		operator pair<const Key, Value>() const {
+			return (pair<const Key, Value>(*this));
+		}
 	};
 
 	template <class Key, class Value>
