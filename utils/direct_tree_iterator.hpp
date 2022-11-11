@@ -44,14 +44,14 @@ namespace ft {
 		}
 
 		reference operator*() const {
-			return _current->key;
+			return _current->_value;
 		}
 		pointer operator->() const {
 			return &(operator*());
 		}
 
 		tree_iterator &operator++() {
-			_current = _current->successor();
+			_current = _current->getSuccessor();
 			return *this;
 		}
 
@@ -62,7 +62,7 @@ namespace ft {
 		}
 
 		tree_iterator &operator--() {
-			_current = _current->predecessor();
+			_current = _current->getPredecessor();
 			return *this;
 		}
 

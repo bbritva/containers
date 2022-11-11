@@ -108,30 +108,30 @@ namespace ft {
 			return _node_allocator.max_size();
 		};
 
-		node_type *getRoot() { return _root; }
-		node_type *getMin() { return _root->getMin(); }
-		node_type *getMax() { return _root->getMax(); }
-		node_type *getLast() { return _leaf; }
+		node_type *getRoot() const { return _root; }
+		node_type *getMin() const { return node_type::getMin(_root); }
+		node_type *getMax() const { return node_type::getMax(_root); }
+		node_type *getLast() const { return _leaf; }
 
-		void delete_node(const value_type& key) {
+		void deleteNode(const value_type& key) {
 			node_type *curr_node= findByKey(key, _root);
 			node_type *to_clear = curr_node;
 			if (curr_node != _leaf) {
 				if (curr_node->_right_kid != _leaf) {
 					if (curr_node->_left_kid != _leaf) {
-						replaceNode(*curr_node, curr_node->getSuccessor());
+						replaceNode(&curr_node, curr_node->getSuccessor());
 					} else {
-						replaceNode(*curr_node, curr_node->_right_kid);
+						replaceNode(&curr_node, curr_node->_right_kid);
 					}
 				} else {
 					if (curr_node->_left_kid) {
-						replaceNode(*curr_node, curr_node->_right_kid);
+						replaceNode(&curr_node, curr_node->_right_kid);
 					} else {
-						replaceNode(*curr_node, _leaf);
+						replaceNode(&curr_node, _leaf);
 					}
 				}
 				if (to_clear->_color == black)
-					deleteFixUp(curr_node);
+					balanceDelete(curr_node);
 				_node_allocator.destroy(to_clear);
 				_node_allocator.deallocate(to_clear, 1);
 				_leaf->_parent = _root;

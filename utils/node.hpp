@@ -55,7 +55,24 @@ namespace ft {
 			return *this;
 		};
 
-		node *getSuccessor() const {
+		node const *getSuccessor() const {
+			node const *successor = this;
+			if (_right_kid) {
+				successor = getMin(_right_kid);
+			} else if (_parent) {
+				successor = _parent;
+				if (successor->_left_kid == this) {
+					if (successor->_right_kid) {
+						successor = getMin(successor->_right_kid);
+					}
+				}
+			} else {
+				// node is _root
+			}
+			return successor;
+		}
+
+		node *getSuccessor() {
 			node *successor = this;
 			if (_right_kid) {
 				successor = getMin(_right_kid);
@@ -70,27 +87,9 @@ namespace ft {
 				// node is _root
 			}
 			return successor;
-
-			/*
-			node *parent = this->_p;
-			node *current = this;
-
-			if (current == current->_left)
-				return parent->TreeMax();
-
-			if (current->_right != current->_right->_right)
-				return current->_right->TreeMin();
-			while (parent != parent->_left && current == parent->_right)
-			{
-				current = parent;
-				parent = parent->_p;
-			}
-			return parent;
-			 */
 		}
 
-		node *getPredecessor() const
-		{
+		node *getPredecessor() {
 			node *predecessor = this;
 			if (_left_kid) {
 				predecessor = getMax(_left_kid);
@@ -105,32 +104,33 @@ namespace ft {
 				// node is _root
 			}
 			return predecessor;
-			/*
-			Node * parent = this->_p;
-			Node * node = this;
-
-			if (node == node->_left)
-				return parent->TreeMax();
-
-			if (node->_left != node->_left->_left)
-				return node->_left->TreeMax();
-			while (parent != parent->_left && node == parent->_left)
-			{
-				node = parent;
-				parent = parent->_p;
-			}
-			return parent;
-			 */
 		}
 
-		static node *getMin(const node *_root) {
+		node const *getPredecessor() const {
+			node const *predecessor = this;
+			if (_left_kid) {
+				predecessor = getMax(_left_kid);
+			} else if (_parent) {
+				predecessor = _parent;
+				if (predecessor->_right_kid == this) {
+					if (predecessor->_left_kid) {
+						predecessor = getMax(predecessor->_left_kid);
+					}
+				}
+			} else {
+				// node is _root
+			}
+			return predecessor;
+		}
+
+		static node *getMin(node *_root) {
 			node *min = _root;
 			while (min->_left_kid)
 				min = min->_left_kid;
 			return min;
 		}
 
-		static node *getMax(const node *_root) {
+		static node *getMax(node *_root) {
 			node *max = _root;
 			while (max->_right_kid)
 				max = max->_right_kid;

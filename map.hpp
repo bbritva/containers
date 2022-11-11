@@ -2,11 +2,12 @@
 # define MAP_HPP
 
 # include <iostream>
-# include "pair.hpp"
-# include "direct_tree_iterator.hpp"
-# include "reverse_iterator.hpp"
-# include "red_black_tree.hpp"
-# include "sfinae.hpp"
+# include "utils/pair.hpp"
+# include "utils/direct_tree_iterator.hpp"
+# include "utils/reverse_iterator.hpp"
+# include "utils/red_black_tree.hpp"
+# include "utils/sfinae.hpp"
+# include "utils/compare_utils.hpp"
 
 namespace ft {
 	template<typename Key, typename Value,
@@ -61,13 +62,13 @@ namespace ft {
 		//constructors
 		explicit map(const key_compare& comp = Compare(),
 					 const allocator_type& allocator = allocator_type())
-					 :  _allocator(allocator), _comparator(comp),
-					 _tree(_allocator, _comparator),
-//					 _key_comp(key_comp),
-					 _size(0) {};
+						: _allocator(allocator), _comparator(comp),
+						_tree(_allocator, _comparator),
+//						_key_comp(key_comp),
+						_size(0) {};
 
 		map(const map<Key, Value, Compare, A> &other)
-			:_comparator(other._key_comp),
+			: _comparator(other._key_comp),
 			_allocator(other._allocator),
 //			_key_comp(other._key_comp),
 			_size(other._size),
@@ -78,7 +79,8 @@ namespace ft {
 		map(InputIterator first, InputIterator last,
 			const key_compare & key_comp = key_compare(),
 			const allocator_type &allocator = allocator_type())
-				: _comparator(key_comp), _allocator(allocator),
+				: _allocator(allocator), _comparator(key_comp),
+				_tree(_allocator, _comparator),
 //				_key_comp(key_comp),
 				_size(0)
 		{ insert(first, last); }
@@ -98,11 +100,11 @@ namespace ft {
 
 		// iterators
 		iterator begin()
-		{ return iterator (_tree.getFirst());}
+		{ return iterator (_tree.getMin());}
 		iterator end()
 		{ return iterator (_tree.getLast()); }
 		const_iterator begin() const
-		{ return const_iterator (_tree.getFirst()); }
+		{ return const_iterator (_tree.getMin()); }
 		const_iterator end() const
 		{ return const_iterator (_tree.getLast()); }
 
@@ -118,8 +120,8 @@ namespace ft {
 		// element access
 
 		reference operator[](const key_type &key) {
-			insert(make_pair(key, Value()));
-			return find(key)->_value._second;
+			insert(ft::make_pair(key, Value()));
+			return find(key)->second;
 		}
 
 		reference at(const key_type &key) {
@@ -161,6 +163,30 @@ namespace ft {
 			while (begin != end) {
 				insert(*begin);
 				begin++;
+			}
+		}
+
+		void erase(iterator pos) {
+			if (pos != end()) {
+				_tree.deleteNode(*pos);
+				--_size;
+			}
+		}
+
+		size_type erase(const key_type& key) {
+			iterator it = find(key);
+			if (it != end()) {
+				erase(it);
+				return 0;
+			}
+			return 1;
+		}
+
+		void erase(iterator first, iterator last) {
+			while (first != last) {
+				iterator tmp = first;
+				++first;
+				erase(tmp);
 			}
 		}
 
