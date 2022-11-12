@@ -118,15 +118,15 @@ namespace ft {
 			if (curr_node != _leaf) {
 				if (curr_node->_right_kid != _leaf) {
 					if (curr_node->_left_kid != _leaf) {
-						replaceNode(&curr_node, curr_node->getSuccessor());
+						replaceNode(curr_node, curr_node->getSuccessor());
 					} else {
-						replaceNode(&curr_node, curr_node->_right_kid);
+						replaceNode(curr_node, curr_node->_right_kid);
 					}
 				} else {
 					if (curr_node->_left_kid) {
-						replaceNode(&curr_node, curr_node->_right_kid);
+						replaceNode(curr_node, curr_node->_right_kid);
 					} else {
-						replaceNode(&curr_node, _leaf);
+						replaceNode(curr_node, _leaf);
 					}
 				}
 				if (to_clear->_color == black)
@@ -216,18 +216,24 @@ namespace ft {
 			return true;
 		};
 
-		void replaceNode(node_type **curr_node, node_type *new_node) {
-			node_type *tmp = *curr_node;
-			node_type *left_kid = tmp->_left_kid;
-			node_type *right_kid = tmp->_right_kid;
-			new_node->_color = tmp->_color;
-			new_node->_parent = tmp->_parent;
-			new_node->_left_kid = tmp->_left_kid;
-			new_node->_right_kid = tmp->_right_kid;
-			*curr_node = new_node;
-			if (right_kid)
+		void replaceNode(node_type *curr_node, node_type *new_node) {
+			node_type *left_kid = new_node->_left_kid;
+			node_type *right_kid = new_node->_right_kid;
+
+			new_node->_color = curr_node->_color;
+			new_node->_parent = curr_node->_parent;
+			new_node->_left_kid = curr_node->_left_kid;
+			new_node->_right_kid = curr_node->_right_kid;
+
+			node_type *parent = curr_node->_parent;
+			if (parent->_left_kid == curr_node)
+				parent->_left_kid = new_node;
+			else
+				parent->_right_kid = new_node;
+
+			if (right_kid != _leaf)
 				insert_node(right_kid, &_root, NULL);
-			if (left_kid)
+			if (left_kid != _leaf)
 				insert_node(left_kid, &_root, NULL);
 		};
 
