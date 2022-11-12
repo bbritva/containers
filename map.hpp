@@ -120,8 +120,7 @@ namespace ft {
 		// element access
 
 		reference operator[](const key_type &key) {
-			insert(ft::make_pair(key, Value()));
-			return find(key)->second;
+			return insert(ft::make_pair(key, Value())).first->second;
 		}
 
 		reference at(const key_type &key) {
