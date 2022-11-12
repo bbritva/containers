@@ -82,7 +82,7 @@ namespace ft {
 			pos = (pos) ? pos : _root;
 			node_type *new_node = _node_allocator.allocate(1);
 			_node_allocator.construct(new_node, node_type(value));
-			return insert_node(new_node, &pos, NULL);
+			return insert_node(new_node, &pos, _leaf);
 		};
 
 		bool empty() {
@@ -203,7 +203,7 @@ namespace ft {
 				return false;
 			if (*place == _leaf) {
 				*place = new_node;
-				(*place)->_parent = new_parent;
+				(*place)->_parent = new_parent ? new_parent : _leaf;
 				if (new_parent == _leaf)
 					(*place)->_color = black;
 			} else if (_comparator( new_node->_value, (*place)->_value)) {

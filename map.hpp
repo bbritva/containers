@@ -82,8 +82,9 @@ namespace ft {
 				: _allocator(allocator), _comparator(key_comp),
 				_tree(_allocator, _comparator),
 //				_key_comp(key_comp),
-				_size(0)
-		{ insert(first, last); }
+				_size(0){
+			insert(first, last);
+		}
 
 		~map() { clear(); }
 

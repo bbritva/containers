@@ -72,6 +72,14 @@ int main() {
 	unsigned int lst_size = 10;
 	for (unsigned int i = 0; i < lst_size; ++i)
 		lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
+	TESTED_NAMESPACE::map<T1, T2> mymap;
+	ft::make_pair(11, "ttt");
+	mymap.insert(ft::make_pair(11, "fdgs"));
+
+	// ft::pair<int, const char*>’ to
+	// ‘const ft::pair<const int, std::__cxx11::basic_string<char> >&
+
+
 	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
 	printSize(mp);
 

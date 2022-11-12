@@ -10,15 +10,18 @@ namespace ft {
 	class pair
 	{
 	public:
-		Key		first;
-		Value	second;
+		typedef Key first_type;
+		typedef Value second_type;
+
+		first_type	first;
+		second_type	second;
 
 		pair() : first(), second() {}
 
 		template<class U, class V>
 		explicit pair(const pair<U, V>& other) : first(other.first), second(other.second) {}
 
-		pair(const Key& a, const Value& b) : first(a), second(b) {}
+		pair(const first_type& a, const second_type& b) : first(a), second(b) {}
 
 		pair& operator=(const pair& other)
 		{
@@ -30,44 +33,49 @@ namespace ft {
 		}
 		~pair(){};
 
-		operator pair<const Key, Value>() const {
-			return (pair<const Key, Value>(*this));
+		operator pair<const first_type, second_type>() const {
+			return (pair<const first_type, second_type>(*this));
 		}
 	};
 
-	template <class Key, class Value>
-	pair<Key, Value> make_pair(const Key &key, const Value &value) {
-		return ft::pair<Key, Value>(key, value);
+//	template<typename _T1, typename _T2>
+//	inline pair<_T1, _T2>
+//	make_pair(_T1 __x, _T2 __y)
+//	{ return pair<_T1, _T2>(__x, __y); }
+
+	template <class first_type, class second_type>
+	pair<first_type, second_type> make_pair(first_type key, second_type value) {
+		return ft::pair<first_type, second_type>(key, value);
 	}
 
-	template <class Key, class Value>
-	bool operator==(const ft::pair<Key,Value>& first, const ft::pair<Key,Value>& second) {
+	template <class first_type, class second_type>
+	bool operator==(const ft::pair<first_type,second_type>& first, const ft::pair<first_type,second_type>& second) {
 		return first.first == second.first && first.second == second.second;
 	}
 
-	template <class Key, class Value>
-	bool operator!=(const ft::pair<Key,Value>& first, const ft::pair<Key,Value>& second) {
+	template <class first_type, class second_type>
+	bool operator!=(const ft::pair<first_type,second_type>& first, const ft::pair<first_type,second_type>& second) {
 		return !(first == second);
 	}
 
-	template <class Key, class Value>
-	bool operator<(const ft::pair<Key,Value>& first, const ft::pair<Key,Value>& second) {
+	template <class first_type, class second_type>
+	bool operator<(const ft::pair<first_type,second_type>& first, const ft::pair<first_type,second_type>& second) {
 		return first.first < second.first \
  				|| (!(second.first < first.first) && first.second < second.second);
 	}
 
-	template <class Key, class Value>
-	bool operator<=(const ft::pair<Key,Value>& first, const ft::pair<Key,Value>& second) {
+	template <class first_type, class second_type>
+	bool operator<=(const ft::pair<first_type,second_type>& first, const ft::pair<first_type,second_type>& second) {
 		return !(second < first);
 	}
 
-	template <class Key, class Value>
-	bool operator>(const ft::pair<Key,Value>& first, const ft::pair<Key,Value>& second) {
+	template <class first_type, class second_type>
+	bool operator>(const ft::pair<first_type,second_type>& first, const ft::pair<first_type,second_type>& second) {
 		return second < first;
 	}
 
-	template <class Key, class Value>
-	bool operator>=(const ft::pair<Key,Value>& first, const ft::pair<Key,Value>& second) {
+	template <class first_type, class second_type>
+	bool operator>=(const ft::pair<first_type,second_type>& first, const ft::pair<first_type,second_type>& second) {
 		return !(first < second);
 	}
 }
