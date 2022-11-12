@@ -72,6 +72,14 @@ namespace ft {
 			return tmp;
 		}
 
+		bool operator==(const tree_iterator &other) const {
+			return _current == other._current;
+		}
+
+		bool operator!=(const tree_iterator &other) const {
+			return !(operator==(other));
+		}
+
 		node_type *getCurrent() const {
 			return _current;
 		}
@@ -135,35 +143,43 @@ namespace ft {
 			return tmp;
 		}
 
+		bool operator==(const tree_iterator_const &other) const {
+			return _current == other._current;
+		}
+
+		bool operator!=(const tree_iterator_const &other) const {
+			return !(operator==(other));
+		}
+
 		node_type *getCurrent() const {
 			return _current;
 		}
 	};
 
-	template <class T>
-	bool operator==(const tree_iterator<T> first,
-					const tree_iterator<T> second) {
-		return first.getCurrent() == second.getCurrent();
-	}
-
-	// for non-const and const
-	template<class T_F, class T_S>
-	bool operator==(const tree_iterator<T_F> first,
-					const tree_iterator<T_S> second) {
-		return first.getCurrent() == second.getCurrent();
-	}
-
-	template <class T>
-	bool operator!=(const tree_iterator<T> first,
-					const tree_iterator<T> second) {
-		return first.getCurrent() != second.getCurrent();
-	}
-
-	// for non-const and const
-	template<class T_F, class T_S>
-	bool operator!=(const tree_iterator<T_F> first,
-					const tree_iterator<T_S> second) {
-		return first.getCurrent() != second.getCurrent();
-	}
+//	template <class T>
+//	bool operator==(const tree_iterator<T> first,
+//					const tree_iterator<T> second) {
+//		return first.getCurrent() == second.getCurrent();
+//	}
+//
+//	// for non-const and const
+//	template<class T_F, class T_S>
+//	bool operator==(const tree_iterator<T_F> first,
+//					const tree_iterator<T_S> second) {
+//		return first.getCurrent() == second.getCurrent();
+//	}
+//
+//	template <class T>
+//	bool operator!=(const tree_iterator<T> first,
+//					const tree_iterator<T> second) {
+//		return first.getCurrent() != second.getCurrent();
+//	}
+//
+//	// for non-const and const
+//	template<class T_F, class T_S>
+//	bool operator!=(const tree_iterator<T_F> first,
+//					const tree_iterator<T_S> second) {
+//		return first.getCurrent() != second.getCurrent();
+//	}
 }
 #endif //CONTAINERS_DIRECT_TREE_ITERATOR_HPP
