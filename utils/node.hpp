@@ -36,6 +36,13 @@ namespace ft {
 			_left_kid(left_kid),
 			_right_kid(right_kid) {};
 
+		explicit node(node<T> *leaf, const T &value = T()) :
+			_value(value),
+			_color(RED),
+			_parent(leaf),
+			_left_kid(leaf),
+			_right_kid(leaf) {};
+
 		node(const node &other) :
 			_value(other._value),
 			_color(other._color),
@@ -126,14 +133,14 @@ namespace ft {
 
 		static node *getMin(node *_root) {
 			node *min = _root;
-			while (min->_left_kid)
+			while (min->_left_kid != min->_left_kid->_left_kid)
 				min = min->_left_kid;
 			return min;
 		}
 
 		static node *getMax(node *_root) {
 			node *max = _root;
-			while (max->_right_kid)
+			while (max->_right_kid != max->_right_kid->_right_kid)
 				max = max->_right_kid;
 			return max;
 		}

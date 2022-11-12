@@ -143,7 +143,7 @@ namespace ft {
 			iterator it = find(new_pair.first);
 			if (it == end()) {
 				_size++;
-				_tree.insert(new_pair, NULL);
+				_tree.insert(new_pair);
 				return ft::make_pair(find(new_pair.first), true);
 			}
 			return ft::make_pair(it, false);

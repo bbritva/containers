@@ -33,6 +33,7 @@ namespace ft {
 		}
 		~pair(){};
 
+		template <class first_type, class second_type>
 		operator pair<const first_type, second_type>() const {
 			return (pair<const first_type, second_type>(*this));
 		}
