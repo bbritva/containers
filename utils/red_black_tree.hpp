@@ -42,6 +42,8 @@ namespace ft {
 
 		~rb_tree() {
 			clear();
+			_node_allocator.destroy(_leaf);
+			_node_allocator.deallocate(_leaf, 1);
 		};
 
 		rb_tree(const rb_tree& other)
@@ -90,9 +92,7 @@ namespace ft {
 
 		void clear() {
 			eraseNode(_root);
-			_root = NULL;
-			_node_allocator.destroy(_leaf);
-			_node_allocator.deallocate(_leaf, 1);
+			_root = _leaf;
 		};
 
 		bool operator==(rb_tree const& other) {
@@ -189,7 +189,7 @@ namespace ft {
 		}
 
 		void eraseNode(node_type *node) {
-			if (!node)
+			if (node == _leaf)
 				return;
 			eraseNode(node->_left_kid);
 			eraseNode(node->_right_kid);
@@ -217,24 +217,13 @@ namespace ft {
 		};
 
 		void replaceNode(node_type *curr_node, node_type *new_node) {
-			node_type *left_kid = new_node->_left_kid;
-			node_type *right_kid = new_node->_right_kid;
-
-			new_node->_color = curr_node->_color;
-			new_node->_parent = curr_node->_parent;
-			new_node->_left_kid = curr_node->_left_kid;
-			new_node->_right_kid = curr_node->_right_kid;
-
-			node_type *parent = curr_node->_parent;
-			if (parent->_left_kid == curr_node)
-				parent->_left_kid = new_node;
+			if (curr_node->_parent == _leaf)
+				_root = new_node;
+			else if (curr_node == curr_node->_parent->_left_kid)
+				curr_node->_parent->_left_kid = new_node;
 			else
-				parent->_right_kid = new_node;
-
-			if (right_kid != _leaf)
-				insert_node(right_kid, &_root, NULL);
-			if (left_kid != _leaf)
-				insert_node(left_kid, &_root, NULL);
+				curr_node->_parent->_right_kid = new_node;
+			new_node->_parent = curr_node->_parent;
 		};
 
 		node_type *getSuccessor(node_type *curr_node) {
