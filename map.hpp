@@ -170,9 +170,9 @@ namespace ft {
 			iterator it = find(key);
 			if (it != end()) {
 				erase(it);
-				return 0;
+				return true;
 			}
-			return 1;
+			return false;
 		}
 
 		void erase(iterator first, iterator last) {
