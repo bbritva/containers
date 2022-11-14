@@ -5,6 +5,7 @@
 #ifndef CONTAINERS_NODE_HPP
 #define CONTAINERS_NODE_HPP
 
+#include <cstring>
 #include "pair.hpp"
 
 namespace ft {
@@ -20,12 +21,11 @@ namespace ft {
 		typedef T	value_type;
 
 	public:
-		T		_value;
-		t_color	_color;
-		node	*_parent;
-		node	*_left_kid;
-		node	*_right_kid;
-
+		value_type	_value;
+		t_color		_color;
+		node		*_parent;
+		node		*_left_kid;
+		node		*_right_kid;
 //		error: binding reference of type  ‘			ft::pair<const int, std::__cxx11::basic_string<char> >&’}
 //										to‘const	ft::pair<const int, std::__cxx11::basic_string<char> >’
 		explicit node(const T &value = T(), t_color color = RED, node<T> *parent = NULL
@@ -34,7 +34,8 @@ namespace ft {
 			_color(color),
 			_parent(parent),
 			_left_kid(left_kid),
-			_right_kid(right_kid) {};
+			_right_kid(right_kid) {
+		};
 
 		explicit node(node<T> *leaf, const T &value = T()) :
 			_value(value),

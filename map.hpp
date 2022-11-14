@@ -15,7 +15,7 @@ namespace ft {
 			typename A = std::allocator< ft::pair<const Key, Value> > >
 	class map {
 	private:
-		typedef typename A::template rebind<Value>::other	pair_alloc_type;
+		typedef typename A::template rebind<ft::pair<const Key, Value> >::other	pair_alloc_type;
 
 	public:
 		typedef Key								key_type;
@@ -44,7 +44,7 @@ namespace ft {
 			}
 		};
 
-		typedef rb_tree<pair_type, comparator, allocator_type>	tree_type;
+		typedef rb_tree<pair_type, comparator, pair_alloc_type>	tree_type;
 		typedef typename tree_type::iterator			iterator;
 		typedef typename tree_type::const_iterator		const_iterator;
 		typedef ft::reverse_iterator<iterator>			reverse_iterator;
@@ -244,7 +244,7 @@ namespace ft {
 		}
 
 		size_type max_size() const {
-			return _allocator.max_size();
+			return _tree.maxSize();
 		}
 
 		void clear() {

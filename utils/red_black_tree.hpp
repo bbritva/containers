@@ -6,6 +6,7 @@
 #define CONTAINERS_RED_BLACK_TREE_HPP
 
 #include <iostream>
+#include <limits>
 #include "node.hpp"
 #include "direct_tree_iterator.hpp"
 
@@ -16,15 +17,14 @@ namespace ft {
 	private:
 		typedef typename Allocator::template rebind<node<T> >::other	node_allocator;
 	public:
-		typedef T										value_type;
-		typedef Allocator								allocator_type;
-		typedef Compare									key_compare;
-		typedef node<T>									node_type;
-		typedef tree_iterator<node_type>				iterator;
+		typedef T								value_type;
+		typedef Allocator						allocator_type;
+		typedef Compare							key_compare;
+		typedef node<T>							node_type;
+		typedef tree_iterator<node_type>		iterator;
 		typedef tree_iterator_const<node_type>	const_iterator;
 
 	private:
-		allocator_type	_allocator;
 		node_allocator	_node_allocator;
 		node_type		*_root;
 		node_type		*_leaf;
@@ -33,7 +33,7 @@ namespace ft {
 	public:
 		explicit rb_tree(const allocator_type &alloc = allocator_type(),
 						 const key_compare &comparator = key_compare())
-			: _allocator(alloc), _node_allocator(alloc), _comparator(comparator)
+			: _node_allocator(alloc), _comparator(comparator)
 		{
 			_leaf = _node_allocator.allocate(1);
 			_node_allocator.construct(_leaf, node_type(T(), black, _leaf, _leaf, _leaf));
@@ -104,6 +104,8 @@ namespace ft {
 		};
 
 		std::size_t maxSize() const {
+//			return std::numeric_limits<std::size_t>::max() / sizeof(value_type);
+//			return std::allocator<node<T> >().max_size();
 			return _node_allocator.max_size();
 		};
 
