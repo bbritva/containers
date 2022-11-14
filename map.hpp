@@ -55,7 +55,6 @@ namespace ft {
 		comparator			_comparator;
 		tree_type			_tree;
 //		key_compare			_key_comp;
-		size_type			_size;
 
 	public:
 
@@ -63,15 +62,14 @@ namespace ft {
 		explicit map(const key_compare& comp = Compare(),
 					 const allocator_type& allocator = allocator_type())
 						: _allocator(allocator), _comparator(comp),
-						_tree(_allocator, _comparator),
+						_tree(_allocator, _comparator)
 //						_key_comp(key_comp),
-						_size(0) {};
+						{};
 
 		map(const map<Key, Value, Compare, A> &other)
 			: _comparator(other._key_comp),
 			_allocator(other._allocator),
 //			_key_comp(other._key_comp),
-			_size(other._size),
 			_tree(other._tree) {}
 
 
@@ -80,11 +78,9 @@ namespace ft {
 			const key_compare & key_comp = key_compare(),
 			const allocator_type &allocator = allocator_type())
 				: _allocator(allocator), _comparator(key_comp),
-				_tree(_allocator, _comparator),
+				_tree(_allocator, _comparator)
 //				_key_comp(key_comp),
-				_size(0){
-			insert(first, last);
-		}
+		{ insert(first, last); }
 
 		~map() { clear(); }
 
@@ -95,7 +91,6 @@ namespace ft {
 			_allocator = other._allocator;
 			_tree = other._tree;
 			_comparator = other._comparator;
-			_size = other._size;
 			return (*this);
 		}
 
@@ -142,7 +137,6 @@ namespace ft {
 		pair<iterator, bool> insert(const pair_type &new_pair) {
 			iterator it = find(new_pair.first);
 			if (it == end()) {
-				_size++;
 				_tree.insert(new_pair);
 				return ft::make_pair(find(new_pair.first), true);
 			}
@@ -169,7 +163,6 @@ namespace ft {
 		void erase(iterator pos) {
 			if (pos != end()) {
 				_tree.deleteNode(*pos);
-				--_size;
 			}
 		}
 
@@ -236,11 +229,11 @@ namespace ft {
 
 		// capacity
 		bool empty() const {
-			return _size;
+			return _tree.empty();
 		}
 
 		size_type size() const {
-			return _size;
+			return _tree.size();
 		}
 
 		size_type max_size() const {

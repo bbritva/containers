@@ -26,8 +26,7 @@ namespace ft {
 		node		*_parent;
 		node		*_left_kid;
 		node		*_right_kid;
-//		error: binding reference of type  ‘			ft::pair<const int, std::__cxx11::basic_string<char> >&’}
-//										to‘const	ft::pair<const int, std::__cxx11::basic_string<char> >’
+
 		explicit node(const T &value = T(), t_color color = RED, node<T> *parent = NULL
 				, node<T> *left_kid = NULL, node<T> *right_kid = NULL) :
 			_value(value),
@@ -66,82 +65,74 @@ namespace ft {
 
 		node const *getSuccessor() const {
 			node const *successor = this;
-			if (_right_kid) {
-				successor = getMin(_right_kid);
-			} else if (_parent) {
-				successor = _parent;
-				if (successor->_left_kid == this) {
-					if (successor->_right_kid) {
-						successor = getMin(successor->_right_kid);
-					}
-				}
+			if (isLeaf())
+				return getMin(_parent);
+			if (!_right_kid->isLeaf()) {
+				return getMin(_right_kid);
 			} else {
-				// node is _root
+				while (!successor->_parent->isLeaf()
+					   && successor->_parent->_left_kid != successor) {
+					successor = successor->_parent;
+				}
+				return successor->_parent;
 			}
-			return successor;
 		}
 
 		node *getSuccessor() {
 			node *successor = this;
-			if (_right_kid) {
-				successor = getMin(_right_kid);
-			} else if (_parent) {
-				successor = _parent;
-				if (successor->_left_kid == this) {
-					if (successor->_right_kid) {
-						successor = getMin(successor->_right_kid);
-					}
-				}
+			if (isLeaf())
+				return getMin(_parent);
+			if (!_right_kid->isLeaf()) {
+				return getMin(_right_kid);
 			} else {
-				// node is _root
+				while (!successor->_parent->isLeaf()
+					   && successor->_parent->_left_kid != successor) {
+					successor = successor->_parent;
+				}
+				return successor->_parent;
 			}
-			return successor;
 		}
 
 		node *getPredecessor() {
-			node *predecessor = this;
-			if (_left_kid) {
-				predecessor = getMax(_left_kid);
-			} else if (_parent) {
-				predecessor = _parent;
-				if (predecessor->_right_kid == this) {
-					if (predecessor->_left_kid) {
-						predecessor = getMax(predecessor->_left_kid);
-					}
-				}
+			node *successor = this;
+			if (isLeaf())
+				return getMax(_parent);
+			if (!_left_kid->isLeaf()) {
+				return getMax(_left_kid);
 			} else {
-				// node is _root
+				while (!successor->_parent->isLeaf()
+					   && successor->_parent->_right_kid != successor) {
+					successor = successor->_parent;
+				}
+				return successor->_parent;
 			}
-			return predecessor;
 		}
 
 		node const *getPredecessor() const {
-			node const *predecessor = this;
-			if (_left_kid) {
-				predecessor = getMax(_left_kid);
-			} else if (_parent) {
-				predecessor = _parent;
-				if (predecessor->_right_kid == this) {
-					if (predecessor->_left_kid) {
-						predecessor = getMax(predecessor->_left_kid);
-					}
-				}
+			node const *successor = this;
+			if (isLeaf())
+				return getMax(_parent);
+			if (!_left_kid->isLeaf()) {
+				return getMax(_left_kid);
 			} else {
-				// node is _root
+				while (!successor->_parent->isLeaf()
+					   && successor->_parent->_right_kid != successor) {
+					successor = successor->_parent;
+				}
+				return successor->_parent;
 			}
-			return predecessor;
 		}
 
 		static node *getMin(node *_root) {
 			node *min = _root;
-			while (min->_left_kid != min->_left_kid->_left_kid)
+			while (!min->_left_kid->isLeaf())
 				min = min->_left_kid;
 			return min;
 		}
 
 		static node *getMax(node *_root) {
 			node *max = _root;
-			while (max->_right_kid != max->_right_kid->_right_kid)
+			while (!max->_right_kid->isLeaf())
 				max = max->_right_kid;
 			return max;
 		}
@@ -149,6 +140,10 @@ namespace ft {
 		bool operator==(node const& other) {
 			return _value == other._value;
 		};
+
+		bool isLeaf() const {
+			return (this == _right_kid);
+		}
 
 	};
 

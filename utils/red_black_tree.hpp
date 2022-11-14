@@ -185,9 +185,13 @@ namespace ft {
 		}
 
 		std::size_t size(node_type *node) const {
-			if (!node)
+			if (node == _leaf)
 				return 0;
 			return size(node->_right_kid) + size(node->_left_kid) + 1;
+		}
+
+		bool empty() const {
+			return _root == _leaf;
 		}
 
 		void eraseNode(node_type *node) {
@@ -205,8 +209,10 @@ namespace ft {
 			if (*place == _leaf) {
 				*place = new_node;
 				(*place)->_parent = new_parent ? new_parent : _leaf;
-				if (new_parent == _leaf)
+				if (new_parent == _leaf) {
 					(*place)->_color = black;
+					_leaf->_parent = new_node;
+				}
 			} else if (_comparator( new_node->_value, (*place)->_value)) {
 				insert_node(new_node, &((*place)->_left_kid), *place);
 			} else if (_comparator( (*place)->_value, new_node->_value)) {
@@ -228,14 +234,6 @@ namespace ft {
 			new_node->_parent = curr_node->_parent;
 		};
 
-		node_type *getSuccessor(node_type *curr_node) {
-			if (!curr_node || !curr_node->_right_kid)
-				return NULL;
-			curr_node = curr_node->_right_kid;
-			while (curr_node->_left_kid)
-				curr_node = curr_node->_left_kid;
-			return curr_node;
-		};
 
 		void balanceDeleteRightKid(node_type **point_ptr) {
 			node_type * tmp;

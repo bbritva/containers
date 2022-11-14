@@ -72,14 +72,6 @@ int main() {
 	unsigned int lst_size = 10;
 	for (unsigned int i = 0; i < lst_size; ++i)
 		lst.push_back(T3(i, std::string((lst_size - i), i + 65)));
-	TESTED_NAMESPACE::map<T1, T2> mymap;
-	std::map<T1, T2> stdmap;
-
-	std::cout << "std max = " << stdmap.max_size() << ",\nmy  max = " << mymap.max_size() << std::endl;
-//	 ft::pair<int, const char*>’ to
-//	 ‘const ft::pair<const int, std::__cxx11::basic_string<char> >&
-
-
 	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
 	printSize(mp);
 
