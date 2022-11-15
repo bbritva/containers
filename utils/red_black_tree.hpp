@@ -114,25 +114,24 @@ namespace ft {
 		node_type *getMax() const { return node_type::getMax(_root); }
 		node_type *getLast() const { return _leaf; }
 
-		void deleteNode(const value_type& key) {
-			node_type *curr_node= findByKey(key, _root);
-			node_type *to_clear = curr_node;
-			if (curr_node != _leaf) {
-				if (curr_node->_right_kid != _leaf) {
-					if (curr_node->_left_kid != _leaf) {
-						replaceNode(curr_node, curr_node->getSuccessor());
+		void deleteNode(node_type *to_delete) {
+			node_type *to_clear = to_delete;
+			if (to_delete != _leaf) {
+				if (to_delete->_right_kid != _leaf) {
+					if (to_delete->_left_kid != _leaf) {
+						replaceNode(to_delete, to_delete->getSuccessor());
 					} else {
-						replaceNode(curr_node, curr_node->_right_kid);
+						replaceByKid(to_delete, false);
 					}
 				} else {
-					if (curr_node->_left_kid) {
-						replaceNode(curr_node, curr_node->_right_kid);
+					if (to_delete->_left_kid) {
+						replaceByKid(to_delete, true);
 					} else {
-						replaceNode(curr_node, _leaf);
+						replaceNode(to_delete, _leaf);
 					}
 				}
 				if (to_clear->_color == black)
-					balanceDelete(curr_node);
+					balanceDelete(to_delete);
 				_node_allocator.destroy(to_clear);
 				_node_allocator.deallocate(to_clear, 1);
 				_leaf->_parent = _root;
@@ -225,14 +224,60 @@ namespace ft {
 		};
 
 		void replaceNode(node_type *curr_node, node_type *new_node) {
-			if (curr_node->_parent == _leaf)
-				_root = new_node;
-			else if (curr_node == curr_node->_parent->_left_kid)
-				curr_node->_parent->_left_kid = new_node;
-			else
-				curr_node->_parent->_right_kid = new_node;
+			//set left kid to new node
+			new_node->_left_kid = curr_node->_left_kid;
+			new_node->_left_kid->_parent = new_node;
+
+			if (curr_node->_right_kid != new_node) {
+				// replace new_node's right kid to new_node's parent
+				new_node->_right_kid->_parent = new_node->_parent;
+				new_node->_parent->_left_kid = new_node->_right_kid;
+
+				//set right kid to new node
+				new_node->_right_kid = curr_node->_right_kid;
+				new_node->_right_kid->_parent = new_node;
+			}
 			new_node->_parent = curr_node->_parent;
+			if (curr_node == _root) {
+				//Node is ROOT
+				_leaf->_parent = new_node;
+				_root = new_node;
+			} else {
+				//Node is NOT ROOT
+				if (curr_node->_parent->_left_kid == curr_node)
+					curr_node->_parent->_left_kid = new_node;
+				else
+					curr_node->_parent->_right_kid = new_node;
+			}
 		};
+
+		void replaceByKid(node_type *curr_node, bool isLeft) {
+			node_type *parent = curr_node->_parent;
+			if (parent != _leaf) {
+				if (isLeft) {
+					curr_node->_left_kid->_parent = parent;
+					if (parent->_left_kid == curr_node)
+						parent->_left_kid = curr_node->_left_kid;
+					else
+						parent->_right_kid = curr_node->_left_kid;
+				} else {
+					curr_node->_right_kid->_parent = parent;
+					if (parent->_left_kid == curr_node)
+						parent->_left_kid = curr_node->_right_kid;
+					else
+						parent->_right_kid = curr_node->_right_kid;
+				}
+			} else {
+				if (isLeft) {
+					_root = curr_node->_left_kid;
+				} else {
+					_root = curr_node->_right_kid;
+				}
+				_root->_parent = _leaf;
+				_leaf->_parent = _root;
+			}
+		}
+
 
 
 		void balanceDeleteRightKid(node_type **point_ptr) {

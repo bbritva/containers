@@ -162,7 +162,7 @@ namespace ft {
 
 		void erase(iterator pos) {
 			if (pos != end()) {
-				_tree.deleteNode(*pos);
+				_tree.deleteNode(pos.getCurrent());
 			}
 		}
 
