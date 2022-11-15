@@ -59,6 +59,7 @@ std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
 
 #define T1 int
 #define T2 foo<int>
+
 typedef TESTED_NAMESPACE::map<T1, T2>::value_type T3;
 typedef TESTED_NAMESPACE::map<T1, T2>::iterator ft_iterator;
 typedef TESTED_NAMESPACE::map<T1, T2>::const_iterator ft_const_iterator;
@@ -114,7 +115,8 @@ void	ft_const_bound(const MAP &mp, const T1 &param)
 
 	std::cout << "\t-- [" << iter++ << "] (const) --" << std::endl;
 	std::cout << "with key [" << param << "]:" << std::endl;
-	it[0] = mp.lower_bound(param); it[1] = mp.upper_bound(param);
+	it[0] = mp.lower_bound(param);
+	it[1] = mp.upper_bound(param);
 	ft_range = mp.equal_range(param);
 	std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
 	std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;

@@ -50,7 +50,7 @@ namespace ft {
 		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 	private:
-		allocator_type		_allocator;
+		pair_alloc_type		_allocator;
 		comparator			_comparator;
 		tree_type			_tree;
 //		key_compare			_key_comp;
@@ -219,18 +219,18 @@ namespace ft {
 		}
 
 		iterator lower_bound(const Key& key) {
-			iterator it = end();
+			iterator it = begin();
 			value_type pair = ft::make_pair(key, Value());
-			while (_comparator(*it, pair) && it != begin())
-				it--;
+			while (!_comparator(*it, pair) && it != begin())
+				it++;
 			return it;
 		}
 
 		const_iterator	lower_bound(const Key& key) const {
-			const_iterator it = end();
+			const_iterator it = begin();
 			value_type pair = ft::make_pair(key, Value());
-			while (_comparator(*it, pair) && it != begin())
-				it--;
+			while (!_comparator(*it, pair) && it != begin())
+				it++;
 			return it;
 		}
 
