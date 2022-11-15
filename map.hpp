@@ -19,18 +19,17 @@ namespace ft {
 
 	public:
 		typedef Key								key_type;
-		typedef Value							value_type;
-		typedef pair<const Key, Value>			pair_type;
+		typedef pair<const Key, Value>			value_type;
 		typedef std::size_t						size_type;
 		typedef std::ptrdiff_t					difference_type;
 		typedef Compare							key_compare;
 		typedef A								allocator_type;
-		typedef value_type &					reference;
-		typedef const value_type &				const_reference;
+		typedef Value &							reference;
+		typedef const Value &					const_reference;
 		typedef typename A::pointer             pointer;
 		typedef typename A::const_pointer       const_pointer;
 
-		class comparator : public std::binary_function<pair_type, pair_type, bool>
+		class comparator : public std::binary_function<value_type, value_type, bool>
 		{
 			friend class map;
 
@@ -39,12 +38,12 @@ namespace ft {
 			comparator(key_compare comp) : _comp(comp) {}
 
 		public:
-			bool operator()(const pair_type &first, const pair_type &second) const {
+			bool operator()(const value_type &first, const value_type &second) const {
 				return _comp(first.first, second.first);
 			}
 		};
 
-		typedef rb_tree<pair_type, comparator, pair_alloc_type>	tree_type;
+		typedef rb_tree<value_type, comparator, pair_alloc_type>	tree_type;
 		typedef typename tree_type::iterator			iterator;
 		typedef typename tree_type::const_iterator		const_iterator;
 		typedef ft::reverse_iterator<iterator>			reverse_iterator;
@@ -134,7 +133,7 @@ namespace ft {
 		}
 
 		// modifiers
-		pair<iterator, bool> insert(const pair_type &new_pair) {
+		pair<iterator, bool> insert(const value_type &new_pair) {
 			iterator it = find(new_pair.first);
 			if (it == end()) {
 				_tree.insert(new_pair);
@@ -143,10 +142,18 @@ namespace ft {
 			return ft::make_pair(it, false);
 		};
 
-		iterator insert (iterator pos, const pair_type &new_pair) {
+		iterator insert(iterator pos, const value_type &new_pair) {
 			if (pos == end())
 				insert(new_pair);
 			else {
+				if (key_comp()(new_pair.first, pos->first)) {
+					_tree.insert(new_pair, lower_bound(new_pair.first).getCurrent());
+				}
+				else if (key_comp()(pos->first, new_pair.first)) {
+					_tree.insert(new_pair, upper_bound(new_pair.first).getCurrent());
+				}
+				else
+					_tree.insert(new_pair);
 				_tree.insert(new_pair, pos.getCurrent());
 			}
 			return find(new_pair.first);
@@ -184,11 +191,11 @@ namespace ft {
 		}
 
 		iterator find(const key_type &key) {
-			return iterator(_tree.findByKey(pair_type(key, Value()), _tree.getRoot()));
+			return iterator(_tree.findByKey(value_type(key, Value()), _tree.getRoot()));
 		}
 
 		const_iterator find(const key_type& key) const {
-			return const_iterator(_tree.findByKey(pair_type(key, Value()), _tree.getRoot()));
+			return const_iterator(_tree.findByKey(value_type(key, Value()), _tree.getRoot()));
 		}
 
 		size_type count(const key_type &key) const {
@@ -197,26 +204,34 @@ namespace ft {
 
 		iterator upper_bound(const Key& key) {
 			iterator it = begin();
-			pair_type pair = ft::make_pair(key, Value());
-			while (key_comp(*it, pair) && it != end())
+			value_type pair = ft::make_pair(key, Value());
+			while (_comparator(*it, pair) && it != end())
 				it++;
 			return it;
 		}
 
 		const_iterator	upper_bound(const Key& key) const {
-			return const_iterator(upper_bound(key));
+			const_iterator it = begin();
+			value_type pair = ft::make_pair(key, Value());
+			while (_comparator(*it, pair) && it != end())
+				it++;
+			return it;
 		}
 
 		iterator lower_bound(const Key& key) {
 			iterator it = end();
-			pair_type pair = ft::make_pair(key, Value());
-			while (key_comp(*it, pair) && it != begin())
+			value_type pair = ft::make_pair(key, Value());
+			while (_comparator(*it, pair) && it != begin())
 				it--;
 			return it;
 		}
 
 		const_iterator	lower_bound(const Key& key) const {
-			return const_iterator(lower_bound(key));
+			const_iterator it = end();
+			value_type pair = ft::make_pair(key, Value());
+			while (_comparator(*it, pair) && it != begin())
+				it--;
+			return it;
 		}
 
 		ft::pair<iterator, iterator> equal_range(const Key& key) {

@@ -91,6 +91,12 @@ namespace ft {
 			return insert_node(new_node, &_root, _leaf);
 		};
 
+		bool insert (value_type value, node_type *pos) {
+			node_type *new_node = _node_allocator.allocate(1);
+			_node_allocator.construct(new_node, node_type(_leaf, value));
+			return insert_node(new_node, &pos, pos->_parent);
+		};
+
 		bool empty() const {
 			return _root == _leaf;
 		}
