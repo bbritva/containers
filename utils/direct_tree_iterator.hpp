@@ -46,6 +46,12 @@ namespace ft {
 		reference operator*() {
 			return _current->_value;
 		}
+		reference operator*() const{
+			return _current->_value;
+		}
+		pointer operator->() const {
+			return &(operator*());
+		}
 		pointer operator->() {
 			return &(operator*());
 		}

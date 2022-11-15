@@ -63,9 +63,14 @@ namespace ft {
 			if (this == &other)
 				return *this;
 			clear();
-			this = &rb_tree(other);
+
+			iterator it = iterator(other.getMin());
+			iterator ite = iterator(other.getLast());
+			while (it != ite)
+				insert(*it++);
 			return *this;
 		};
+
 
 		void swap(rb_tree& other)
 		{
@@ -86,8 +91,8 @@ namespace ft {
 			return insert_node(new_node, &_root, _leaf);
 		};
 
-		bool empty() {
-			return !_root;
+		bool empty() const {
+			return _root == _leaf;
 		}
 
 		void clear() {
@@ -138,7 +143,7 @@ namespace ft {
 			}
 		};
 
-		node_type *findByKey(const value_type &key, node_type *node) {
+		node_type *findByKey(const value_type &key, node_type *node) const {
 			if (node == _leaf)
 				return _leaf;
 			if (_comparator(key, node->_value))
@@ -187,10 +192,6 @@ namespace ft {
 			if (node == _leaf)
 				return 0;
 			return size(node->_right_kid) + size(node->_left_kid) + 1;
-		}
-
-		bool empty() const {
-			return _root == _leaf;
 		}
 
 		void eraseNode(node_type *node) {
