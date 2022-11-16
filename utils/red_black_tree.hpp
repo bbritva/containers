@@ -92,6 +92,8 @@ namespace ft {
 		};
 
 		bool insert (value_type value, node_type *pos) {
+			if (pos == _leaf)
+				return insert(value);
 			node_type *new_node = _node_allocator.allocate(1);
 			_node_allocator.construct(new_node, node_type(_leaf, value));
 			return insert_node(new_node, &pos, pos->_parent);
@@ -115,8 +117,6 @@ namespace ft {
 		};
 
 		std::size_t maxSize() const {
-//			return std::numeric_limits<std::size_t>::max() / sizeof(value_type);
-//			return std::allocator<node<T> >().max_size();
 			return _node_allocator.max_size();
 		};
 

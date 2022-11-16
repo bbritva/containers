@@ -146,15 +146,14 @@ namespace ft {
 			if (pos == end())
 				insert(new_pair);
 			else {
-				if (key_comp()(new_pair.first, pos->first)) {
+				if (_comparator(new_pair, *pos)) {
 					_tree.insert(new_pair, lower_bound(new_pair.first).getCurrent());
 				}
-				else if (key_comp()(pos->first, new_pair.first)) {
+				else if (_comparator(*pos, new_pair)) {
 					_tree.insert(new_pair, upper_bound(new_pair.first).getCurrent());
 				}
 				else
 					_tree.insert(new_pair);
-				_tree.insert(new_pair, pos.getCurrent());
 			}
 			return find(new_pair.first);
 		};

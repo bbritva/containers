@@ -21,48 +21,10 @@
 #define COUNT 100
 #define _pair TESTED_NAMESPACE::pair
 
-template <typename T>
-class foo {
-public:
-	typedef T	value_type;
-
-	foo(void) : value(), _verbose(false) { };
-	foo(value_type src, const bool verbose = false) : value(src), _verbose(verbose) { };
-	foo(foo const &src, const bool verbose = false) : value(src.value), _verbose(verbose) { };
-	~foo(void) { if (this->_verbose) std::cout << "~foo::foo()" << std::endl; };
-	void m(void) { std::cout << "foo::m called [" << this->value << "]" << std::endl; };
-	void m(void) const { std::cout << "foo::m const called [" << this->value << "]" << std::endl; };
-	foo &operator=(value_type src) { this->value = src; return *this; };
-	foo &operator=(foo const &src) {
-		if (this->_verbose || src._verbose)
-			std::cout << "foo::operator=(foo) CALLED" << std::endl;
-		this->value = src.value;
-		return *this;
-	};
-	value_type	getValue(void) const { return this->value; };
-	void		switchVerbose(void) { this->_verbose = !(this->_verbose); };
-
-	operator value_type(void) const {
-		return value_type(this->value);
-	}
-private:
-	value_type	value;
-	bool		_verbose;
-};
-
-template <typename T>
-std::ostream	&operator<<(std::ostream &o, foo<T> const &bar) {
-	o << bar.getValue();
-	return o;
-}
-// --- End of class foo
-
 #define T1 int
-#define T2 foo<int>
-
+#define T2 std::string
 typedef TESTED_NAMESPACE::map<T1, T2>::value_type T3;
-typedef TESTED_NAMESPACE::map<T1, T2>::iterator ft_iterator;
-typedef TESTED_NAMESPACE::map<T1, T2>::const_iterator ft_const_iterator;
+typedef TESTED_NAMESPACE::map<T1, T2>::iterator iterator;
 
 static int iter = 0;
 
@@ -92,58 +54,47 @@ void	printSize(T_MAP const &mp, bool print_content = 1)
 	std::cout << "###############################################" << std::endl;
 }
 
-template <typename MAP>
-void	ft_bound(MAP &mp, const T1 &param)
+template <typename MAP, typename U>
+void	ft_insert(MAP &mp, U param)
 {
-	ft_iterator ite = mp.end(), it[2];
-	_pair<ft_iterator, ft_iterator> ft_range;
+	_pair<iterator, bool> tmp;
 
 	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
-	std::cout << "with key [" << param << "]:" << std::endl;
-	it[0] = mp.lower_bound(param); it[1] = mp.upper_bound(param);
-	ft_range = mp.equal_range(param);
-	std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
-	std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
-	std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
+	tmp = mp.insert(param);
+	std::cout << "insert return: " << printPair(tmp.first);
+	std::cout << "Created new node: " << tmp.second << std::endl;
+	printSize(mp);
 }
 
-template <typename MAP>
-void	ft_const_bound(const MAP &mp, const T1 &param)
+template <typename MAP, typename U, typename V>
+void	ft_insert(MAP &mp, U param, V param2)
 {
-	ft_const_iterator ite = mp.end(), it[2];
-	_pair<ft_const_iterator, ft_const_iterator> ft_range;
+	iterator tmp;
 
-	std::cout << "\t-- [" << iter++ << "] (const) --" << std::endl;
-	std::cout << "with key [" << param << "]:" << std::endl;
-	it[0] = mp.lower_bound(param);
-	it[1] = mp.upper_bound(param);
-	ft_range = mp.equal_range(param);
-	std::cout << "lower_bound: " << (it[0] == ite ? "end()" : printPair(it[0], false)) << std::endl;
-	std::cout << "upper_bound: " << (it[1] == ite ? "end()" : printPair(it[1], false)) << std::endl;
-	std::cout << "equal_range: " << (ft_range.first == it[0] && ft_range.second == it[1]) << std::endl;
+	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
+	tmp = mp.insert(param, param2);
+	std::cout << "insert return: " << printPair(tmp);
+	printSize(mp);
 }
 
 int main() {
-	std::list<T3> lst;
-	unsigned int lst_size = 10;
-	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3(i + 1, (i + 1) * 3));
-	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
-	printSize(mp);
+	TESTED_NAMESPACE::map<T1, T2> mp, mp2;
 
-	ft_const_bound(mp, -10);
-	ft_const_bound(mp, 1);
-	ft_const_bound(mp, 5);
-	ft_const_bound(mp, 10);
-	ft_const_bound(mp, 50);
+	ft_insert(mp, T3(42, "lol"));
+	ft_insert(mp, T3(42, "mdr"));
 
-	printSize(mp);
+	ft_insert(mp, T3(50, "mdr"));
+	ft_insert(mp, T3(35, "funny"));
 
-	mp.lower_bound(3)->second = 404;
-	mp.upper_bound(7)->second = 842;
-	ft_bound(mp, 5);
-	ft_bound(mp, 7);
+	ft_insert(mp, T3(45, "bunny"));
+	ft_insert(mp, T3(21, "fizz"));
+	ft_insert(mp, T3(38, "buzz"));
 
-	printSize(mp);
+	ft_insert(mp, mp.begin(), T3(55, "fuzzy"));
+
+	ft_insert(mp2, mp2.begin(), T3(1337, "beauty"));
+	ft_insert(mp2, mp2.end(), T3(1000, "Hello"));
+	ft_insert(mp2, mp2.end(), T3(1500, "World"));
+
 	return (0);
 }
