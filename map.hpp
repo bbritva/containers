@@ -93,6 +93,16 @@ namespace ft {
 			return (*this);
 		}
 
+		void swap(map &other) {
+			pair_alloc_type tmp_allocator = other._allocator;
+			comparator tmp_comparator = other._comparator;
+			other._allocator = _allocator;
+			other._comparator = _comparator;
+			_allocator = tmp_allocator;
+			_comparator = tmp_comparator;
+			_tree.swap(other._tree);
+		}
+
 		// iterators
 		iterator begin()
 		{ return iterator (_tree.getMin());}

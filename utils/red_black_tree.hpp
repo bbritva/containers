@@ -75,15 +75,21 @@ namespace ft {
 
 		void swap(rb_tree& other)
 		{
-			rb_tree tmp(other);
-			other = *this;
-			*this = tmp;
-//			node_type *tmp = _last;
-//			_last = other._last;
-//			other._last = tmp;
-//			tmp = _root;
-//			_root = other._root;
-//			other._root = tmp;
+			node_allocator	tmp_node_allocator = other._node_allocator;
+			other._node_allocator = _node_allocator;
+			_node_allocator = tmp_node_allocator;
+
+			key_compare tmp_comparator = other._comparator;
+			other._comparator = _comparator;
+			_comparator = tmp_comparator;
+
+			node_type *tmp = _leaf;
+			_leaf = other._leaf;
+			other._leaf = tmp;
+
+			tmp = _root;
+			_root = other._root;
+			other._root = tmp;
 		}
 
 		bool insert (value_type value) {
