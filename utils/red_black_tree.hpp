@@ -233,7 +233,6 @@ namespace ft {
 			} else if (_comparator( (*place)->_value, new_node->_value)) {
 				insert_node(new_node, &((*place)->_right_kid), *place);
 			} else {
-				std::cout << "Key exists\n";
 				return false;
 			}
 			balanceNode(*place);
@@ -262,7 +261,8 @@ namespace ft {
 					insert_node2(new_node, current->_right_kid);
 				}
 			} else {
-				std::cout << "Key exists\n";
+				_node_allocator.destroy(new_node);
+				_node_allocator.deallocate(new_node, sizeof(new_node));
 				return false;
 			}
 //			balanceNode(current);

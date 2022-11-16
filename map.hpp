@@ -293,7 +293,7 @@ namespace ft {
 					const map<Key, Value, Compare, Allocator> &second)
 	{
 		return (first.size() == second.size()
-			&& equal(first.begin(), first.end(), second.begin()));
+			&& ft::equal(first.begin(), first.end(), second.begin()));
 	}
 
 	template <class Key, class Value, class Compare, class Allocator>
