@@ -25,14 +25,42 @@
 #define T2 int
 typedef _pair<const T1, T2> T3;
 
+template <typename T>
+T	dec(T it, int n)
+{
+	while (n-- > 0)
+		--it;
+	return (it);
+}
+
+template <typename T>
+T	inc(T it, int n)
+{
+	while (n-- > 0)
+		++it;
+	return (it);
+}
 
 template <typename T>
 std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
 {
-	o << "key: " << iterator->first << " | value: " << iterator->second;
+	o << "key: " << (char)iterator->first << " | value: " << iterator->second;
 	if (nl)
 		o << std::endl;
 	return ("");
+}
+
+template <typename T3, typename T4>
+void	printReverse(TESTED_NAMESPACE::map<T3, T4> &mp)
+{
+	typename TESTED_NAMESPACE::map<T3, T4>::iterator it = mp.end(), ite = mp.begin();
+
+	std::cout << "printReverse:" << std::endl;
+	while (it != ite) {
+		it--;
+		std::cout << "-> " << printPair(it, false) << std::endl;
+	}
+	std::cout << "_______________________________________________" << std::endl;
 }
 
 template <typename T_MAP>
@@ -52,35 +80,30 @@ void	printSize(T_MAP const &mp, bool print_content = 1)
 
 int main() {
 	std::list<T3> lst;
-	unsigned int lst_size = 7;
+	unsigned int lst_size = 5;
 	for (unsigned int i = 0; i < lst_size; ++i)
-		lst.push_back(T3(lst_size - i, i));
+		lst.push_back(T3('a' + i, (i + 1) * 7));
 
 	TESTED_NAMESPACE::map<T1, T2> mp(lst.begin(), lst.end());
-	TESTED_NAMESPACE::map<T1, T2>::iterator it = mp.begin(), ite = mp.end();
-
-	TESTED_NAMESPACE::map<T1, T2> mp_range(it, --(--ite));
-	for (int i = 0; it != ite; ++it)
-		it->second = ++i * 5;
-
-	it = mp.begin(); ite = --(--mp.end());
-	TESTED_NAMESPACE::map<T1, T2> mp_copy(mp);
-	for (int i = 0; it != ite; ++it)
-		it->second = ++i * 7;
-
-	std::cout << "\t-- PART ONE --" << std::endl;
+	TESTED_NAMESPACE::map<T1, T2>::iterator it_ = mp.begin();
+	TESTED_NAMESPACE::map<T1, T2>::reverse_iterator it(it_), ite;
 	printSize(mp);
-	printSize(mp_range);
-	printSize(mp_copy);
 
-	mp = mp_copy;
-	mp_copy = mp_range;
-	mp_range.clear();
+	std::cout << (it_ == it.base()) << std::endl;
+	std::cout << (it_ == dec(it, 3).base()) << std::endl;
 
-	std::cout << "\t-- PART TWO --" << std::endl;
-	printSize(mp);
-	printSize(mp_range);
-	printSize(mp_copy);
-	return (0);
+	printPair(it.base());
+	printPair(inc(it.base(), 1));
+
+	std::cout << "TEST OFFSET" << std::endl;
+	--it;
+	printPair(it);
+	printPair(it.base());
+
+	it = mp.rbegin(); ite = mp.rend();
+	while (it != ite)
+		std::cout << "[rev] " << printPair(it++, false) << std::endl;
+	printReverse(mp);
+
 	return (0);
 }
