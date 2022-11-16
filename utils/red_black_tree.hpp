@@ -95,7 +95,8 @@ namespace ft {
 		bool insert (value_type value) {
 			node_type *new_node = _node_allocator.allocate(1);
 			_node_allocator.construct(new_node, node_type(_leaf, value));
-			return insert_node(new_node, &_root, _leaf);
+//			return insert_node(new_node, &_root, _leaf);
+			return insert_node2(new_node, _root);
 		};
 
 		bool insert (value_type value, node_type *pos) {
@@ -103,7 +104,8 @@ namespace ft {
 				return insert(value);
 			node_type *new_node = _node_allocator.allocate(1);
 			_node_allocator.construct(new_node, node_type(_leaf, value));
-			return insert_node(new_node, &pos, pos->_parent);
+//			return insert_node(new_node, &pos, pos->_parent);
+			return insert_node2(new_node, pos);
 		};
 
 		bool empty() const {
@@ -220,8 +222,8 @@ namespace ft {
 			if (!place || !*place || !new_node)
 				return false;
 			if (*place == _leaf) {
+				new_node->_parent = new_parent;
 				*place = new_node;
-				(*place)->_parent = new_parent ? new_parent : _leaf;
 				if (new_parent == _leaf) {
 					(*place)->_color = black;
 					_leaf->_parent = new_node;
@@ -234,6 +236,36 @@ namespace ft {
 				std::cout << "Key exists\n";
 				return false;
 			}
+			balanceNode(*place);
+			return true;
+		};
+
+		bool insert_node2(node_type *new_node, node_type *current) {
+			if (!current || !new_node)
+				return false;
+			if (current == _leaf) {
+				_root = new_node;
+				_leaf->_parent = _root;
+				_root->_parent = _leaf;
+			} else if (_comparator( new_node->_value, current->_value)) {
+				if (current->_left_kid == _leaf) {
+					current->_left_kid = new_node;
+					current->_left_kid->_parent = current;
+				} else {
+					insert_node2(new_node, current->_left_kid);
+				}
+			} else if (_comparator( current->_value, new_node->_value)) {
+				if (current->_right_kid == _leaf) {
+					current->_right_kid = new_node;
+					current->_right_kid->_parent = current;
+				} else {
+					insert_node2(new_node, current->_right_kid);
+				}
+			} else {
+				std::cout << "Key exists\n";
+				return false;
+			}
+//			balanceNode(current);
 			return true;
 		};
 
@@ -443,7 +475,7 @@ namespace ft {
 		}
 
 		void swap_color(node_type *point) {
-			point->color = (point->_parent == _leaf) ? RED : black;
+			point->_color = (point->_parent == _leaf) ? RED : black;
 			point->_right_kid->_color = black;
 			point->_left_kid->_color = black;
 		}

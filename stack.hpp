@@ -12,48 +12,48 @@ namespace ft {
 	class stack {
 	public:
 		typedef Container container_type;
-	private:
-		Container _data;
 
+	protected:
+		Container c;
 	public:
-		explicit stack(const Container& cont = Container()) : _data(cont){
+		explicit stack(const Container& cont = Container()) : c(cont){
 		};
 
-		stack(const stack &other) : _data(other._data) {}
+		stack(const stack &other) : c(other.c) {}
 
 		stack &operator=(const stack &other) {
 			if (this == &other)
 				return (*this);
-			_data = other._data;
+			c = other.c;
 			return *this;
 		}
 
 		T& top() {
-			return _data.back();
+			return c.back();
 		}
 
 		const T& top() const {
-			return _data.back();
+			return c.back();
 		}
 
 		bool empty() const {
-			return _data.empty();
+			return c.empty();
 		}
 
 		std::size_t size() const {
-			return _data.size();
+			return c.size();
 		}
 
 		void push(const T element) {
-			_data.push_back(element);
+			c.push_back(element);
 		}
 
 		void pop() {
-			_data.pop_back();
+			c.pop_back();
 		}
 
 		const Container &getData() const {
-			return _data;
+			return c;
 		}
 	};
 
