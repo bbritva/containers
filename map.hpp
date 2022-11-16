@@ -205,7 +205,7 @@ namespace ft {
 		iterator upper_bound(const Key& key) {
 			iterator it = begin();
 			value_type pair = ft::make_pair(key, Value());
-			while (_comparator(*it, pair) && it != end())
+			while (!_comparator(pair, *it) && it != end())
 				it++;
 			return it;
 		}
@@ -213,7 +213,7 @@ namespace ft {
 		const_iterator	upper_bound(const Key& key) const {
 			const_iterator it = begin();
 			value_type pair = ft::make_pair(key, Value());
-			while (_comparator(*it, pair) && it != end())
+			while (!_comparator(pair, *it) && it != end())
 				it++;
 			return it;
 		}
@@ -221,7 +221,7 @@ namespace ft {
 		iterator lower_bound(const Key& key) {
 			iterator it = begin();
 			value_type pair = ft::make_pair(key, Value());
-			while (!_comparator(*it, pair) && it != begin())
+			while (_comparator(*it, pair) && it != end())
 				it++;
 			return it;
 		}
@@ -229,7 +229,7 @@ namespace ft {
 		const_iterator	lower_bound(const Key& key) const {
 			const_iterator it = begin();
 			value_type pair = ft::make_pair(key, Value());
-			while (!_comparator(*it, pair) && it != begin())
+			while (_comparator(*it, pair) && it != end())
 				it++;
 			return it;
 		}
