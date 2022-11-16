@@ -24,7 +24,7 @@ namespace ft {
 		typedef typename _iterator::iterator_category	iterator_category;
 		typedef T										node_type;
 
-	private:
+	public:
 		node_type *_current;
 
 	public:

@@ -49,12 +49,13 @@ namespace ft {
 		rb_tree(const rb_tree& other)
 			: _node_allocator(other._node_allocator), _comparator(other._comparator)
 		{
-			iterator it = other.getMin();
-			_leaf = _node_allocator(1);
+			iterator it = iterator(other.getMin());
+			iterator ite = iterator(other.getLast());
+			_leaf = _node_allocator.allocate(1);
 			_node_allocator.construct(_leaf, node_type(T(), black, _leaf, _leaf, _leaf));
 			_root = _leaf;
-			while (it != other._leaf) {
-				insertNode(*it);
+			while (it != ite) {
+				insert(*it);
 				++it;
 			}
 		}

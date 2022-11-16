@@ -66,9 +66,9 @@ namespace ft {
 						{};
 
 		map(const map<Key, Value, Compare, A> &other)
-			: _comparator(other._key_comp),
-			_allocator(other._allocator),
-//			_key_comp(other._key_comp),
+			: _allocator(other._allocator),
+			_comparator(other._comparator),
+			//			_key_comp(other._key_comp),
 			_tree(other._tree) {}
 
 
