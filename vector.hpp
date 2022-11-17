@@ -179,16 +179,15 @@ namespace ft {
 		void reserve(size_type new_cap) {
 			if (new_cap <= _capacity)
 				return;
-			size_type old_capacity = _capacity;
-			_capacity = (_capacity) ? _capacity : 1;
-			while (_capacity < new_cap)
-				_capacity *= 2;
-			pointer new_arr = _allocator.allocate(_capacity);
+			if (new_cap > max_size())
+				throw std::length_error("vector::reserve");
+			pointer new_arr = _allocator.allocate(new_cap);
 			for (size_type i = 0; i < _size; ++i) {
 				_allocator.construct(&new_arr[i], _arr[i]);
 				_allocator.destroy(&_arr[i]);
 			}
-			_allocator.deallocate(_arr, old_capacity);
+			_allocator.deallocate(_arr, _capacity);
+			_capacity = new_cap;
 			_arr = new_arr;
 		}
 
@@ -213,8 +212,8 @@ namespace ft {
 		}
 
 		void push_back(T new_el) {
-			if (_size + 1 >= _capacity)
-				reserve(_capacity + 1);
+			if (_size + 1 > _capacity)
+				reserve(_capacity ? _capacity * 2 : 1);
 			_allocator.construct(&_arr[_size++], new_el);
 		}
 
