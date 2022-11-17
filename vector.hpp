@@ -65,7 +65,7 @@ namespace ft {
 		vector( InputIterator first, InputIterator last, const allocator_type& allocator = allocator_type(),
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL)
 				: _allocator(allocator), _size(0) {
-			difference_type size = last - first;
+			difference_type size = ft::distance(first, last);;
 			_capacity = size;
 			_arr = _allocator.allocate(_capacity);
 			while (first != last)
