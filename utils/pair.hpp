@@ -19,30 +19,23 @@ namespace ft {
 		pair() : first(), second() {}
 
 		template<class U, class V>
-		explicit pair(const pair<U, V>& other) : first(other.first), second(other.second) {}
+		pair(const pair<U, V>& other) : first(other.first), second(other.second) {}
 
 		pair(const first_type& a, const second_type& b) : first(a), second(b) {}
 
-		pair& operator=(const pair& other)
+		template<class Other>
+		pair &operator=(const Other& other)
 		{
-			if (*this == other)
-				return *this;
 			first = other.first;
 			second = other.second;
 			return *this;
 		}
 		~pair(){};
 
-		template <class first_type, class second_type>
 		operator pair<const first_type, second_type>() const {
 			return (pair<const first_type, second_type>(*this));
 		}
 	};
-
-//	template<typename _T1, typename _T2>
-//	inline pair<_T1, _T2>
-//	make_pair(_T1 __x, _T2 __y)
-//	{ return pair<_T1, _T2>(__x, __y); }
 
 	template <class first_type, class second_type>
 	pair<first_type, second_type> make_pair(first_type key, second_type value) {
