@@ -27,53 +27,54 @@ namespace ft {
 		typedef ft::reverse_iterator<const_iterator>	const_reverse_iterator;
 
 	private:
-		pointer			_arr;
+		allocator_type	_allocator;
 		size_type		_capacity;
 		size_type		_size;
-		allocator_type	_allocator;
+		pointer			_arr;
 
 	public:
 
 		//constructors
-		explicit vector(const allocator_type allocator = allocator_type()) {
-			_size = 0;
-			_capacity = 0;
-			_allocator = allocator;
-		};
+		explicit vector(const allocator_type allocator = allocator_type())
+				: _allocator(allocator),
+				  _capacity(0),
+				  _size(0),
+				  _arr(_allocator.allocate(_capacity)) {};
 
-		explicit vector(size_type size, const_reference value = T(), const allocator_type& allocator = allocator_type()) {
-			_allocator = allocator;
-			_size = 0;
-			_capacity = 0;
+		explicit vector(size_type size, const_reference value = T(), const allocator_type& allocator = allocator_type())
+				: _allocator(allocator),
+				  _capacity(0),
+				  _size(0),
+				  _arr(_allocator.allocate(_capacity)) {
 			reserve(size);
 			for (size_type i = 0; i < size; ++i) {
 				push_back(value);
 			}
 		};
 
-		vector(vector const &other, const allocator_type& allocator = allocator_type()) {
-			_allocator = allocator;
-			_arr = _allocator.allocate(other._capacity);
+		vector(vector const &other)
+				: _allocator(other._allocator),
+				_capacity(other._capacity),
+				_size(other._size),
+				_arr(_allocator.allocate(_capacity)) {
 			for (size_type i = 0; i < other._size; ++i)
-				_arr[i] = other._arr[i];
-			_capacity = other._capacity;
-			_size = other._size;
+				_allocator.construct(&_arr[i], other._arr[i]);
 		}
 
 		template< class InputIterator >
 		vector( InputIterator first, InputIterator last, const allocator_type& allocator = allocator_type(),
-			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL) {
-			_capacity = 0;
-			_allocator = allocator;
-			_size = 0;
+			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL)
+				: _allocator(allocator),
+				  _capacity(0),
+				  _size(0),
+				  _arr(_allocator.allocate(_capacity)) {
 			while (first != last)
 				push_back(*first++);
 		}
 
 		~vector() {
 			clear();
-			if (_capacity)
-				_allocator.deallocate(_arr, _capacity);
+			_allocator.deallocate(_arr, _capacity);
 		}
 
 		vector &operator=(const vector &other) {
@@ -81,8 +82,7 @@ namespace ft {
 				return (*this);
 			clear();
 			if (_capacity < other._capacity) {
-				if (_capacity)
-					_allocator.deallocate(_arr, _capacity);
+				_allocator.deallocate(_arr, _capacity);
 				_arr = _allocator.allocate(other._capacity);
 				_capacity = other._capacity;
 			}
@@ -188,8 +188,7 @@ namespace ft {
 				_allocator.construct(&new_arr[i], _arr[i]);
 				_allocator.destroy(&_arr[i]);
 			}
-			if (old_capacity)
-				_allocator.deallocate(_arr, old_capacity);
+			_allocator.deallocate(_arr, old_capacity);
 			_arr = new_arr;
 		}
 
@@ -254,6 +253,10 @@ namespace ft {
 			iterator ret = position;
 			iterator it = end() + n - 1;
 			iterator ite = position + n - 1;
+			while (it != (end() - 1) && it != ite) {
+				_allocator.construct(it.getPtr(), *(it - n));
+				it--;
+			}
 			while (it != ite) {
 				_allocator.destroy(it.getPtr());
 				_allocator.construct(it.getPtr(), *(it - n));
@@ -280,12 +283,15 @@ namespace ft {
 			}
 			iterator it = end() + n - 1;
 			while (it != position + n - 1) {
-				*it = *(it - n);
+				_allocator.construct(it.getPtr(), *(it - n));
+				_allocator.destroy((it - n).getPtr());
 				it--;
 			}
 			iterator ret = position;
 			while (first != last) {
-				*position++ = *first++;
+				_allocator.construct(position.getPtr(), *first);
+				position++;
+				first++;
 			}
 			_size += n;
 			return ret;
