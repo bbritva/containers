@@ -277,7 +277,7 @@ namespace ft {
 			return comparator(key_comp());
 		}
 
-		const allocator_type &get_allocator() const {
+		allocator_type &get_allocator() {
 			return _allocator;
 		};
 	};
