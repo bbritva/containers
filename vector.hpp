@@ -54,7 +54,7 @@ namespace ft {
 
 		vector(vector const &other)
 				: _allocator(other._allocator),
-				_capacity(other._capacity),
+				_capacity(other._size),
 				_size(other._size),
 				_arr(_allocator.allocate(_capacity)) {
 			for (size_type i = 0; i < other._size; ++i)
@@ -64,10 +64,10 @@ namespace ft {
 		template< class InputIterator >
 		vector( InputIterator first, InputIterator last, const allocator_type& allocator = allocator_type(),
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL)
-				: _allocator(allocator),
-				  _capacity(0),
-				  _size(0),
-				  _arr(_allocator.allocate(_capacity)) {
+				: _allocator(allocator), _size(0) {
+			difference_type size = last - first;
+			_capacity = size;
+			_arr = _allocator.allocate(_capacity);
 			while (first != last)
 				push_back(*first++);
 		}
@@ -170,6 +170,8 @@ namespace ft {
 		bool empty() const { return (_size == 0); }
 
 		void resize(size_type count, value_type value = value_type()) {
+			if (count > _capacity)
+				reserve((_size * 2 < count) ? count : (_size * 2));
 			while (_size < count)
 				push_back(value);
 			while (_size > count)
@@ -213,7 +215,7 @@ namespace ft {
 
 		void push_back(T new_el) {
 			if (_size + 1 > _capacity)
-				reserve(_capacity ? _capacity * 2 : 1);
+				reserve(_size ? _size * 2 : 1);
 			_allocator.construct(&_arr[_size++], new_el);
 		}
 
@@ -244,6 +246,7 @@ namespace ft {
 
 		iterator insert (iterator position, size_type n, const_reference value)
 		{
+			if (!n) return position;
 			position = move(position, n);
 			iterator ret = position;
 			for (size_type i = 0; i < n; ++i) {
@@ -259,6 +262,7 @@ namespace ft {
 			typename ft::enable_if<!ft::is_integral<InputIterator>::value>::type * = NULL)
 		{
 			size_type n = ft::distance(first, last);
+			if (!n) return position;
 			if (_capacity <= _size + n) {
 				size_type index = position - begin();
 				reserve(_size + n);
@@ -339,20 +343,16 @@ namespace ft {
 			for (; it != end(); ++it)
 				std::cout << "- " << *it << std::endl;
 		}
+
 	private:
 		iterator move(iterator position, size_type n) {
 			if (_capacity <= _size + n) {
 				size_type index = position - begin();
-				reserve(_size + n);
+				reserve((_size * 2 < _size + n) ? _size + n : (_size * 2));
 				position = iterator(&_arr[index]);
 			}
 			iterator it = end() + n - 1;
 			iterator ite = position + n - 1;
-//			while (it != (end() - 1) && it != ite) {
-//				_allocator.construct(it.getPtr(), *(it - n));
-//				_allocator.destroy((it - n).getPtr());
-//				it--;
-//			}
 			while (it != ite) {
 				_allocator.construct(it.getPtr(), *(it - n));
 				_allocator.destroy((it - n).getPtr());
