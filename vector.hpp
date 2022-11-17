@@ -84,11 +84,11 @@ namespace ft {
 				if (_capacity)
 					_allocator.deallocate(_arr, _capacity);
 				_arr = _allocator.allocate(other._capacity);
+				_capacity = other._capacity;
+				_size = other._size;
 			}
 			for (size_type i = 0; i < other._size; ++i)
 				_allocator.construct(&_arr[i], other._arr[i]);
-			_capacity = other._capacity;
-			_size = other._size;
 			return (*this);
 		}
 
