@@ -245,25 +245,9 @@ namespace ft {
 
 		iterator insert (iterator position, size_type n, const_reference value)
 		{
-			if (_capacity <= _size + n) {
-				size_type index = position - begin();
-				reserve(_size + n);
-				position = iterator(&_arr[index]);
-			}
+			position = move(position, n);
 			iterator ret = position;
-			iterator it = end() + n - 1;
-			iterator ite = position + n - 1;
-			while (it != (end() - 1) && it != ite) {
-				_allocator.construct(it.getPtr(), *(it - n));
-				it--;
-			}
-			while (it != ite) {
-				_allocator.destroy(it.getPtr());
-				_allocator.construct(it.getPtr(), *(it - n));
-				it--;
-			}
 			for (size_type i = 0; i < n; ++i) {
-				_allocator.destroy(position.getPtr());
 				_allocator.construct(position.getPtr(), value);
 				position++;
 			}
@@ -355,6 +339,27 @@ namespace ft {
 			iterator it = begin();
 			for (; it != end(); ++it)
 				std::cout << "- " << *it << std::endl;
+		}
+	private:
+		iterator move(iterator position, size_type n) {
+			if (_capacity <= _size + n) {
+				size_type index = position - begin();
+				reserve(_size + n);
+				position = iterator(&_arr[index]);
+			}
+			iterator it = end() + n - 1;
+			iterator ite = position + n - 1;
+//			while (it != (end() - 1) && it != ite) {
+//				_allocator.construct(it.getPtr(), *(it - n));
+//				_allocator.destroy((it - n).getPtr());
+//				it--;
+//			}
+			while (it != ite) {
+				_allocator.construct(it.getPtr(), *(it - n));
+				_allocator.destroy((it - n).getPtr());
+				it--;
+			}
+			return position;
 		}
 	};
 	//class end
