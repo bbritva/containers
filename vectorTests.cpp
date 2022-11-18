@@ -18,9 +18,8 @@ bool compareVectors(const T &vct_ft, const U &vct_std)
 {
 	if (vct_ft.size() != vct_std.size()) {
 		std::cout << KRED"Different size!!!\n" RST;
-		return false;
-	}else if (vct_ft.capacity() != vct_std.capacity()) {
-		std::cout << KRED"Different capacity!!!\n" RST;
+		std::cout << "STD: Capacity " << vct_std.capacity() << ", size = " << vct_std.size() <<"\n";
+		std::cout << "FT:  Capacity " << vct_ft.capacity() << ", size = " << vct_ft.size() <<"\n";
 		return false;
 	} else {
 		for (size_t i = 0; i < vct_ft.size(); ++i) {
@@ -294,6 +293,43 @@ int vectorMaxSize() {
 	return 0;
 }
 
+int vectorIterators() {
+	std::string test_name("Iterators");
+	std::cout << KBLU << test_name<< "\n" RST;
+	std::vector<int> vct_std_int;
+	ft::vector<int> vct_ft_int;
+	int num = 42;
+	int count = 50;
+	int count2 = 50;
+	std::cout << "Push " << count << " elements\n";
+	for (int i = 0; i < count; ++i) {
+		vct_ft_int.push_back(num);
+		vct_std_int.push_back(num);
+	}
+	count = 20;
+	num = 300;
+	std::cout << "insert "<< num <<" to begin() + " << count << "\n";
+	vct_std_int.insert(vct_std_int.begin() + count, num);
+	vct_ft_int.insert(vct_ft_int.begin() + count, num);
+	std::cout << "STD: ";
+	printVector(vct_std_int);
+	std::cout << "FT:  ";
+	printVector(vct_ft_int);
+	if (!compareVectors(vct_std_int, vct_ft_int)) return 1;
+	count = 13;
+	num = 300;
+	count2 = 25;
+	std::cout << "insert to (begin() + "<< count2 << ") " << count << " elements(" << num << ")\n";
+	vct_std_int.insert(vct_std_int.begin() + count2, count, num);
+	vct_ft_int.insert(vct_ft_int.begin() + count2, count, num);
+	std::cout << "STD: ";
+	printVector(vct_std_int);
+	std::cout << "FT:  ";
+	printVector(vct_ft_int);
+	return !compareVectors(vct_std_int, vct_ft_int);
+
+}
+
 
 int vectorTests() {
 	std::cout << KMAG BOLD "Vector TESTS:\n" RST;
@@ -302,6 +338,7 @@ int vectorTests() {
 	if (vectorReserve()) return 1;
 	if (vectorMaxSize()) return 1;
 	if (vectorAssign()) return 1;
+	if (vectorIterators()) return 1;
 
 	std::cout << KGRN"===========Vector TESTS PASSED===========\n\n" RST;
 	return 0;
