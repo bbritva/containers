@@ -4,16 +4,39 @@ template <typename T>
 void printVector(const T &vec)
 {
 	std::cout << "begin:\n";
-	for (size_t i = 0; i < vec.size(); ++i) {
+	size_t size = (vec.size() > 100) ? 100 : vec.size();
+	for (size_t i = 0; i < size; ++i) {
 		std::cout << "[" << vec[i] << "]";
 		if (!((i+1)%10)) std::cout << "\n";
 		else std::cout << " ";
 	}
 	std::cout << "\nend\n";
-
 }
 
-int vectorReserveTests() {
+template <typename T, typename U>
+bool compareVectors(const T &vct_ft, const U &vct_std)
+{
+	if (vct_ft.size() != vct_std.size()) {
+		std::cout << KRED"Different size!!!\n" RST;
+		return false;
+	}else if (vct_ft.capacity() != vct_std.capacity()) {
+		std::cout << KRED"Different capacity!!!\n" RST;
+		return false;
+	} else {
+		for (size_t i = 0; i < vct_ft.size(); ++i) {
+			if (vct_ft[i] != vct_std[i]){
+				std::cout << "std[" << i << "] " <<  vct_std[i] << " != " <<
+				"ft[" << i << "] " <<  vct_ft[i] << "\n";
+				std::cout << KRED"Different vectors!!!\n" RST;
+				return false;
+			}
+		}
+	}
+	std::cout << KGRN"Identical vectors\n" RST;
+	return true;
+}
+
+int vectorReserve() {
 	std::string test_name("Reserve");
 	int count = 42;
 	std::cout << KBLU"Reserve:\n" RST;
@@ -71,7 +94,7 @@ int vectorReserveTests() {
 	return 0;
 }
 
-int vectorCapacityTests() {
+int vectorCapacity() {
 	std::string test_name("Capacity");
 	const int num = 42;
 	int count = 42;
@@ -88,8 +111,6 @@ int vectorCapacityTests() {
 			return 1;
 		}
 	}
-	printVector(vct_std_int);
-	printVector(vct_ft_int);
 	std::cout << "STD: Capacity " << vct_std_int.capacity() << ", size = " << vct_std_int.size() <<"\n";
 	std::cout << "FT:  Capacity " << vct_ft_int.capacity() << ", size = " << vct_ft_int.size() <<"\n";
 	std::cout << "--------------------------------------------------------------------------------------\n";
@@ -164,7 +185,7 @@ int vectorCapacityTests() {
 	return 0;
 }
 
-int vectorEmptyTests() {
+int vectorEmpty() {
 	std::string test_name("Empty");
 	const int num = 42;
 	int count = 4;
@@ -204,6 +225,38 @@ int vectorEmptyTests() {
 	std::cout << "FT:  Is empty? " << (vct_ft_int.empty() ? "true" : "false") <<"\n";
 	std::cout << "--------------------------------------------------------------------------------------\n";
 
+	std::cout << KGRN"===========" << test_name << " TESTS PASSED===========\n\n" RST;
+	return 0;
+}
+
+int vectorAssign() {
+	std::string test_name("Assign");
+	std::cout << KBLU<< test_name <<"\n" RST;
+	int num = 42;
+	int count = 4;
+	std::cout << "Assign vectors " << count <<" elements(" << num <<")\n";
+	std::vector<int> vct_std_int;
+	ft::vector<int> vct_ft_int;
+	vct_std_int.assign(count, num);
+	vct_ft_int.assign(count, num);
+	if (vct_ft_int.size() != vct_std_int.size()
+		|| vct_ft_int.capacity() != vct_std_int.capacity()) {
+		std::cout << KRED"===========" << test_name << " TESTS FAILED===========\n\n" RST;
+		return 1;
+	}
+	compareVectors(vct_std_int, vct_ft_int);
+
+	num = 400;
+	count = 400;
+	std::cout << "Assign vectors " << count <<" elements(" << num <<")\n";
+	vct_std_int.assign(count, num);
+	vct_ft_int.assign(count, num);
+	if (vct_ft_int.size() != vct_std_int.size()
+		|| vct_ft_int.capacity() != vct_std_int.capacity()) {
+		std::cout << KRED"===========" << test_name << " TESTS FAILED===========\n\n" RST;
+		return 1;
+	}
+	compareVectors(vct_std_int, vct_ft_int);
 
 	std::cout << KGRN"===========" << test_name << " TESTS PASSED===========\n\n" RST;
 	return 0;
@@ -223,7 +276,7 @@ int createVectors(const std::string& test_name, T = 0)  {
 	return 0;
 }
 
-int vectorMaxSizeTest() {
+int vectorMaxSize() {
 	std::string test_name("MaxSize");
 	std::cout << KBLU << test_name<< "\n" RST;
 	std::cout << "Create vectors with ints:\n";
@@ -244,10 +297,11 @@ int vectorMaxSizeTest() {
 
 int vectorTests() {
 	std::cout << KMAG BOLD "Vector TESTS:\n" RST;
-	if (vectorCapacityTests()) return 1;
-	if (vectorEmptyTests()) return 1;
-	if (vectorReserveTests()) return 1;
-	if (vectorMaxSizeTest()) return 1;
+	if (vectorCapacity()) return 1;
+	if (vectorEmpty()) return 1;
+	if (vectorReserve()) return 1;
+	if (vectorMaxSize()) return 1;
+	if (vectorAssign()) return 1;
 
 	std::cout << KGRN"===========Vector TESTS PASSED===========\n\n" RST;
 	return 0;
