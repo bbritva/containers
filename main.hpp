@@ -8,6 +8,9 @@
 #include <iostream>
 #include <string>
 #include <deque>
+#include <vector>
+#include <stack>
+#include <map>
 
 #include <stdlib.h>
 #include <iostream>
@@ -51,5 +54,6 @@ struct Buffer
 };
 
 int subject_test(int seed);
+int vectorTests();
 
 #endif //MAIN_CPP_MAIN_HPP

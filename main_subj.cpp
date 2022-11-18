@@ -79,5 +79,5 @@ int subject_test(int seed) {
 		std::cout << *it;
 	}
 	std::cout << std::endl;
-	return (0);
+	return (sum);
 }

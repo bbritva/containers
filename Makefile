@@ -2,7 +2,7 @@ NAME		=	exec
 CPP			=	c++ $(CFLAGS)
 RM			=	rm -f
 CFLAGS		=	-Wall -Wextra -Werror -g3 -std=c++98
-SRCS		=	main.cpp main_subj.cpp
+SRCS		=	main.cpp main_subj.cpp vectorTests.cpp
 OBJS		=	$(SRCS:.cpp=.o)
 HDRS		=	*.hpp utils/*.hpp
 CYAN		=	\x1B[36m
