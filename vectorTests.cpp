@@ -1,5 +1,18 @@
 #include "main.hpp"
 
+template <typename T>
+void printVector(const T &vec)
+{
+	std::cout << "begin:\n";
+	for (size_t i = 0; i < vec.size(); ++i) {
+		std::cout << "[" << vec[i] << "]";
+		if (!((i+1)%10)) std::cout << "\n";
+		else std::cout << " ";
+	}
+	std::cout << "\nend\n";
+
+}
+
 int vectorReserveTests() {
 	std::string test_name("Reserve");
 	int count = 42;
@@ -75,6 +88,8 @@ int vectorCapacityTests() {
 			return 1;
 		}
 	}
+	printVector(vct_std_int);
+	printVector(vct_ft_int);
 	std::cout << "STD: Capacity " << vct_std_int.capacity() << ", size = " << vct_std_int.size() <<"\n";
 	std::cout << "FT:  Capacity " << vct_ft_int.capacity() << ", size = " << vct_ft_int.size() <<"\n";
 	std::cout << "--------------------------------------------------------------------------------------\n";
