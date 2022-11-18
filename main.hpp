@@ -5,6 +5,21 @@
 #ifndef MAIN_CPP_MAIN_HPP
 #define MAIN_CPP_MAIN_HPP
 
+#include <iostream>
+#include <string>
+#include <deque>
+
+#include <stdlib.h>
+#include <iostream>
+#include <algorithm>
+#include <sys/time.h>
+
+#define MAX_RAM 4294967296
+#define BUFFER_SIZE 4096
+#define COUNT (MAX_RAM / (int)sizeof(Buffer))
+//#define COUNT 10000
+
+// COLORS
 #define RST  "\x1B[0m"
 #define KRED  "\x1B[31m"
 #define KGRN  "\x1B[32m"
@@ -25,17 +40,16 @@
 #define BOLD(x) "\x1B[1m" x RST
 #define UNDL(x) "\x1B[4m" x RST
 
-
-#if STL == 1
-#include <map>
-#define _NAMESPACE std
-# else
 #include "map.hpp"
-#define _NAMESPACE ft
-#endif
+#include "vector.hpp"
+#include "stack.hpp"
 
-#include <iostream>
-#include <algorithm>
+struct Buffer
+{
+	int idx;
+	char buff[BUFFER_SIZE];
+};
 
-#include <sys/time.h>
+int subject_test(int seed);
+
 #endif //MAIN_CPP_MAIN_HPP

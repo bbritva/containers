@@ -49,26 +49,27 @@ namespace ft {
 		rb_tree(const rb_tree& other)
 			: _node_allocator(other._node_allocator), _comparator(other._comparator)
 		{
-			iterator it = iterator(other.getMin());
-			iterator ite = iterator(other.getLast());
+//			iterator it = iterator(other.getMin());
+//			iterator ite = iterator(other.getLast());
 			_leaf = _node_allocator.allocate(1);
 			_node_allocator.construct(_leaf, node_type(T(), black, _leaf, _leaf, _leaf));
 			_root = _leaf;
-			while (it != ite) {
-				insert(*it);
-				++it;
-			}
+//			while (it != ite) {
+//				insert(*it);
+//				++it;
+//			}
+			copyTree(other._root);
 		}
 
 		rb_tree& operator=(const rb_tree& other) {
 			if (this == &other)
 				return *this;
 			clear();
-
-			iterator it = iterator(other.getMin());
-			iterator ite = iterator(other.getLast());
-			while (it != ite)
-				insert(*it++);
+			copyTree(other._root);
+//			iterator it = iterator(other.getMin());
+//			iterator ite = iterator(other.getLast());
+//			while (it != ite)
+//				insert(*it++);
 			return *this;
 		};
 
@@ -216,6 +217,14 @@ namespace ft {
 			eraseNode(node->_right_kid);
 			_node_allocator.destroy(node);
 			_node_allocator.deallocate(node, 1);
+		};
+
+		void copyTree(node_type *node) {
+			if (node->isLeaf())
+				return;
+			insert(node->_value);
+			copyTree(node->_left_kid);
+			copyTree(node->_right_kid);
 		};
 
 		bool insert_node(node_type *new_node, node_type **place, node_type *new_parent) {

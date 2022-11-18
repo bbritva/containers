@@ -1,32 +1,13 @@
-#include "vector.hpp"
+#include "main.hpp"
 
-#ifndef STD
-# define TESTED_NAMESPACE ft
-#else
-# define NAMESPACE std
-#endif
-#include <list>
-
-
-#define TESTED_TYPE int
-
-int		main(void)
+int		main()
 {
-	std::list<TESTED_TYPE> lst;
-	std::list<TESTED_TYPE>::iterator lst_it;
-	for (int i = 1; i < 5; ++i)
-		lst.push_back(i * 3);
+	std::cout << "SUBJECT TESTS:\n";
+	std::cout << "Test 1, seed = 1000:\n";
+	subject_test(1000);
+	std::cout << "Test 2, seed = 1000:\n";
+	subject_test(1000);
+	std::cout << "Test 3, seed = 10001000:\n";
+	subject_test(10001000);
 
-	TESTED_NAMESPACE::vector<TESTED_TYPE> vct(lst.begin(), lst.end());
-	printSize(vct);
-
-	lst_it = lst.begin();
-	for (int i = 1; lst_it != lst.end(); ++i)
-		*lst_it++ = i * 5;
-	vct.assign(lst.begin(), lst.end());
-	printSize(vct);
-
-	vct.insert(vct.end(), lst.rbegin(), lst.rend());
-	printSize(vct);
-	return (0);
 }
