@@ -41,11 +41,13 @@
 
 struct Buffer
 {
-	int idx;
-	char buff[BUFFER_SIZE];
+	int		idx;
+	char	buff[BUFFER_SIZE];
 };
 
 int subject_test(int seed);
 int vectorTests();
+int stackTests();
+
 
 #endif //MAIN_CPP_MAIN_HPP
