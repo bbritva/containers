@@ -328,7 +328,6 @@ int vectorIterators() {
 	printVector(vct_ft_int);
 
 	count = 13;
-	num = 300;
 	count2 = 25;
 	std::cout << "erase from (begin() + "<< count << ") to (end() - "<< count2 << ")\n";
 	vct_std_int.erase(vct_std_int.begin() + count, vct_std_int.end() - count2);
@@ -391,6 +390,65 @@ int swap() {
 	return 0;
 }
 
+int compare(){
+	std::string test_name("Compare");
+	std::cout << KBLU << test_name<< "\n" RST;
+	std::vector<int> vct_std_int1;
+	ft::vector<int> vct_ft_int1;
+	std::vector<int> vct_std_int2;
+	ft::vector<int> vct_ft_int2;
+	int num = 3;
+	int count = 5;
+	std::cout << "Push " << count << " elements(" << num << ") to vectors\n";
+	for (int i = 0; i < count; ++i) {
+		vct_ft_int1.push_back(num);
+		vct_std_int1.push_back(num);
+	}
+	std::cout << "Push " << num << " elements(" << count << ") to other vectors\n";
+	for (int i = 0; i < num; ++i) {
+		vct_ft_int2.push_back(count);
+		vct_std_int2.push_back(count);
+	}
+	std::cout << "Vectors:\n";
+	std::cout << "STD1: ";
+	printVector(vct_std_int1);
+	std::cout << "FT1:  ";
+	printVector(vct_ft_int1);
+	std::cout << "STD2: ";
+	printVector(vct_std_int2);
+	std::cout << "FT2:  ";
+	printVector(vct_ft_int2);
+
+	std::cout << "ft vector one == ft vector two:" << std::endl;
+	std::cout << ((vct_ft_int1 == vct_ft_int2) ? KGRN "True" RST : KRED "False" RST ) << std::endl;
+	std::cout << "std vector one == std vector two:" << std::endl;
+	std::cout << ((vct_ft_int1 == vct_ft_int2) ? KGRN "True" RST : KRED "False" RST ) << std::endl;
+
+	std::cout << "Equating vectors\n";
+
+	vct_ft_int1 = vct_ft_int2;
+	vct_std_int1 = vct_std_int2;
+	std::cout << "Vectors:\n";
+	std::cout << "STD1: ";
+	printVector(vct_std_int1);
+	std::cout << "FT1:  ";
+	printVector(vct_ft_int1);
+	std::cout << "STD2: ";
+	printVector(vct_std_int2);
+	std::cout << "FT2:  ";
+	printVector(vct_ft_int2);
+	std::cout << "ft vector one == ft vector two:" << std::endl;
+	std::cout << ((vct_ft_int1 == vct_ft_int2) ? KGRN "True" RST : KRED "False" RST ) << std::endl;
+	std::cout << "std vector one == std vector two:" << std::endl;
+	std::cout << ((vct_ft_int1 == vct_ft_int2) ? KGRN "True" RST : KRED "False" RST ) << std::endl;
+
+	if (isVectorsIdentical(vct_std_int1, vct_std_int2)
+		&& isVectorsIdentical(vct_ft_int1, vct_ft_int2) )
+		std::cout << KGRN"===========" << test_name << " TESTS PASSED===========\n\n" RST;
+	else
+		return 1;
+	return 0;
+}
 
 int vectorTests() {
 	std::cout << KMAG BOLD "Vector TESTS:\n" RST;
@@ -401,6 +459,7 @@ int vectorTests() {
 	if (vectorAssign()) return 1;
 	if (vectorIterators()) return 1;
 	if (swap()) return 1;
+	if (compare()) return 1;
 
 	std::cout << KGRN"===========Vector TESTS PASSED===========\n\n" RST;
 	return 0;
