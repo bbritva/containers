@@ -14,7 +14,7 @@ void printVector(const T &vec)
 }
 
 template <typename T, typename U>
-bool compareVectors(const T &vct_ft, const U &vct_std)
+bool isVectorsIdentical(const T &vct_ft, const U &vct_std)
 {
 	if (vct_ft.size() != vct_std.size()) {
 		std::cout << KRED"Different size!!!\n" RST;
@@ -243,7 +243,7 @@ int vectorAssign() {
 		std::cout << KRED"===========" << test_name << " TESTS FAILED===========\n\n" RST;
 		return 1;
 	}
-	compareVectors(vct_std_int, vct_ft_int);
+	isVectorsIdentical(vct_std_int, vct_ft_int);
 
 	num = 400;
 	count = 400;
@@ -255,7 +255,7 @@ int vectorAssign() {
 		std::cout << KRED"===========" << test_name << " TESTS FAILED===========\n\n" RST;
 		return 1;
 	}
-	compareVectors(vct_std_int, vct_ft_int);
+	isVectorsIdentical(vct_std_int, vct_ft_int);
 
 	std::cout << KGRN"===========" << test_name << " TESTS PASSED===========\n\n" RST;
 	return 0;
@@ -315,7 +315,7 @@ int vectorIterators() {
 	printVector(vct_std_int);
 	std::cout << "FT:  ";
 	printVector(vct_ft_int);
-	if (!compareVectors(vct_std_int, vct_ft_int)) return 1;
+	if (!isVectorsIdentical(vct_std_int, vct_ft_int)) return 1;
 	count = 13;
 	num = 300;
 	count2 = 25;
@@ -326,8 +326,58 @@ int vectorIterators() {
 	printVector(vct_std_int);
 	std::cout << "FT:  ";
 	printVector(vct_ft_int);
-	return !compareVectors(vct_std_int, vct_ft_int);
+	if (isVectorsIdentical(vct_std_int, vct_ft_int))
+		std::cout << KGRN"===========" << test_name << " TESTS PASSED===========\n\n" RST;
+	else
+		return 1;
+	return 0;
+}
 
+int swap() {
+	std::string test_name("Swap");
+	std::cout << KBLU << test_name<< "\n" RST;
+	std::vector<int> vct_std_int1;
+	ft::vector<int> vct_ft_int1;
+	std::vector<int> vct_std_int2;
+	ft::vector<int> vct_ft_int2;
+	int num = 3;
+	int count = 5;
+	std::cout << "Push " << count << " elements(" << num << ") to vectors\n";
+	for (int i = 0; i < count; ++i) {
+		vct_ft_int1.push_back(num);
+		vct_std_int1.push_back(num);
+	}
+	std::cout << "Push " << num << " elements(" << count << ") to other vectors\n";
+	for (int i = 0; i < num; ++i) {
+		vct_ft_int2.push_back(count);
+		vct_std_int2.push_back(count);
+	}
+	std::cout << "Before swap:\n";
+	std::cout << "STD1: ";
+	printVector(vct_std_int1);
+	std::cout << "FT1:  ";
+	printVector(vct_ft_int1);
+	std::cout << "STD2: ";
+	printVector(vct_std_int2);
+	std::cout << "FT2:  ";
+	printVector(vct_ft_int2);
+	vct_ft_int1.swap(vct_ft_int2);
+	vct_std_int1.swap(vct_std_int2);
+	std::cout << "After swap:\n";
+	std::cout << "STD1: ";
+	printVector(vct_std_int1);
+	std::cout << "FT1:  ";
+	printVector(vct_ft_int1);
+	std::cout << "STD2: ";
+	printVector(vct_std_int2);
+	std::cout << "FT2:  ";
+	printVector(vct_ft_int2);
+	if (isVectorsIdentical(vct_std_int1, vct_ft_int1)
+	&& isVectorsIdentical(vct_std_int2, vct_ft_int2) )
+		std::cout << KGRN"===========" << test_name << " TESTS PASSED===========\n\n" RST;
+	else
+		return 1;
+	return 0;
 }
 
 
@@ -339,6 +389,7 @@ int vectorTests() {
 	if (vectorMaxSize()) return 1;
 	if (vectorAssign()) return 1;
 	if (vectorIterators()) return 1;
+	if (swap()) return 1;
 
 	std::cout << KGRN"===========Vector TESTS PASSED===========\n\n" RST;
 	return 0;
