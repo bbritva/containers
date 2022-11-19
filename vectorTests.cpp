@@ -294,7 +294,7 @@ int vectorMaxSize() {
 }
 
 int vectorIterators() {
-	std::string test_name("Iterators");
+	std::string test_name("Iterators, insert and erase");
 	std::cout << KBLU << test_name<< "\n" RST;
 	std::vector<int> vct_std_int;
 	ft::vector<int> vct_ft_int;
@@ -322,6 +322,17 @@ int vectorIterators() {
 	std::cout << "insert to (begin() + "<< count2 << ") " << count << " elements(" << num << ")\n";
 	vct_std_int.insert(vct_std_int.begin() + count2, count, num);
 	vct_ft_int.insert(vct_ft_int.begin() + count2, count, num);
+	std::cout << "STD: ";
+	printVector(vct_std_int);
+	std::cout << "FT:  ";
+	printVector(vct_ft_int);
+
+	count = 13;
+	num = 300;
+	count2 = 25;
+	std::cout << "erase from (begin() + "<< count << ") to (end() - "<< count2 << ")\n";
+	vct_std_int.erase(vct_std_int.begin() + count, vct_std_int.end() - count2);
+	vct_ft_int.erase(vct_ft_int.begin() + count, vct_ft_int.end() - count2);
 	std::cout << "STD: ";
 	printVector(vct_std_int);
 	std::cout << "FT:  ";
