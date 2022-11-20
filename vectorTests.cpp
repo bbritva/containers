@@ -35,7 +35,7 @@ bool isVectorsIdentical(const T &vct_ft, const U &vct_std)
 	return true;
 }
 
-int vectorReserve() {
+static int vectorReserve() {
 	std::string test_name("Reserve");
 	int count = 42;
 	std::cout << KBLU"Reserve:\n" RST;
@@ -93,7 +93,7 @@ int vectorReserve() {
 	return 0;
 }
 
-int vectorCapacity() {
+static int vectorCapacity() {
 	std::string test_name("Capacity");
 	const int num = 42;
 	int count = 42;
@@ -184,7 +184,7 @@ int vectorCapacity() {
 	return 0;
 }
 
-int vectorEmpty() {
+static int vectorEmpty() {
 	std::string test_name("Empty");
 	const int num = 42;
 	int count = 4;
@@ -228,7 +228,7 @@ int vectorEmpty() {
 	return 0;
 }
 
-int vectorAssign() {
+static int vectorAssign() {
 	std::string test_name("Assign");
 	std::cout << KBLU<< test_name <<"\n" RST;
 	int num = 42;
@@ -275,7 +275,7 @@ int createVectors(const std::string& test_name, T = 0)  {
 	return 0;
 }
 
-int vectorMaxSize() {
+static int vectorMaxSize() {
 	std::string test_name("MaxSize");
 	std::cout << KBLU << test_name<< "\n" RST;
 	std::cout << "Create vectors with ints:\n";
@@ -293,7 +293,7 @@ int vectorMaxSize() {
 	return 0;
 }
 
-int vectorIterators() {
+static int vectorIterators() {
 	std::string test_name("Iterators, insert and erase");
 	std::cout << KBLU << test_name<< "\n" RST;
 	std::vector<int> vct_std_int;
@@ -343,7 +343,7 @@ int vectorIterators() {
 	return 0;
 }
 
-int swap() {
+static int swap() {
 	std::string test_name("Swap");
 	std::cout << KBLU << test_name<< "\n" RST;
 	std::vector<int> vct_std_int1;
@@ -390,7 +390,7 @@ int swap() {
 	return 0;
 }
 
-int compare(){
+static int compare(){
 	std::string test_name("Compare");
 	std::cout << KBLU << test_name<< "\n" RST;
 	std::vector<int> vct_std_int1;
