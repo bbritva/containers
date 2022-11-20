@@ -297,6 +297,74 @@ static int swap() {
 	return 0;
 }
 
+static int compare(){
+	std::string test_name("Compare");
+	std::cout << KBLU << test_name<< "\n" RST;
+	std::map<int, int> map_std_int1;
+	ft::map<int, int> map_ft_int1;
+	std::map<int, int> map_std_int2;
+	ft::map<int, int> map_ft_int2;
+	int num = 3;
+	int count = 5;
+	std::cout << "Push " << count << " elements(" << num << ") to maps\n";
+	for (int i = 0; i < count; ++i) {
+		map_ft_int1.insert(ft::make_pair(i, i + num));
+		map_std_int1.insert(std::make_pair(i, i + num));
+		if (map_ft_int1.size() != map_std_int1.size()
+			|| map_ft_int1[i] != map_std_int1[i]) {
+			std::cout << KRED"===========" << test_name << " TESTS FAILED===========\n\n" RST;
+			return 1;
+		}
+	}
+	std::cout << "Push " << num << " elements(" << count << ") to other maps\n";
+	for (int i = 0; i < num; ++i) {
+		map_ft_int2.insert(ft::make_pair(i, i + count));
+		map_std_int2.insert(std::make_pair(i, i + count));
+		if (map_ft_int2.size() != map_std_int2.size()
+			|| map_ft_int2[i] != map_std_int2[i]) {
+			std::cout << KRED"===========" << test_name << " TESTS FAILED===========\n\n" RST;
+			return 1;
+		}
+	}
+	std::cout << "Maps:\n";
+	std::cout << "1: ";
+	printIter(map_std_int1.begin(), map_std_int1.end(), false);
+	std::cout << "1:  ";
+	printIter(map_ft_int1.begin(), map_ft_int1.end(), true);
+	std::cout << "2: ";
+	printIter(map_std_int2.begin(), map_std_int2.end(), false);
+	std::cout << "1:  ";
+
+	std::cout << "ft map one == ft map two:" << std::endl;
+	std::cout << ((map_ft_int1 == map_ft_int2) ? KGRN "True" RST : KRED "False" RST ) << std::endl;
+	std::cout << "std map one == std map two:" << std::endl;
+	std::cout << ((map_ft_int1 == map_ft_int2) ? KGRN "True" RST : KRED "False" RST ) << std::endl;
+
+	std::cout << "Equating maps\n";
+
+	map_ft_int1 = map_ft_int2;
+	map_std_int1 = map_std_int2;
+	std::cout << "Maps:\n";
+	std::cout << "1: ";
+	printIter(map_std_int1.begin(), map_std_int1.end(), false);
+	std::cout << "1:  ";
+	printIter(map_ft_int1.begin(), map_ft_int1.end(), true);
+	std::cout << "2: ";
+	printIter(map_std_int2.begin(), map_std_int2.end(), false);
+	std::cout << "1:  ";
+	std::cout << "ft map one == ft map two:" << std::endl;
+	std::cout << ((map_ft_int1 == map_ft_int2) ? KGRN "True" RST : KRED "False" RST ) << std::endl;
+	std::cout << "std map one == std map two:" << std::endl;
+	std::cout << ((map_ft_int1 == map_ft_int2) ? KGRN "True" RST : KRED "False" RST ) << std::endl;
+
+	if (!isMapsIdentical(map_ft_int1.begin(), map_ft_int1.end(), map_std_int1.begin())
+		|| !isMapsIdentical(map_ft_int2.begin(), map_ft_int2.end(), map_std_int2.begin())) {
+		std::cout << KRED"===========" << test_name << " TESTS FAILED===========\n\n" RST;
+		return 1;
+	}
+	return 0;
+}
+
 
 int mapTests() {
 	std::cout << KMAG BOLD "Map TESTS:\n" RST;
@@ -304,7 +372,7 @@ int mapTests() {
 	if (mapMaxSize()) return 1;
 	if (findUpperLower()) return 1;
 	if (swap()) return 1;
-//	if (compare()) return 1;
+	if (compare()) return 1;
 
 	std::cout << KGRN"===========Map TESTS PASSED===========\n\n" RST;
 	return 0;
