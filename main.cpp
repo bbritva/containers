@@ -20,9 +20,10 @@ int subjTests() {
 
 int	main() {
 
-//	if (subjTests()) return 1;
+	if (subjTests()) return 1;
 	if (vectorTests()) return 1;
 	if (stackTests()) return 1;
 	if (mapTests()) return 1;
+	std::cout << KGRN"===========ALL TESTS PASSED===========\n" RST;
 	return 0;
 }
