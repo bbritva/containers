@@ -48,6 +48,7 @@ struct Buffer
 int subject_test(int seed);
 int vectorTests();
 int stackTests();
+int mapTests();
 
 
 #endif //MAIN_CPP_MAIN_HPP

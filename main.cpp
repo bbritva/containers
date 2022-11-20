@@ -23,5 +23,6 @@ int	main() {
 //	if (subjTests()) return 1;
 	if (vectorTests()) return 1;
 	if (stackTests()) return 1;
+	if (mapTests()) return 1;
 	return 0;
 }
